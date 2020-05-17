@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
+import AuthenticationPage from "../components/AuthenticationPage";
+import {AuthenticationMode} from "../types/authenticationMode";
 
 function Login() {
-    return (
-        <div>login</div>
-    );
+    return (<AuthenticationPage authenticationMode={AuthenticationMode.Login}/>)
 }
 
-export default Login;
+export default Login

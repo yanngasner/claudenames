@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import {auth} from './services/firebase';
 
@@ -6,17 +6,21 @@ import './App.css';
 
 import Home from './pages/Home';
 import Chat from './pages/Chat';
-import Signup from './pages/Signup';
+import Signup from './pages/SignUp';
 import Login from './pages/Login';
 
-
-import {PublicRoute} from "./components/PublicRoute";
-import {PrivateRoute} from "./components/PrivateRoute";
+import {PublicRoute, PrivateRoute} from "./components/AuthenticatedRoute";
 
 
 function App() {
 
     const [authenticated, setAuthenticated] = useState(false);
+
+    useEffect(() => {
+        auth().onAuthStateChanged((user) => {
+            setAuthenticated(user != null);
+        })
+    }, []);
 
     return (
         <div className="App">
