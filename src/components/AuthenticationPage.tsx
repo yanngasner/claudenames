@@ -45,7 +45,7 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <h1>{authenticationMode} to <Link to="/">Confinauds</Link>
+                <h1>{authenticationMode} to <Link to="/">Claude Name</Link>
                 </h1>
                 {authenticationDescription()}
                 <div>

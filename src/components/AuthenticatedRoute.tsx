@@ -20,7 +20,7 @@ export const PublicRoute: React.FC<RouteProps> = ({component: Component, authent
             path={path}
             render={(props) => authenticated === false
                 ? <Component {...props} />
-                : <Redirect to='/chat'/>}
+                : <Redirect to='/game'/>}
         />
     );
 }

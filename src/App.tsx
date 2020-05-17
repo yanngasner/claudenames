@@ -5,7 +5,7 @@ import {auth} from './services/firebase';
 import './App.css';
 
 import Home from './pages/Home';
-import Chat from './pages/Chat';
+import Game from './pages/Game';
 import Signup from './pages/SignUp';
 import Login from './pages/Login';
 
@@ -27,7 +27,7 @@ function App() {
             <Router>
                 <Switch>
                     <Route exact path="/" component={Home}></Route>
-                    <PrivateRoute path="/chat" component={Chat} authenticated={authenticated} ></PrivateRoute>
+                    <PrivateRoute path="/game" component={Game} authenticated={authenticated} ></PrivateRoute>
                     <PublicRoute path="/login" component={Login} authenticated={authenticated}></PublicRoute>
                     <PublicRoute path="/signup" component={Signup} authenticated={authenticated}></PublicRoute>
                 </Switch>
