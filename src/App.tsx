@@ -5,7 +5,7 @@ import {auth} from './services/firebase';
 import './App.css';
 
 import Home from './pages/Home';
-import Game from './pages/Game';
+import Game from './pages/CurrentGame';
 import Signup from './pages/SignUp';
 import Login from './pages/Login';
 
