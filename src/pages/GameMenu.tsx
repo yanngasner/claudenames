@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {useGame} from '../services/useGame'
-import {dateConverter} from "../helpers/dateConverter";
+import React, {useState} from 'react';
+import {useGames} from '../services/useGame'
+import {GameDescription} from "../components/GameDescription";
 
-function CurrentGame() {
+const GameMenu = () => {
 
     const [inputName, setInputName] = useState("")
-    const [game, createGame, endGame] = useGame();
+    const [games, createGame, endGame, startGame] = useGames();
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
@@ -14,19 +14,17 @@ function CurrentGame() {
         await createGame(inputName);
     }
 
-    const handleClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        await endGame();
+    const getGameComponents = () => {
+        return (
+            <div>
+                {games.map(game => <GameDescription {...game} startGame={() => startGame(game.id)} endGame={() => endGame(game.id)} />)}
+            </div>
+        );
     }
 
-    return(
+    return (
         <div>
-            <div>
-                <h2>{game.name}</h2>
-                <h2>{dateConverter(game.startTime)}</h2>
-                <h2>{dateConverter(game.endTime)}</h2>
-                <h2>{game.isStarted}</h2>
-                <button onClick={handleClick}>End Game</button>
-            </div>
+            {getGameComponents()}
             <div>
                 <form onSubmit={handleSubmit}>
                     <h1>New game</h1>
@@ -39,4 +37,4 @@ function CurrentGame() {
     )
 }
 
-export default CurrentGame;
+export default GameMenu;

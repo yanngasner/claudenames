@@ -1,5 +1,5 @@
 import {db} from '../services/firebase';
-import {GameModel} from "../types/game";
+import {GameModel} from "../types/gameTypes";
 
 
 export const getCurrentGame = () => {

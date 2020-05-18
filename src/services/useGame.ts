@@ -1,43 +1,50 @@
 import React, {useEffect, useState} from "react";
-import {GameModel} from "../types/game";
-import {db} from "./firebase";
+import {db, auth} from "./firebase";
+import {DbGameModel} from "../types/dBTypes";
 
 
-const emptyGame = {
-    name:"",
-    isStarted : false,
-    startTime : null,
-    endTime : null
-}
 
-const useGame : () => [GameModel, (inputName: string) => Promise<void>, () => Promise<void>]
+const useGames : () => [DbGameModel[], (
+    inputName: string) => Promise<void>,
+    (id : string) => Promise<void>,
+    (id : string) => Promise<void>]
 = () => {
 
-    const [game, setGame] = useState<GameModel>(emptyGame);
+    const [games, setGames] = useState<DbGameModel[]>([]);
 
     const createGame = async (name: string) => {
-        await db.ref("game").set({
+        const newGameRef = await db.ref("games").push({
             name: name,
             isStarted: false,
             startTime: Date.now(),
         });
+        await newGameRef.update({"id" : newGameRef.key})
     }
 
-    const endGame = async () => {
-        await db.ref("game").update({
+    const endGame = async (id : string) => {
+        await db.ref('games/'+id).update({
             endTime: Date.now()
         });
     }
 
+    const startGame = async (id : string) => {
+        await db.ref('games/'+id).update({
+            isStarted: true,
+        });
+    }
+
     useEffect(() => {
-            db.ref("game").on('value', snaphshot => {
-                const gameValue = snaphshot.val()
-                setGame({...gameValue})
+            db.ref("games").on('value', snapshot => {
+                let dbGames: DbGameModel[] = [];
+                snapshot.forEach((snap) => {
+                    dbGames.push({...snap.val()});
+                });
+                setGames(dbGames)
             })
         }
         , []);
 
-    return [game, createGame, endGame]
+    return [games, createGame, endGame, startGame]
 }
 
-export {useGame}
+export {useGames}
