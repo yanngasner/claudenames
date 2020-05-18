@@ -3,12 +3,13 @@ import {Team, WordType} from "./enums";
 export interface DbGameModel {
     id: string,
     name : string,
+    creationTime : Date | null,
     startTime : Date | null,
     endTime : Date | null,
-    isStarted : boolean,
     words : DbWordModel[],
     players : DbPlayerModel[],
-    roundNumber : 1,
+    roundNumber : number,
+    authorEmail: string | null
 }
 
 export interface DbPlayerModel {
@@ -16,6 +17,7 @@ export interface DbPlayerModel {
     name : string,
     team : Team,
     isPilote : boolean,
+    isAuthor : boolean,
 }
 
 

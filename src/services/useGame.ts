@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {db, auth} from "./firebase";
 import {DbGameModel} from "../types/dBTypes";
-
+import {useRecoilValue} from "recoil"
+import {userEmailState} from "../types/atoms";
 
 
 const useGames : () => [DbGameModel[], (
@@ -11,25 +12,35 @@ const useGames : () => [DbGameModel[], (
 = () => {
 
     const [games, setGames] = useState<DbGameModel[]>([]);
+    const userEmail = useRecoilValue(userEmailState);
 
     const createGame = async (name: string) => {
         const newGameRef = await db.ref("games").push({
             name: name,
-            isStarted: false,
-            startTime: Date.now(),
+            creationTime: Date.now(),
+            authorEmail: userEmail
         });
         await newGameRef.update({"id" : newGameRef.key})
     }
 
-    const endGame = async (id : string) => {
-        await db.ref('games/'+id).update({
-            endTime: Date.now()
+    const startGame = async (id : string) => {
+        const gameRef = db.ref('games/'+id);
+        // const snapshot = await gameRef.child('authorEmail').once('value');
+        // if (snapshot.val() != userEmail)
+        //     return;
+        await gameRef.update({
+            startTime: Date.now(),
+            endTime: null,
         });
     }
 
-    const startGame = async (id : string) => {
-        await db.ref('games/'+id).update({
-            isStarted: true,
+    const endGame = async (id : string) => {
+        const gameRef = db.ref('games/'+id);
+        // const snapshot = await gameRef.child('authorEmail').once('value');
+        // if (snapshot.val() != userEmail)
+        //     return;
+        await gameRef.update({
+            endTime: Date.now()
         });
     }
 
@@ -44,7 +55,7 @@ const useGames : () => [DbGameModel[], (
         }
         , []);
 
-    return [games, createGame, endGame, startGame]
+    return [games, createGame, startGame, endGame]
 }
 
 export {useGames}

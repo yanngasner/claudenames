@@ -5,7 +5,7 @@ import {GameDescription} from "../components/GameDescription";
 const GameMenu = () => {
 
     const [inputName, setInputName] = useState("")
-    const [games, createGame, endGame, startGame] = useGames();
+    const [games, createGame, startGame, endGame] = useGames();
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
@@ -17,7 +17,10 @@ const GameMenu = () => {
     const getGameComponents = () => {
         return (
             <div>
-                {games.map(game => <GameDescription {...game} startGame={() => startGame(game.id)} endGame={() => endGame(game.id)} />)}
+                {games.map(game => <GameDescription
+                    {...game}
+                    startGame={() => startGame(game.id)}
+                    endGame={() => endGame(game.id)} />)}
             </div>
         );
     }
