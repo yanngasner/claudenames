@@ -9,15 +9,30 @@ export const GameDescription: React.FC<GameModel>
 
     const userEmail = useRecoilValue(userEmailState);
 
+    const isAuthor = () => game.authorEmail === userEmail;
+    const isInGame = () => game.players.find(p=>p.email === userEmail);
+
     const handleEndClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        if (game.authorEmail === userEmail) {
+        if (isAuthor()) {
             game.endGame();
         }
     }
 
     const handleStartClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        if (game.authorEmail === userEmail) {
+        if (isAuthor()) {
             game.startGame();
+        }
+    }
+
+    const handleJoinClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (!isInGame()) {
+            game.joinGame();
+        }
+    }
+
+    const handleQuitClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (isInGame() && !isAuthor()) {
+            game.quitGame();
         }
     }
 
@@ -30,6 +45,9 @@ export const GameDescription: React.FC<GameModel>
             <h2>{game.authorEmail}</h2>
             <button onClick={handleStartClick}>Start</button>
             <button onClick={handleEndClick}>End</button>
+            <button onClick={handleJoinClick}>Join</button>
+            <button onClick={handleQuitClick}>Quit</button>
+            <p>{game.players.map(p => <p>{p.email}</p>)}</p>
         </div>
     )
 };

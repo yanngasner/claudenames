@@ -9,3 +9,10 @@ export enum WordType {
     Yellow,
     Black
 }
+
+export enum GameAction {
+    Start,
+    End,
+    Join,
+    Quit
+}

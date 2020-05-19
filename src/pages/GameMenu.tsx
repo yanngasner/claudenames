@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {useGames} from '../services/useGame'
 import {GameDescription} from "../components/GameDescription";
+import {GameAction} from "../types/enums";
 
 const GameMenu = () => {
 
     const [inputName, setInputName] = useState("")
-    const [games, createGame, startGame, endGame] = useGames();
+    const [games, createGame, actOnGame] = useGames();
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
@@ -19,8 +20,11 @@ const GameMenu = () => {
             <div>
                 {games.map(game => <GameDescription
                     {...game}
-                    startGame={() => startGame(game.id)}
-                    endGame={() => endGame(game.id)} />)}
+                    startGame={() => actOnGame(GameAction.Start, game)}
+                    endGame={() => actOnGame(GameAction.End, game)}
+                    joinGame={() => actOnGame(GameAction.Join, game)}
+                    quitGame={() => actOnGame(GameAction.Quit, game)}
+                    />)}
             </div>
         );
     }
