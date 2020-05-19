@@ -16,7 +16,7 @@ const useGames: () => [DbGameModel[], (inputName: string) => Promise<void>, (gam
     const createGame = async (name: string) => {
         const newGameRef = await db.ref("games").push({
             name: name,
-            creationTime: Date.now(),
+            creationTime: new Date(),
             authorEmail: userEmail,
             players:[]
         });
@@ -30,39 +30,55 @@ const useGames: () => [DbGameModel[], (inputName: string) => Promise<void>, (gam
         });
     }
 
-    const updateGameRef = async (gameRef : firebase.database.Reference, gameAction: GameAction) => {
+    const joinGame = async (gameRef: firebase.database.Reference, team : Team) => {
+        const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
+        await playerRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await playerRef.update({"team": team})
+            } else {
+                await playerRef.set({
+                    email: userEmail,
+                    name: '',
+                    team: team,
+                    isPilot: false,
+                    isAuthor: false
+                })
+            }
+        });
+    }
+
+    const updateGame = async (gameRef : firebase.database.Reference, gameAction: GameAction) => {
         switch (gameAction) {
             case GameAction.Start :
-                await  gameRef.update({
-                    startTime: Date.now(),
+                await gameRef.update({
+                    startTime: new Date(),
                     endTime : null
                 });
-                return;
+                break;
             case GameAction.End :
                 await  gameRef.update({
                     endTime: Date.now()
                 });
-                return;
-            case GameAction.Join :
-                await  gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).set({
-                    email : userEmail,
-                    name : '',
-                    team : 0,
-                    isPilot : false,
-                    isAuthor : false
-                });
-                return;
-            case GameAction.Quit :
-                await  gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).remove();
-                return;
+                break;
 
+            case GameAction.JoinBlue :
+                await joinGame(gameRef, Team.Blue);
+                break;
+
+            case GameAction.JoinRed :
+                await joinGame(gameRef, Team.Red);
+                break;
+
+            case GameAction.Quit :
+                await gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).remove();
+                break;
         }
     }
 
     const actOnGame = async (gameAction: GameAction, game: DbGameModel) => {
         const path = `games/${game.id}`;
         const gameRef = db.ref(path);
-        await updateGameRef(gameRef, gameAction);
+        await updateGame(gameRef, gameAction);
     }
 
     useEffect(() => {

@@ -13,6 +13,7 @@ export enum WordType {
 export enum GameAction {
     Start,
     End,
-    Join,
+    JoinBlue,
+    JoinRed,
     Quit
 }

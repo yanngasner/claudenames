@@ -1,0 +1,20 @@
+.game-description-component {
+    border : 1px solid red;
+    width : 50%;
+    margin : 0 auto;
+}
+
+.game-description-players {
+    display: flex;
+    font-family: Arial;
+    border : 1px blue solid;
+    font-size: 0.75em;
+}
+
+.game-description-player-blue {
+    color: blue;
+}
+
+.game-description-player-red {
+    color: red;
+}

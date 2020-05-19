@@ -22,7 +22,8 @@ const GameMenu = () => {
                     {...game}
                     startGame={() => actOnGame(GameAction.Start, game)}
                     endGame={() => actOnGame(GameAction.End, game)}
-                    joinGame={() => actOnGame(GameAction.Join, game)}
+                    joinBlueGame={() => actOnGame(GameAction.JoinBlue, game)}
+                    joinRedGame={() => actOnGame(GameAction.JoinRed, game)}
                     quitGame={() => actOnGame(GameAction.Quit, game)}
                     />)}
             </div>
