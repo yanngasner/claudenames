@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Home() {
+function CurrentGamePage() {
     return (
         <div></div>
     );
 }
 
-export default Home;
+export default CurrentGamePage;

@@ -1,12 +1,12 @@
 import React from 'react';
 import {customDateConverter} from "../helpers/dateHelpers";
-import {GameModel} from "../types/gameTypes";
+import {GameDescriptionModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
 import './GameDescription.css';
 import {Team} from "../types/enums";
 
-export const GameDescription: React.FC<GameModel>
+export const GameDescription: React.FC<GameDescriptionModel>
     = ({...game}) => {
 
     const userEmail = useRecoilValue(userEmailState);
@@ -32,7 +32,7 @@ export const GameDescription: React.FC<GameModel>
             {!isRed() && <button onClick={handleJoinRedClick}>JoinRed</button>}
             {isInGame() && !isAuthor() && <button onClick={handleQuitClick}>Quit</button>}
             <div className='game-description-players'>{game.players.map(p =>
-                <div className={p.team == Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
+                <div className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
                     <p>{p.email}</p>
                 </div>)}
             </div>

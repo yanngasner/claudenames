@@ -7,8 +7,7 @@ import {GameAction, Team} from "../types/enums";
 import firebase from "firebase";
 
 
-const useGames: () => [DbGameModel[], (inputName: string) => Promise<void>, (gameAction: GameAction, game: DbGameModel) => Promise<void>]
-    = () => {
+const useGame =  () : [DbGameModel[], (inputName: string) => Promise<void>, (gameAction: GameAction, gameId : string) => Promise<void>] => {
 
     const [games, setGames] = useState<DbGameModel[]>([]);
     const userEmail = useRecoilValue(userEmailState);
@@ -75,8 +74,8 @@ const useGames: () => [DbGameModel[], (inputName: string) => Promise<void>, (gam
         }
     }
 
-    const actOnGame = async (gameAction: GameAction, game: DbGameModel) => {
-        const path = `games/${game.id}`;
+    const actOnGame = async (gameAction: GameAction, gameId: string) => {
+        const path = `games/${gameId}`;
         const gameRef = db.ref(path);
         await updateGame(gameRef, gameAction);
     }
@@ -99,4 +98,4 @@ const useGames: () => [DbGameModel[], (inputName: string) => Promise<void>, (gam
     return [games, createGame, actOnGame]
 }
 
-export {useGames};
+export {useGame};

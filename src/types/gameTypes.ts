@@ -1,11 +1,11 @@
 import {DbGameModel} from "./dBTypes";
 
 
-export interface GameModel extends DbGameModel {
-    startGame : () => void,
-    endGame : () => void,
-    joinBlueGame : () => void,
-    joinRedGame : () => void,
-    quitGame : () => void,
+export interface GameDescriptionModel extends DbGameModel {
+    readonly startGame : () => void,
+    readonly endGame : () => void,
+    readonly joinBlueGame : () => void,
+    readonly joinRedGame : () => void,
+    readonly quitGame : () => void,
 }
 

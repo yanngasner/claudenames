@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {useGames} from '../services/useGame'
-import {GameDescription} from "../components/GameDescription";
+import {GameDescription} from "./GameDescription";
 import {GameAction} from "../types/enums";
+import {useGame} from "../services/useGame";
 
-const GameMenu = () => {
+function GameMenu() {
 
     const [inputName, setInputName] = useState("")
-    const [games, createGame, actOnGame] = useGames();
+    const [games, createGame, actOnGame] = useGame();
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
@@ -20,12 +20,12 @@ const GameMenu = () => {
             <div>
                 {games.map(game => <GameDescription
                     {...game}
-                    startGame={() => actOnGame(GameAction.Start, game)}
-                    endGame={() => actOnGame(GameAction.End, game)}
-                    joinBlueGame={() => actOnGame(GameAction.JoinBlue, game)}
-                    joinRedGame={() => actOnGame(GameAction.JoinRed, game)}
-                    quitGame={() => actOnGame(GameAction.Quit, game)}
-                    />)}
+                    startGame={() => actOnGame(GameAction.Start, game.id)}
+                    endGame={() => actOnGame(GameAction.End, game.id)}
+                    joinBlueGame={() => actOnGame(GameAction.JoinBlue, game.id)}
+                    joinRedGame={() => actOnGame(GameAction.JoinRed, game.id)}
+                    quitGame={() => actOnGame(GameAction.Quit, game.id)}
+                />)}
             </div>
         );
     }
@@ -42,7 +42,7 @@ const GameMenu = () => {
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
 export default GameMenu;
