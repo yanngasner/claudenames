@@ -1,12 +1,17 @@
 import React, {useState} from 'react';
 import {GameDescription} from "./GameDescription";
 import {GameAction} from "../types/enums";
-import {useGame} from "../services/useGame";
+import {DbGameModel} from "../types/dBTypes";
 
-function GameMenu() {
+interface GameMenuProps {
+    games: DbGameModel[],
+    createGame: (inputName: string) => Promise<void>,
+    actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>
+}
+
+const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
 
     const [inputName, setInputName] = useState("")
-    const [games, createGame, actOnGame] = useGame();
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 

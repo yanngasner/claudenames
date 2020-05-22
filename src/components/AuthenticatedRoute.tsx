@@ -23,7 +23,7 @@ export const PublicRoute: React.FC<RouteProps> = ({render, authenticated, path})
             render={(props) => authenticated === null
                 ? <div></div>
                 : authenticated
-                ? <Redirect to='/menu'/>
+                ? <Redirect to='/'/>
                 : render()}
         />
     );
