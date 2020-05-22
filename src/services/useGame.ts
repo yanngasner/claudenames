@@ -7,29 +7,33 @@ import {GameAction, Team} from "../types/enums";
 import firebase from "firebase";
 
 
-const useGame =  () : [DbGameModel[], (inputName: string) => Promise<void>, (gameAction: GameAction, gameId : string) => Promise<void>] => {
+const useGame = (): [DbGameModel[],
+    (inputName: string) => Promise<void>,
+    (gameAction: GameAction, gameId: string) => Promise<void>,
+    boolean] => {
 
     const [games, setGames] = useState<DbGameModel[]>([]);
     const userEmail = useRecoilValue(userEmailState);
+    const [areGamesLoaded, setGamesLoaded] = useState(false);
 
     const createGame = async (name: string) => {
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: new Date(),
             authorEmail: userEmail,
-            players:[]
+            players: []
         });
         await newGameRef.update({"id": newGameRef.key})
         await newGameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).set({
-            email : userEmail,
-            name : '',
-            team : 0,
-            isPilot : false,
-            isAuthor : true
+            email: userEmail,
+            name: '',
+            team: 0,
+            isPilot: false,
+            isAuthor: true
         });
     }
 
-    const joinGame = async (gameRef: firebase.database.Reference, team : Team) => {
+    const joinGame = async (gameRef: firebase.database.Reference, team: Team) => {
         const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
@@ -46,16 +50,16 @@ const useGame =  () : [DbGameModel[], (inputName: string) => Promise<void>, (gam
         });
     }
 
-    const updateGame = async (gameRef : firebase.database.Reference, gameAction: GameAction) => {
+    const updateGame = async (gameRef: firebase.database.Reference, gameAction: GameAction) => {
         switch (gameAction) {
             case GameAction.Start :
                 await gameRef.update({
                     startTime: new Date(),
-                    endTime : null
+                    endTime: null
                 });
                 break;
             case GameAction.End :
-                await  gameRef.update({
+                await gameRef.update({
                     endTime: Date.now()
                 });
                 break;
@@ -90,12 +94,13 @@ const useGame =  () : [DbGameModel[], (inputName: string) => Promise<void>, (gam
                         players: players == null ? [] : [...Object.keys(players).map(key => players[key])]
                     });
                 });
-                setGames(dbGames)
+                setGames(dbGames);
+                setGamesLoaded(true);
             })
         }
         , []);
 
-    return [games, createGame, actOnGame]
+    return [games, createGame, actOnGame, areGamesLoaded]
 }
 
 export {useGame};

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom'
 import {customDateConverter} from "../helpers/dateHelpers";
 import {GameDescriptionModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
@@ -17,13 +18,20 @@ export const GameDescription: React.FC<GameDescriptionModel>
     const isRed = () => game.players.find(p => p.email === userEmail)?.team === Team.Red;
 
     const handleEndClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.endGame();
-    const handleStartClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.startGame();
+
+    const handleStartClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        game.startGame();
+        history.push(`/${game.id}`);
+    }
     const handleJoinBlueClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.joinBlueGame();
     const handleJoinRedClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.joinRedGame();
     const handleQuitClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.quitGame();
 
+    let history = useHistory();
+
     return (
         <div className='game-description-component'>
+            <h2>{game.id}</h2>
             <h2>{game.name}</h2>
             <h3>{`${game.authorEmail} (${customDateConverter(game.creationTime)})`}</h3>
             {isAuthor() && <button onClick={handleStartClick}>Start</button>}
@@ -31,6 +39,7 @@ export const GameDescription: React.FC<GameDescriptionModel>
             {!isBlue() && <button onClick={handleJoinBlueClick}>JoinBlue</button>}
             {!isRed() && <button onClick={handleJoinRedClick}>JoinRed</button>}
             {isInGame() && !isAuthor() && <button onClick={handleQuitClick}>Quit</button>}
+            {isInGame() && <button onClick={handleQuitClick}>Quit</button>}
             <div className='game-description-players'>{game.players.map(p =>
                 <div className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
                     <p>{p.email}</p>

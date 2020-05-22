@@ -6,7 +6,7 @@ import GameMenu from "../components/GameMenu";
 interface GameMenuProps {
     games: DbGameModel[],
     createGame: (inputName: string) => Promise<void>,
-    actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>
+    actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>,
 }
 
 const GameMenuPage : React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {

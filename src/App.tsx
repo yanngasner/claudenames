@@ -17,7 +17,7 @@ function App() {
     useEffect(() => {
         auth().onAuthStateChanged((user) => {
             setAuthenticated(user != null);
-            setUserEmail(user === null ? null : user.email)
+            setUserEmail(user?.email)
         })
     }, []);
 
