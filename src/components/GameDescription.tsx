@@ -1,14 +1,23 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom'
 import {customDateConverter} from "../helpers/dateHelpers";
-import {GameDescriptionModel} from "../types/gameTypes";
+import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
 import './GameDescription.css';
 import {Team} from "../types/enums";
 
-export const GameDescription: React.FC<GameDescriptionModel>
-    = ({...game}) => {
+interface GameDescriptionProps  {
+    game : GameModel,
+    startGame : () => void,
+    endGame : () => void,
+    joinBlueGame : () => void,
+    joinRedGame : () => void,
+    quitGame : () => void,
+}
+
+export const GameDescription: React.FC<GameDescriptionProps>
+    = ({game, startGame, endGame, joinBlueGame, joinRedGame, quitGame}) => {
 
     const userEmail = useRecoilValue(userEmailState);
 
@@ -17,15 +26,15 @@ export const GameDescription: React.FC<GameDescriptionModel>
     const isBlue = () => game.players.find(p => p.email === userEmail)?.team === Team.Blue;
     const isRed = () => game.players.find(p => p.email === userEmail)?.team === Team.Red;
 
-    const handleEndClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.endGame();
+    const handleEndClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => endGame();
 
     const handleStartClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        game.startGame();
+        startGame();
         history.push(`/${game.id}`);
     }
-    const handleJoinBlueClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.joinBlueGame();
-    const handleJoinRedClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.joinRedGame();
-    const handleQuitClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => game.quitGame();
+    const handleJoinBlueClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => joinBlueGame();
+    const handleJoinRedClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => joinRedGame();
+    const handleQuitClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => quitGame();
 
     let history = useHistory();
 

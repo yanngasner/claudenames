@@ -1,10 +1,10 @@
 import React from 'react';
-import {DbGameModel} from "../types/dBTypes";
+import {GameModel} from "../types/gameTypes";
 import {GameAction} from "../types/enums";
 import GameMenu from "../components/GameMenu";
 
 interface GameMenuProps {
-    games: DbGameModel[],
+    games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
     actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>,
 }

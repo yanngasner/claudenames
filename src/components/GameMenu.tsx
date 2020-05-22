@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {GameDescription} from "./GameDescription";
 import {GameAction} from "../types/enums";
-import {DbGameModel} from "../types/dBTypes";
+import {GameModel} from "../types/gameTypes";
 
 interface GameMenuProps {
-    games: DbGameModel[],
+    games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
     actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>
 }
@@ -24,7 +24,7 @@ const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
         return (
             <div>
                 {games.map(game => <GameDescription
-                    {...game}
+                    game={game}
                     startGame={() => actOnGame(GameAction.Start, game.id)}
                     endGame={() => actOnGame(GameAction.End, game.id)}
                     joinBlueGame={() => actOnGame(GameAction.JoinBlue, game.id)}

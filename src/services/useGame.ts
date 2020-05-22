@@ -1,18 +1,18 @@
 import {useEffect, useState} from "react";
 import {db} from "./firebase";
-import {DbGameModel} from "../types/dBTypes";
+import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
 import {GameAction, Team} from "../types/enums";
 import firebase from "firebase";
 
 
-const useGame = (): [DbGameModel[],
+const useGame = (): [GameModel[],
     (inputName: string) => Promise<void>,
     (gameAction: GameAction, gameId: string) => Promise<void>,
     boolean] => {
 
-    const [games, setGames] = useState<DbGameModel[]>([]);
+    const [games, setGames] = useState<GameModel[]>([]);
     const userEmail = useRecoilValue(userEmailState);
     const [areGamesLoaded, setGamesLoaded] = useState(false);
 
@@ -86,7 +86,7 @@ const useGame = (): [DbGameModel[],
 
     useEffect(() => {
             db.ref("games").on('value', snapshot => {
-                let dbGames: DbGameModel[] = [];
+                let dbGames: GameModel[] = [];
                 snapshot.forEach((snap) => {
                     const players = snap.val().players
                     dbGames.push({
