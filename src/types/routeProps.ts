@@ -1,7 +1,7 @@
 import React from "react";
 
 export default interface RouteProps {
-    component: React.FunctionComponent<any>,
-    authenticated: boolean,
+    render : () => JSX.Element,
+    authenticated: boolean | null,
     path: string
 }

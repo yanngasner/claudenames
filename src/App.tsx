@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Switch} from "react-router-dom";
+import {Route, BrowserRouter as Router, Switch, Redirect} from "react-router-dom";
 import {auth} from './services/firebase';
 import {useRecoilState} from "recoil";
 
@@ -11,6 +11,7 @@ import SignUpPage from "./pages/SignUpPage";
 
 import {PublicRoute, PrivateRoute} from "./components/AuthenticatedRoute";
 import {userEmailState} from "./types/atoms";
+import GamePage from "./pages/GamePage";
 
 
 
@@ -18,8 +19,8 @@ function App() {
 
 
     const [, setUserEmail] = useRecoilState(userEmailState)
+    const [authenticated, setAuthenticated] = useState<boolean | null>(null);
 
-    const [authenticated, setAuthenticated] = useState(false);
     useEffect(() => {
         auth().onAuthStateChanged((user) => {
             setAuthenticated(user != null);
@@ -31,9 +32,11 @@ function App() {
         <div className="App">
             <Router>
                 <Switch>
-                    <PrivateRoute path="/game" component={GameMenuPage} authenticated={authenticated}></PrivateRoute>
-                    <PublicRoute path="/login" component={LoginPage} authenticated={authenticated}></PublicRoute>
-                    <PublicRoute path="/signup" component={SignUpPage} authenticated={authenticated}></PublicRoute>
+                    <Route exact path="/" render={() => authenticated != null ? <Redirect to={authenticated ? '/other' : '/login'}/> : <div></div>} />
+                    <PrivateRoute path="/menu" render={() => <GameMenuPage />} authenticated={authenticated}></PrivateRoute>
+                    <PrivateRoute path="/other" render={() => <GamePage id={"1"} />}  authenticated={authenticated} ></PrivateRoute>
+                    <PublicRoute path="/login" render={() => <LoginPage />} authenticated={authenticated}></PublicRoute>
+                    <PublicRoute path="/signup" render={() => <SignUpPage />} authenticated={authenticated}></PublicRoute>
                 </Switch>
             </Router>
         </div>

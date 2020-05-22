@@ -3,24 +3,28 @@ import {Route, Redirect} from "react-router-dom";
 import RouteProps from "../types/routeProps";
 
 
-export const PrivateRoute: React.FC<RouteProps> = ({component: Component, authenticated, path}) => {
+export const PrivateRoute: React.FC<RouteProps> = ({render, authenticated, path}) => {
     return (
         <Route
-            path={path}
-            render={(props) => authenticated === true
-                ? <Component {...props} />
-                : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
+            exact path={path}
+            render={(props) => authenticated === null
+                ? <div></div>
+                : authenticated
+                    ? render()
+                    : <Redirect to={{pathname: '/login', state: {from: props.location}}}/>}
         />
     );
 }
 
-export const PublicRoute: React.FC<RouteProps> = ({component: Component, authenticated, path}) => {
+export const PublicRoute: React.FC<RouteProps> = ({render, authenticated, path}) => {
     return (
         <Route
-            path={path}
-            render={(props) => authenticated === false
-                ? <Component {...props} />
-                : <Redirect to='/game'/>}
+            exact path={path}
+            render={(props) => authenticated === null
+                ? <div></div>
+                : authenticated
+                ? <Redirect to='/menu'/>
+                : render()}
         />
     );
 }
