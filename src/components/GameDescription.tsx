@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useHistory} from 'react-router-dom'
 import {customDateConverter} from "../helpers/dateHelpers";
 import {GameModel} from "../types/gameTypes";
@@ -6,6 +6,23 @@ import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
 import './GameDescription.css';
 import {Team} from "../types/enums";
+import {makeStyles} from "@material-ui/core/styles";
+import {Button} from "@material-ui/core";
+
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    redButton: {
+        background: 'rgb(235, 99, 105)'
+    },
+    blueButton: {
+        background: 'rgb(99, 158, 235)'
+    }
+}));
 
 interface GameDescriptionProps  {
     game : GameModel,
@@ -19,6 +36,7 @@ interface GameDescriptionProps  {
 export const GameDescription: React.FC<GameDescriptionProps>
     = ({game, startGame, endGame, joinBlueGame, joinRedGame, quitGame}) => {
 
+    const classes = useStyles();
     const userEmail = useRecoilValue(userEmailState);
 
     const isAuthor = () => game.authorEmail === userEmail;
@@ -39,16 +57,16 @@ export const GameDescription: React.FC<GameDescriptionProps>
     let history = useHistory();
 
     return (
-        <div className='game-description-component'>
+        <div className={`game-description-component ${classes.root}`}>
             <h2>{game.id}</h2>
             <h2>{game.name}</h2>
             <h3>{`${game.authorEmail} (${customDateConverter(game.creationTime)})`}</h3>
-            {isAuthor() && <button onClick={handleStartClick}>Start</button>}
-            {isAuthor() && <button onClick={handleEndClick}>End</button>}
-            {!isBlue() && <button onClick={handleJoinBlueClick}>JoinBlue</button>}
-            {!isRed() && <button onClick={handleJoinRedClick}>JoinRed</button>}
-            {isInGame() && !isAuthor() && <button onClick={handleQuitClick}>Quit</button>}
-            {isInGame() && <button onClick={handleQuitClick}>Quit</button>}
+            <Button  variant="outlined" disabled={!isAuthor()} onClick={handleStartClick}>Start</Button>
+            <Button variant="outlined" disabled={!isAuthor()} onClick={handleEndClick}>End</Button>
+            <Button className={classes.blueButton} variant="outlined" disabled={isBlue()} onClick={handleJoinBlueClick}>Join Blue</Button>
+            <Button className={classes.redButton} variant="outlined" disabled={isRed()} onClick={handleJoinRedClick}>Join Red</Button>
+            <Button variant="outlined" disabled={!isInGame() || isAuthor()} onClick={handleQuitClick}>Quit</Button>
+
             <div className='game-description-players'>{game.players.map(p =>
                 <div className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
                     <p>{p.email}</p>

@@ -1,12 +1,15 @@
 import React, {FC} from 'react';
+import GameComponent from "../components/GameComponent";
+import {GameModel} from "../types/gameTypes";
 
 interface GameProps {
-    id : string
+    game : GameModel
 }
 
-const GamePage:FC<GameProps> = ({...props}) => {
+const GamePage:FC<GameProps> = ({game}) => {
     return (
-        <div><p>{`hola${props.id}`}</p></div>
+        <GameComponent game={game}/>
+
     );
 }
 
