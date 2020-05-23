@@ -4,10 +4,10 @@ export enum Team {
 }
 
 export enum WordType {
+    Unassigned,
     Blue,
     Red,
-    Yellow,
-    Black
+    Forbidden
 }
 
 export enum GameAction {
@@ -16,5 +16,6 @@ export enum GameAction {
     JoinBlue,
     JoinRed,
     Quit,
-    Leader
+    Lead,
+    Unlead = 6,
 }

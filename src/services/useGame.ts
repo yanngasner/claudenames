@@ -27,8 +27,8 @@ const useGame = (): [GameModel[],
         await newGameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).set({
             email: userEmail,
             name: '',
-            team: 0,
-            isPilot: false,
+            team: Team.Blue,
+            lead: false,
             isAuthor: true
         });
     }
@@ -43,9 +43,18 @@ const useGame = (): [GameModel[],
                     email: userEmail,
                     name: '',
                     team: team,
-                    isPilot: false,
+                    lead: false,
                     isAuthor: false
                 })
+            }
+        });
+    }
+
+    const setLeader = async (gameRef: firebase.database.Reference, lead: boolean) => {
+        const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
+        await playerRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await playerRef.update({"lead": lead})
             }
         });
     }
@@ -70,6 +79,14 @@ const useGame = (): [GameModel[],
 
             case GameAction.JoinRed :
                 await joinGame(gameRef, Team.Red);
+                break;
+
+            case GameAction.Lead :
+                await setLeader(gameRef, true);
+                break;
+
+            case GameAction.Unlead :
+                await setLeader(gameRef, false);
                 break;
 
             case GameAction.Quit :

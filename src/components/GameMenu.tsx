@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {GameDescription} from "./GameDescription";
-import {GameAction} from "../types/enums";
+import {GameAction, Team} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
 import {userEmailState} from "../types/atoms";
@@ -31,10 +31,10 @@ const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
                     player={game.players.find(p => p.email === userEmail)}
                     startGame={() => actOnGame(GameAction.Start, game.id)}
                     endGame={() => actOnGame(GameAction.End, game.id)}
-                    joinBlueGame={() => actOnGame(GameAction.JoinBlue, game.id)}
-                    joinRedGame={() => actOnGame(GameAction.JoinRed, game.id)}
+                    joinTeam={(team:Team) => actOnGame(team==Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}
+                    changeLead={(lead:boolean) => actOnGame(lead ? GameAction.Lead : GameAction.Unlead, game.id)}
                     quitGame={() => actOnGame(GameAction.Quit, game.id)}
-                    setLeader={() => actOnGame(GameAction.Leader, game.id)}
+
                 />)}
             </div>
         );
