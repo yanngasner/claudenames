@@ -3,14 +3,16 @@ import {db} from "./firebase";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
-import {GameAction, Team, WordType} from "../types/enums";
+import {GameAction, Team, WordAction, WordType} from "../types/enums";
 import firebase from "firebase";
 
 
-const useGame = (): [GameModel[],
-    (inputName: string) => Promise<void>,
-    (gameAction: GameAction, gameId: string) => Promise<void>,
-    boolean] => {
+const useGame = ():
+    [GameModel[],
+        (inputName: string) => Promise<void>,
+        (gameAction: GameAction, gameId: string) => Promise<void>,
+        (wordAction: WordAction, gameId: string, wordId: string) => Promise<void>,
+        boolean] => {
 
     const [games, setGames] = useState<GameModel[]>([]);
     const userEmail = useRecoilValue(userEmailState);
@@ -68,6 +70,14 @@ const useGame = (): [GameModel[],
         });
     }
 
+    const setSelected = async (wordRef: firebase.database.Reference, selected: boolean) => {
+        await wordRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await wordRef.update({"isSelected": selected})
+            }
+        });
+    }
+
     const updateGame = async (gameRef: firebase.database.Reference, gameAction: GameAction) => {
         switch (gameAction) {
             case GameAction.Start :
@@ -76,6 +86,7 @@ const useGame = (): [GameModel[],
                     endTime: null
                 });
                 break;
+
             case GameAction.End :
                 await gameRef.update({
                     endTime: Date.now()
@@ -104,10 +115,31 @@ const useGame = (): [GameModel[],
         }
     }
 
+    const updateWord = async (wordRef: firebase.database.Reference, wordAction: WordAction) => {
+
+        switch (wordAction) {
+
+            case WordAction.Select :
+                await setSelected(wordRef, true);
+                break;
+
+            case WordAction.Unselect :
+                await setSelected(wordRef, false);
+                break;
+
+        }
+    }
+
     const actOnGame = async (gameAction: GameAction, gameId: string) => {
         const path = `games/${gameId}`;
         const gameRef = db.ref(path);
         await updateGame(gameRef, gameAction);
+    }
+
+    const actOnWord = async (wordAction: WordAction, gameId: string, wordId: string) => {
+        const path = `games/${gameId}/words/${wordId}`;
+        const wordRef = db.ref(path);
+        await updateWord(wordRef, wordAction);
     }
 
     useEffect(() => {
@@ -128,7 +160,7 @@ const useGame = (): [GameModel[],
         }
         , []);
 
-    return [games, createGame, actOnGame, areGamesLoaded]
+    return [games, createGame, actOnGame, actOnWord, areGamesLoaded]
 }
 
 export {useGame};

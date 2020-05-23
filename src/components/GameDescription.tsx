@@ -67,8 +67,8 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <Button disabled={!isInGame() || isAuthor()} onClick={() => handleQuitClick()}>Quit</Button>
             <FormControlLabel
                 control={isBlue()
-                    ? <BlueSwitch checked={isLeader} onChange={(event, checked) => handleChangeLead(checked)} />
-                    : <RedSwitch checked={isLeader} onChange={(event, checked) => handleChangeLead(checked)} />
+                    ? <BlueSwitch checked={isLeader} onChange={(event) => handleChangeLead(event.target.checked)} />
+                    : <RedSwitch checked={isLeader} onChange={(event) => handleChangeLead(event.target.checked)} />
                 }
                 label="Leader"
             />

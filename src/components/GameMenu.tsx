@@ -8,10 +8,10 @@ import {userEmailState} from "../types/atoms";
 export interface GameMenuProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>
+    actOnGame: (gameAction: GameAction, gameId: string) => Promise<void>
 }
 
-export const GameMenu : React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
+export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}) => {
 
     const userEmail = useRecoilValue(userEmailState);
     const [inputName, setInputName] = useState("")
@@ -26,17 +26,18 @@ export const GameMenu : React.FC<GameMenuProps> = ({games, createGame, actOnGame
     const getGameComponents = () => {
         return (
             <div>
-                {games.map(game => <GameDescription
-                    key={game.id}
-                    game={game}
-                    player={game.players.find(p => p.email === userEmail)}
-                    startGame={() => actOnGame(GameAction.Start, game.id)}
-                    endGame={() => actOnGame(GameAction.End, game.id)}
-                    joinTeam={(team:Team) => actOnGame(team==Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}
-                    changeLead={(lead:boolean) => actOnGame(lead ? GameAction.Lead : GameAction.Unlead, game.id)}
-                    quitGame={() => actOnGame(GameAction.Quit, game.id)}
-
-                />)}
+                {games.map(game =>
+                    <GameDescription
+                        key={game.id}
+                        game={game}
+                        player={game.players.find(p => p.email === userEmail)}
+                        startGame={() => actOnGame(GameAction.Start, game.id)}
+                        endGame={() => actOnGame(GameAction.End, game.id)}
+                        joinTeam={(team: Team) => actOnGame(team == Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}
+                        changeLead={(lead: boolean) => actOnGame(lead ? GameAction.Lead : GameAction.Unlead, game.id)}
+                        quitGame={() => actOnGame(GameAction.Quit, game.id)}
+                    />
+                )}
             </div>
         );
     }

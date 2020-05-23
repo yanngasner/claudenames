@@ -13,7 +13,7 @@ interface AppRouterProps {
 
 const AppRouter : FC<AppRouterProps> = ({authenticated}) => {
 
-    const [games, createGame, actOnGame, areGamesLoaded] = useGame();
+    const [games, createGame, actOnGame, actOnWord, areGamesLoaded] = useGame();
 
     return (
         <div className="App">
@@ -22,7 +22,7 @@ const AppRouter : FC<AppRouterProps> = ({authenticated}) => {
                     <PrivateRoute path="/menu" render={() => <GameMenuPage games={games} createGame={createGame} actOnGame={actOnGame}/>}  authenticated={authenticated} ></PrivateRoute>
                     <PublicRoute path="/login" render={() => <LoginPage />} authenticated={authenticated}></PublicRoute>
                     {games.map(game =>
-                        <PrivateRoute key={game.id} path={`/${game.id}`} render={() => <GamePage game={game} actOnGame={actOnGame}/>}  authenticated={authenticated} ></PrivateRoute>
+                        <PrivateRoute key={game.id} path={`/${game.id}`} render={() => <GamePage game={game} actOnGame={actOnGame} actOnWord={actOnWord}/>}  authenticated={authenticated} ></PrivateRoute>
                     )}
                     <PublicRoute path="/signup" render={() => <SignUpPage />} authenticated={authenticated}></PublicRoute>
                     <Route render={() => authenticated != null && areGamesLoaded ? <Redirect to={authenticated ? '/menu' : '/login'}/> : <div></div>} />/>*/}
