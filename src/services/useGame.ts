@@ -3,7 +3,7 @@ import {db} from "./firebase";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
-import {GameAction, Team} from "../types/enums";
+import {GameAction, Team, WordType} from "../types/enums";
 import firebase from "firebase";
 
 
@@ -31,6 +31,15 @@ const useGame = (): [GameModel[],
             lead: false,
             isAuthor: true
         });
+        for (let i = 0; i < 25; i++) {
+            const newWordRef = await newGameRef.child('words').push({
+                text: '',
+                wordType: WordType.Unassigned,
+                unveiled: false,
+                isSelected: false,
+            });
+            await newWordRef.update({"id": newWordRef.key});
+        }
     }
 
     const joinGame = async (gameRef: firebase.database.Reference, team: Team) => {
@@ -105,10 +114,12 @@ const useGame = (): [GameModel[],
             db.ref("games").on('value', snapshot => {
                 let dbGames: GameModel[] = [];
                 snapshot.forEach((snap) => {
-                    const players = snap.val().players
+                    const players = snap.val().players;
+                    const words = snap.val().words;
                     dbGames.push({
                         ...snap.val(),
-                        players: players == null ? [] : [...Object.keys(players).map(key => players[key])]
+                        players: players == null ? [] : [...Object.keys(players).map(key => players[key])],
+                        words: words == null ? [] : [...Object.keys(words).map(key => words[key])],
                     });
                 });
                 setGames(dbGames);

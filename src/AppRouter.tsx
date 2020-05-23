@@ -22,7 +22,7 @@ const AppRouter : FC<AppRouterProps> = ({authenticated}) => {
                     <PrivateRoute path="/menu" render={() => <GameMenuPage games={games} createGame={createGame} actOnGame={actOnGame}/>}  authenticated={authenticated} ></PrivateRoute>
                     <PublicRoute path="/login" render={() => <LoginPage />} authenticated={authenticated}></PublicRoute>
                     {games.map(game =>
-                        <PrivateRoute path={`/${game.id}`} render={() => <GamePage game={game} />}  authenticated={authenticated} ></PrivateRoute>
+                        <PrivateRoute key={game.id} path={`/${game.id}`} render={() => <GamePage game={game} actOnGame={actOnGame}/>}  authenticated={authenticated} ></PrivateRoute>
                     )}
                     <PublicRoute path="/signup" render={() => <SignUpPage />} authenticated={authenticated}></PublicRoute>
                     <Route render={() => authenticated != null && areGamesLoaded ? <Redirect to={authenticated ? '/menu' : '/login'}/> : <div></div>} />/>*/}

@@ -22,6 +22,8 @@ export interface PlayerModel {
 
 
 export interface WordModel {
+    readonly id:string,
+    readonly text : string,
     readonly wordType : WordType,
     readonly unveiled : boolean
     readonly isSelected : boolean

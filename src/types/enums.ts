@@ -18,4 +18,6 @@ export enum GameAction {
     Quit,
     Lead,
     Unlead = 6,
+    TakeShift = 7,
+    ValidateSelection = 8,
 }

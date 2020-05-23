@@ -5,13 +5,13 @@ import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
 import {userEmailState} from "../types/atoms";
 
-interface GameMenuProps {
+export interface GameMenuProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
     actOnGame: (gameAction: GameAction, gameId : string) => Promise<void>
 }
 
-const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
+export const GameMenu : React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
 
     const userEmail = useRecoilValue(userEmailState);
     const [inputName, setInputName] = useState("")
@@ -27,6 +27,7 @@ const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
         return (
             <div>
                 {games.map(game => <GameDescription
+                    key={game.id}
                     game={game}
                     player={game.players.find(p => p.email === userEmail)}
                     startGame={() => actOnGame(GameAction.Start, game.id)}
@@ -55,4 +56,3 @@ const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
     );
 }
 
-export default GameMenu;

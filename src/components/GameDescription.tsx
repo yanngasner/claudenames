@@ -18,12 +18,6 @@ const useStyles = makeStyles((theme) => ({
             margin: theme.spacing(1),
         },
     },
-    redButton: {
-        background: 'rgb(235, 99, 105)'
-    },
-    blueButton: {
-        background: 'rgb(99, 158, 235)'
-    },
 }));
 
 interface GameDescriptionProps  {
@@ -79,7 +73,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
                 label="Leader"
             />
             <div className='game-description-players'>{game.players.map(p =>
-                <div className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
+                <div key={p.email} className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
                     <p>{p.email}</p>
                 </div>)}
             </div>
