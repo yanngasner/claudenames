@@ -16,7 +16,7 @@ export interface PlayerModel {
     readonly email : string,
     readonly name : string,
     readonly team : Team,
-    readonly isPilote : boolean,
+    readonly isLeader : boolean,
     readonly isAuthor : boolean,
 }
 

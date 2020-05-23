@@ -1,9 +1,5 @@
 import React, {FC} from 'react';
 import {GameModel} from "../types/gameTypes";
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-
-
 
 interface GameProps {
     game:GameModel,

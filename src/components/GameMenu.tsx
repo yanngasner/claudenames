@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {GameDescription} from "./GameDescription";
 import {GameAction} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
+import {useRecoilValue} from "recoil";
+import {userEmailState} from "../types/atoms";
 
 interface GameMenuProps {
     games: GameModel[],
@@ -11,6 +13,7 @@ interface GameMenuProps {
 
 const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
 
+    const userEmail = useRecoilValue(userEmailState);
     const [inputName, setInputName] = useState("")
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
@@ -25,11 +28,13 @@ const GameMenu:React.FC<GameMenuProps> = ({games, createGame, actOnGame}) =>  {
             <div>
                 {games.map(game => <GameDescription
                     game={game}
+                    player={game.players.find(p => p.email === userEmail)}
                     startGame={() => actOnGame(GameAction.Start, game.id)}
                     endGame={() => actOnGame(GameAction.End, game.id)}
                     joinBlueGame={() => actOnGame(GameAction.JoinBlue, game.id)}
                     joinRedGame={() => actOnGame(GameAction.JoinRed, game.id)}
                     quitGame={() => actOnGame(GameAction.Quit, game.id)}
+                    setLeader={() => actOnGame(GameAction.Leader, game.id)}
                 />)}
             </div>
         );
