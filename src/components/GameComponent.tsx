@@ -17,6 +17,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
     const handleTakeShiftClick = () => {
         takeShift();
     }
+
     const handleValidateSelectionClick = () => {
         game.words.filter(w => w.isSelected).forEach(w => validateSelection(w.id));
     }
@@ -27,8 +28,8 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
                 player?.isLeader
                     ? <div>
                         {player?.isPlaying
-                        ? <Button onClick={() => handleValidateSelectionClick()}>Validate selection</Button>
-                        : <Button onClick={() => handleTakeShiftClick()}>Take shift</Button>}
+                        ? <Button onClick={() => handleValidateSelectionClick()}>Valider</Button>
+                        : <Button onClick={() => handleTakeShiftClick()}>A mon tour!</Button>}
                     </div>
                     : <div></div>
             }

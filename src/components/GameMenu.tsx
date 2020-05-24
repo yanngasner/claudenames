@@ -4,6 +4,8 @@ import {GameAction, Team} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
 import {userEmailState} from "../types/atoms";
+import {Button} from "@material-ui/core";
+import './GameMenu.css'
 
 export interface GameMenuProps {
     games: GameModel[],
@@ -23,6 +25,19 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
         await createGame(inputName);
     }
 
+    const getCreateGameComponent = () => {
+        return (
+            <div className={'new-game-component'}>
+                <form onSubmit={handleSubmit}>
+                    <h3>Créer une partie</h3>
+                    <input placeholder="Nom de partie" name="name" type="name" onChange={handleNameChange}
+                           value={inputName}></input>
+                    <Button type="submit">OK</Button>
+                </form>
+            </div>
+        );
+    }
+
     const getGameComponents = () => {
         return (
             <div>
@@ -35,7 +50,6 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
                         endGame={() => actOnGame(GameAction.End, game.id)}
                         joinTeam={(team: Team) => actOnGame(team == Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}
                         changeLead={(lead: boolean) => actOnGame(lead ? GameAction.Lead : GameAction.Unlead, game.id)}
-                        quitGame={() => actOnGame(GameAction.Quit, game.id)}
                     />
                 )}
             </div>
@@ -44,15 +58,9 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
 
     return (
         <div>
+            {getCreateGameComponent()}
             {getGameComponents()}
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <h1>New game</h1>
-                    <input placeholder="Game name" name="name" type="name" onChange={handleNameChange}
-                           value={inputName}></input>
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
+
         </div>
     );
 }

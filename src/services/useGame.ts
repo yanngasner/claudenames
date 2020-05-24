@@ -187,10 +187,6 @@ const useGame = ():
             case GameAction.TakeShift :
                 await takeShift(gameRef);
                 break;
-
-            case GameAction.Quit :
-                await gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).remove();
-                break;
         }
     }
 

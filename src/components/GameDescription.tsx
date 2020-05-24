@@ -11,7 +11,6 @@ import {FormControlLabel, Button} from "@material-ui/core";
 import {BlueSwitch, RedSwitch, BlueButton, RedButton} from "./MaterialComponents";
 
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -20,25 +19,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-interface GameDescriptionProps  {
-    game : GameModel,
-    player : PlayerModel | undefined
-    startGame : () => void,
-    endGame : () => void,
-    joinTeam : (team: Team) => void,
-    changeLead : (lead: boolean) => void,
-    quitGame : () => void,
+interface GameDescriptionProps {
+    game: GameModel,
+    player: PlayerModel | undefined
+    startGame: () => void,
+    endGame: () => void,
+    joinTeam: (team: Team) => void,
+    changeLead: (lead: boolean) => void,
 }
 
 export const GameDescription: React.FC<GameDescriptionProps>
-    = ({game, player, startGame, endGame, joinTeam, changeLead, quitGame}) => {
+    = ({game, player, startGame, endGame, joinTeam, changeLead}) => {
 
     const classes = useStyles();
     const userEmail = useRecoilValue(userEmailState);
     const history = useHistory();
 
     const isAuthor = () => game.authorEmail === userEmail;
-    const isInGame = () => player?.email === userEmail;
     const isBlue = () => player?.team === Team.Blue;
     const isRed = () => player?.team === Team.Red;
 
@@ -47,28 +44,33 @@ export const GameDescription: React.FC<GameDescriptionProps>
         history.push(`/${game.id}`);
     }
     const handleEndClick = () => endGame();
-    const handleJoinClick = (team : Team) => joinTeam(team);
-    const handleQuitClick = () => quitGame();
+    const handleJoinClick = (team: Team) => joinTeam(team);
     const handleChangeLeadClick = (checked: boolean) => changeLead(checked);
 
     return (
         <div className={`game-description-component ${classes.root}`}>
-            <h2>{game.name}</h2>
-            <h3>{`${game.authorEmail} (${customDateConverter(game.creationTime)})`}</h3>
-            <Button  disabled={!isAuthor()} onClick={() => handleStartClick()}>Start</Button>
-            <Button disabled={!isAuthor()} onClick={() => handleEndClick()}>End</Button>
-            <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Join Blue</BlueButton>
-            <RedButton disabled={isRed()} onClick={() => handleJoinClick(Team.Red)}>Join Red</RedButton>
-            <Button disabled={!isInGame() || isAuthor()} onClick={() => handleQuitClick()}>Quit</Button>
+            <h3>{`${game.name} (${customDateConverter(game.creationTime)})`}</h3>
+            {isAuthor()
+                ? <div>
+                    <Button onClick={() => handleStartClick()}>Jouer</Button>
+                    <Button onClick={() => handleEndClick()}>Terminer</Button>
+                </div>
+                : <div></div>
+            }
+            <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
+            <RedButton disabled={isRed()} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
             <FormControlLabel
                 control={isBlue()
-                    ? <BlueSwitch checked={player?.isLeader ?? false} onChange={(event) => handleChangeLeadClick(event.target.checked)} />
-                    : <RedSwitch checked={player?.isLeader ?? false} onChange={(event) => handleChangeLeadClick(event.target.checked)} />
+                    ? <BlueSwitch checked={player?.isLeader ?? false}
+                                  onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
+                    : <RedSwitch checked={player?.isLeader ?? false}
+                                 onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
                 }
                 label="Leader"
             />
             <div className='game-description-players'>{game.players.map(p =>
-                <div key={p.email} className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
+                <div key={p.email}
+                     className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
                     <p>{p.email}</p>
                 </div>)}
             </div>

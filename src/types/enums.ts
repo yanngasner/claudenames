@@ -15,7 +15,6 @@ export enum GameAction {
     End,
     JoinBlue,
     JoinRed,
-    Quit,
     Lead,
     Unlead = 6,
     TakeShift = 7,
