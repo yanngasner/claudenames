@@ -1,0 +1,20 @@
+.game-component {
+    width:90%;
+    margin : 5rem;
+    border: 1px solid black;
+}
+
+.words-container {
+    display:flex;
+    flex-wrap:wrap;
+    margin : auto auto;
+    border: 1px solid blue;
+    justify-content: space-evenly;
+}
+
+.word-component {
+    width : 15%;
+    height : 100px;
+    border : 1px solid red;
+    margin : 1%
+}

@@ -35,25 +35,21 @@ export const GameDescription: React.FC<GameDescriptionProps>
 
     const classes = useStyles();
     const userEmail = useRecoilValue(userEmailState);
+    const history = useHistory();
+
     const isAuthor = () => game.authorEmail === userEmail;
     const isInGame = () => player?.email === userEmail;
     const isBlue = () => player?.team === Team.Blue;
     const isRed = () => player?.team === Team.Red;
-    const [isLeader, setIsLeader] = React.useState(player?.isLeader ?? false);
 
-    const handleEndClick = () => endGame();
     const handleStartClick = () => {
         startGame();
         history.push(`/${game.id}`);
     }
+    const handleEndClick = () => endGame();
     const handleJoinClick = (team : Team) => joinTeam(team);
     const handleQuitClick = () => quitGame();
-    const handleChangeLead = (checked: boolean) => {
-        setIsLeader(checked);
-        changeLead(checked);
-    };
-
-    let history = useHistory();
+    const handleChangeLeadClick = (checked: boolean) => changeLead(checked);
 
     return (
         <div className={`game-description-component ${classes.root}`}>
@@ -67,8 +63,8 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <Button disabled={!isInGame() || isAuthor()} onClick={() => handleQuitClick()}>Quit</Button>
             <FormControlLabel
                 control={isBlue()
-                    ? <BlueSwitch checked={isLeader} onChange={(event) => handleChangeLead(event.target.checked)} />
-                    : <RedSwitch checked={isLeader} onChange={(event) => handleChangeLead(event.target.checked)} />
+                    ? <BlueSwitch checked={player?.isLeader ?? false} onChange={(event) => handleChangeLeadClick(event.target.checked)} />
+                    : <RedSwitch checked={player?.isLeader ?? false} onChange={(event) => handleChangeLeadClick(event.target.checked)} />
                 }
                 label="Leader"
             />

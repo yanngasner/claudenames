@@ -8,7 +8,6 @@ export interface GameModel {
     readonly endTime : Date | null,
     readonly words : readonly WordModel[],
     readonly players : readonly PlayerModel[],
-    readonly roundNumber : number,
     readonly authorEmail: string | null
 }
 
@@ -18,6 +17,7 @@ export interface PlayerModel {
     readonly team : Team,
     readonly isLeader : boolean,
     readonly isAuthor : boolean,
+    readonly isPlaying : boolean,
 }
 
 
@@ -25,6 +25,6 @@ export interface WordModel {
     readonly id:string,
     readonly text : string,
     readonly wordType : WordType,
-    readonly unveiled : boolean
+    readonly isUnveiled : boolean
     readonly isSelected : boolean
 }

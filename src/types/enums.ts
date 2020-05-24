@@ -19,10 +19,10 @@ export enum GameAction {
     Lead,
     Unlead = 6,
     TakeShift = 7,
-    ValidateSelection = 8,
 }
 
 export enum WordAction {
     Select,
     Unselect,
+    Validate,
 }

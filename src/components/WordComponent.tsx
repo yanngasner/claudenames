@@ -9,18 +9,13 @@ interface WordComponentProps {
 
 const WordComponent : FC<WordComponentProps> = ({word, changeWordSelected}) => {
 
-    const [selected, setSelected] = React.useState(word.isSelected);
-
-    function handleSelectedChange(checked: boolean) {
-        setSelected(checked);
-        changeWordSelected(checked);
-    }
+    const handleSelectedChange = (checked: boolean) => changeWordSelected(checked);
 
     return (
-        <div>
-            <p>{word.id}</p>
+        <div className='word-component'>
+            <p style={word.isUnveiled ? {fontWeight:"bold"} : {}}>{word.id}</p>
             <FormControlLabel
-                control={<Checkbox checked={selected} onChange={(event) => handleSelectedChange(event.target.checked)} name="slected" />}
+                control={<Checkbox checked={word.isSelected} onChange={(event) => handleSelectedChange(event.target.checked)} name="selected" />}
                 label="Selected"
             />
         </div>

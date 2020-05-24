@@ -21,26 +21,26 @@ const useGame = ():
     const createGame = async (name: string) => {
         const newGameRef = await db.ref("games").push({
             name: name,
-            creationTime: new Date(),
+            creationTime: Date.now(),
             authorEmail: userEmail,
             players: []
         });
-        await newGameRef.update({"id": newGameRef.key})
+        await newGameRef.update({id: newGameRef.key})
         await newGameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).set({
             email: userEmail,
             name: '',
             team: Team.Blue,
-            lead: false,
+            isLeader: false,
             isAuthor: true
         });
         for (let i = 0; i < 25; i++) {
             const newWordRef = await newGameRef.child('words').push({
                 text: '',
                 wordType: WordType.Unassigned,
-                unveiled: false,
+                isUnveiled: false,
                 isSelected: false,
             });
-            await newWordRef.update({"id": newWordRef.key});
+            await newWordRef.update({id: newWordRef.key});
         }
     }
 
@@ -48,24 +48,37 @@ const useGame = ():
         const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                await playerRef.update({"team": team})
+                await playerRef.update({team: team})
             } else {
                 await playerRef.set({
                     email: userEmail,
                     name: '',
                     team: team,
-                    lead: false,
+                    isLeader: false,
                     isAuthor: false
                 })
             }
         });
     }
 
-    const setLeader = async (gameRef: firebase.database.Reference, lead: boolean) => {
+    const takeShift = async (gameRef: firebase.database.Reference) => {
+        const playersRef = gameRef.child('players');
+        await playersRef.once("value", async snapshot => {
+            await snapshot.ref.update({isPlaying:false})
+        });
+        const playerRef = playersRef.child(`${userEmail.replace(/\./g, ',')}`);
+        await playerRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await playerRef.update({isPlaying: true})
+            }
+        });
+    }
+
+    const setLeader = async (gameRef: firebase.database.Reference, isLeader: boolean) => {
         const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                await playerRef.update({"lead": lead})
+                await playerRef.update({isLeader: isLeader})
             }
         });
     }
@@ -73,7 +86,18 @@ const useGame = ():
     const setSelected = async (wordRef: firebase.database.Reference, selected: boolean) => {
         await wordRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                await wordRef.update({"isSelected": selected})
+                await wordRef.update({isSelected: selected})
+            }
+        });
+    }
+
+    const validateWord = async (wordRef: firebase.database.Reference) => {
+        await wordRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await wordRef.update({
+                    isSelected: false,
+                    isUnveiled: true,
+                })
             }
         });
     }
@@ -82,7 +106,7 @@ const useGame = ():
         switch (gameAction) {
             case GameAction.Start :
                 await gameRef.update({
-                    startTime: new Date(),
+                    startTime: Date.now(),
                     endTime: null
                 });
                 break;
@@ -109,6 +133,10 @@ const useGame = ():
                 await setLeader(gameRef, false);
                 break;
 
+            case GameAction.TakeShift :
+                await takeShift(gameRef);
+                break;
+
             case GameAction.Quit :
                 await gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).remove();
                 break;
@@ -125,6 +153,10 @@ const useGame = ():
 
             case WordAction.Unselect :
                 await setSelected(wordRef, false);
+                break;
+
+            case WordAction.Validate :
+                await validateWord(wordRef);
                 break;
 
         }

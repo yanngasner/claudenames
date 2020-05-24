@@ -20,7 +20,7 @@ const GamePage : FC<GamePageProps> = ({game, actOnGame, actOnWord}) => {
             game={game}
             player={game.players.find(p => p.email === userEmail)}
             takeShift={() => actOnGame(GameAction.TakeShift, game.id)}
-            validateSelection={() => actOnGame(GameAction.ValidateSelection, game.id)}
+            validateSelection={(wordId : string) => actOnWord(WordAction.Validate, game.id, wordId)}
             changeWordSelected={(wordId : string, isSelected) => actOnWord(isSelected ? WordAction.Select :WordAction.Unselect, game.id, wordId)}
         />);
 }
