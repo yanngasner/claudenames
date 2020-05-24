@@ -7,8 +7,8 @@ import {userEmailState} from "../types/atoms";
 import './GameDescription.css';
 import {Team} from "../types/enums";
 import {makeStyles} from "@material-ui/core/styles";
-import {FormControlLabel, Button} from "@material-ui/core";
-import {BlueSwitch, RedSwitch, BlueButton, RedButton} from "./MaterialComponents";
+import {Button, FormControlLabel} from "@material-ui/core";
+import {BlueButton, BlueSwitch, RedButton, RedSwitch} from "./MaterialComponents";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,33 +48,48 @@ export const GameDescription: React.FC<GameDescriptionProps>
     const handleChangeLeadClick = (checked: boolean) => changeLead(checked);
 
     return (
-        <div className={`game-description-component ${classes.root}`}>
-            <h3>{`${game.name} (${customDateConverter(game.creationTime)})`}</h3>
-            {isAuthor()
-                ? <div>
-                    <Button onClick={() => handleStartClick()}>Jouer</Button>
-                    <Button onClick={() => handleEndClick()}>Terminer</Button>
-                </div>
-                : <div></div>
-            }
-            <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
-            <RedButton disabled={isRed()} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
-            <FormControlLabel
-                control={isBlue()
-                    ? <BlueSwitch checked={player?.isLeader ?? false}
-                                  onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
-                    : <RedSwitch checked={player?.isLeader ?? false}
-                                 onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
+        <div className={`game-description-component ${isBlue() ? 'blue':'red'}-game-description-component`}>
+            <div className={'players-list-component blue-players-list-component'}>
+                {game.players.filter(p => p.team === Team.Blue).map(p =>
+                    <div
+                        className={`${player?.isAuthor ? 'author-player' : ''} ${player?.isLeader ? 'leader-player' : ''}`}
+                        key={p.email}>
+                        <p>{p.email}</p>
+                    </div>)
                 }
-                label="Leader"
-            />
-            <div className='game-description-players'>{game.players.map(p =>
-                <div key={p.email}
-                     className={p.team === Team.Blue ? 'game-description-player-blue' : 'game-description-player-red'}>
-                    <p>{p.email}</p>
-                </div>)}
+            </div>
+            <div className={`game-description-central-component ${classes.root}`}>
+                <h3>{`${game.name} (${customDateConverter(game.creationTime)})`}</h3>
+                {isAuthor()
+                    ? <div>
+                        <Button onClick={() => handleStartClick()}>Jouer</Button>
+                        <Button onClick={() => handleEndClick()}>Terminer</Button>
+                    </div>
+                    : <div></div>
+                }
+                <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
+                <RedButton disabled={isRed()} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
+                <FormControlLabel
+                    control={isBlue()
+                        ? <BlueSwitch checked={player?.isLeader ?? false}
+                                      onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
+                        : <RedSwitch checked={player?.isLeader ?? false}
+                                     onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
+                    }
+                    label="Leader"
+                />
+            </div>
+            <div className={'players-list-component red-players-list-component'}>
+                {game.players.filter(p => p.team === Team.Red).map(p =>
+                    <div
+                        className={`${player?.isAuthor ? 'author-player' : ''} ${player?.isLeader ? 'leader-player' : ''}`}
+                        key={p.email}>
+                        <p>{p.email}</p>
+                    </div>)
+                }
             </div>
         </div>
+
     )
 };
 

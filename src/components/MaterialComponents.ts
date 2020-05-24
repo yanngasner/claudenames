@@ -1,31 +1,32 @@
 import {Button, Switch, withStyles} from "@material-ui/core";
+import {blue, red} from "@material-ui/core/colors";
 
 export const BlueButton = withStyles({
     root : {
-        backgroundColor: 'rgb(99, 158, 235)',
+        backgroundColor: "#5e9cff",
         '&:hover': {
-            backgroundColor: 'rgba(99, 158, 235, 0.5)',
+            backgroundColor: blue[800],
         },
     },
 })(Button);
 
 export const RedButton = withStyles({
     root : {
-        backgroundColor: 'rgb(235, 99, 105)',
+        backgroundColor: "#ff887d",
         '&:hover': {
-            backgroundColor: 'rgba(235, 99, 105, 0.5)',
+            backgroundColor: red[800],
         },
     },
 })(Button);
 
 export const RedSwitch = withStyles({
     switchBase : {
-        color: 'rgb(235, 99, 105)',
+        color: red[800],
         '&$checked': {
-            color: 'rgb(235, 99, 105)',
+            color: red[800],
         },
         '&$checked + $track': {
-            backgroundColor: 'rgb(235, 99, 105)',
+            backgroundColor: red[800],
         }
     },
     checked: {},
@@ -34,12 +35,12 @@ export const RedSwitch = withStyles({
 
 export const BlueSwitch = withStyles({
     switchBase : {
-        color: 'rgb(99, 158, 235)',
+        color: blue[800],
         '&$checked': {
-            color: 'rgb(99, 158, 235)',
+            color: blue[800],
         },
         '&$checked + $track': {
-            backgroundColor: 'rgb(99, 158, 235)',
+            backgroundColor: blue[800],
         }
     },
     checked: {},
