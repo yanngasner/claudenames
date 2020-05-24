@@ -13,7 +13,7 @@ const WordComponent : FC<WordComponentProps> = ({word, changeWordSelected}) => {
 
     return (
         <div className='word-component'>
-            <p style={word.isUnveiled ? {fontWeight:"bold"} : {}}>{word.id}</p>
+            <p style={word.isUnveiled ? {fontWeight:"bold"} : {}}>{word.text}</p>
             <FormControlLabel
                 control={<Checkbox checked={word.isSelected} onChange={(event) => handleSelectedChange(event.target.checked)} name="selected" />}
                 label="Selected"

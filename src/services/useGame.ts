@@ -5,6 +5,7 @@ import {useRecoilValue} from "recoil"
 import {userEmailState} from "../types/atoms";
 import {GameAction, Team, WordAction, WordType} from "../types/enums";
 import firebase from "firebase";
+import wordsList from "../resources/wordsList";
 
 
 const useGame = ():
@@ -18,7 +19,23 @@ const useGame = ():
     const userEmail = useRecoilValue(userEmailState);
     const [areGamesLoaded, setGamesLoaded] = useState(false);
 
+    const getWords = () : string[] => {
+        const completeWordsArray = wordsList;
+        const completeWordsNumber = completeWordsArray.length;
+        var wordsNumber = 0;
+        var indexesArray : number[] = [];
+        while (wordsNumber < 25) {
+            const index = Math.floor(Math.random() * completeWordsNumber);
+            if (!indexesArray.includes(index)) {
+                indexesArray.push(index);
+                wordsNumber+=1;
+            }
+        }
+        return indexesArray.map(i => completeWordsArray[i]);
+    }
+
     const createGame = async (name: string) => {
+        const words = getWords();
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: Date.now(),
@@ -34,13 +51,13 @@ const useGame = ():
             isAuthor: true
         });
         for (let i = 0; i < 25; i++) {
-            const newWordRef = await newGameRef.child('words').push({
-                text: '',
+            await newGameRef.child('words').child(`${i}`).set({
+                id: i,
+                text: words[i],
                 wordType: WordType.Unassigned,
                 isUnveiled: false,
                 isSelected: false,
             });
-            await newWordRef.update({id: newWordRef.key});
         }
     }
 
