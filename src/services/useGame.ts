@@ -15,27 +15,61 @@ const useGame = ():
         (wordAction: WordAction, gameId: string, wordId: string) => Promise<void>,
         boolean] => {
 
+    const gameWordsCount = 25;
     const [games, setGames] = useState<GameModel[]>([]);
     const userEmail = useRecoilValue(userEmailState);
     const [areGamesLoaded, setGamesLoaded] = useState(false);
 
     const getWords = () : string[] => {
+
         const completeWordsArray = wordsList;
-        const completeWordsNumber = completeWordsArray.length;
-        var wordsNumber = 0;
-        var indexesArray : number[] = [];
-        while (wordsNumber < 25) {
-            const index = Math.floor(Math.random() * completeWordsNumber);
+        const completeWordsCount = completeWordsArray.length;
+        let wordsCount = 0;
+        let indexesArray: number[] = [];
+
+        while (wordsCount < gameWordsCount) {
+            const index = Math.floor(Math.random() * completeWordsCount);
             if (!indexesArray.includes(index)) {
                 indexesArray.push(index);
-                wordsNumber+=1;
+                wordsCount+=1;
             }
         }
+
         return indexesArray.map(i => completeWordsArray[i]);
+    }
+
+    const getWordTypes = () : WordType[] => {
+
+        const firstTeam = Math.random() < 0.5 ? WordType.Blue : WordType.Red;
+        const secondTeam = firstTeam === WordType.Blue ? WordType.Red : WordType.Blue;
+        let assignedCount = 0;
+        let wordTypesArray: WordType[] = Array(gameWordsCount).fill(WordType.Unassigned);
+
+        let index = Math.floor(Math.random() * gameWordsCount);
+        wordTypesArray[index] = WordType.Forbidden;
+        assignedCount +=1;
+
+        while (assignedCount < 10) {
+            index = Math.floor(Math.random() * gameWordsCount);
+            if (wordTypesArray[index] === WordType.Unassigned) {
+                wordTypesArray[index] = firstTeam;
+                assignedCount +=1;
+            }
+        }
+
+        while (assignedCount < 18) {
+            index = Math.floor(Math.random() * gameWordsCount);
+            if (wordTypesArray[index] === WordType.Unassigned) {
+                wordTypesArray[index] = secondTeam;
+                assignedCount +=1;
+            }
+        }
+        return wordTypesArray;
     }
 
     const createGame = async (name: string) => {
         const words = getWords();
+        const types = getWordTypes();
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: Date.now(),
@@ -54,7 +88,7 @@ const useGame = ():
             await newGameRef.child('words').child(`${i}`).set({
                 id: i,
                 text: words[i],
-                wordType: WordType.Unassigned,
+                wordType: types[i],
                 isUnveiled: false,
                 isSelected: false,
             });

@@ -23,7 +23,6 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
 
     return (
         <div className={'game-component'}>
-            <div><p>{`game = ${game.id}`}</p></div>
             {
                 player?.isLeader
                     ? <div>

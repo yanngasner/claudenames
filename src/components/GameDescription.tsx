@@ -53,7 +53,6 @@ export const GameDescription: React.FC<GameDescriptionProps>
 
     return (
         <div className={`game-description-component ${classes.root}`}>
-            <h2>{game.id}</h2>
             <h2>{game.name}</h2>
             <h3>{`${game.authorEmail} (${customDateConverter(game.creationTime)})`}</h3>
             <Button  disabled={!isAuthor()} onClick={() => handleStartClick()}>Start</Button>
