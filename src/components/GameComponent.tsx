@@ -3,14 +3,21 @@ import {GameModel, PlayerModel} from "../types/gameTypes";
 import WordComponent from "./WordComponent";
 import './GameComponent.css'
 import {Button} from "@material-ui/core";
+import styled from "styled-components";
+import {getBackgroundColor} from "../resources/colors";
 
 interface GameComponentProps {
     game: GameModel,
-    player: PlayerModel | undefined,
+    player: PlayerModel,
     takeShift: () => void,
     validateSelection: (wordId : string) => void,
     changeWordSelected: (id: string, isSelected: boolean) => void
 }
+
+
+const GameComponentDiv = styled.div<{ player: PlayerModel }>`
+    background-color : ${props => getBackgroundColor(props.player.team)};
+`;
 
 const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validateSelection, changeWordSelected}) => {
 
@@ -23,11 +30,11 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
     }
 
     return (
-        <div className={'game-component'}>
+        <GameComponentDiv player={player} className={'game-component'}>
             {
-                player?.isLeader
+                player.isLeader
                     ? <div>
-                        {player?.isPlaying
+                        {player.isPlaying
                         ? <Button onClick={() => handleValidateSelectionClick()}>Valider</Button>
                         : <Button onClick={() => handleTakeShiftClick()}>A mon tour!</Button>}
                     </div>
@@ -39,10 +46,11 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
                     <WordComponent
                         word={word}
                         changeWordSelected={(isSelected: boolean) => changeWordSelected(word.id, isSelected)}
+                        player={player}
                     />
                 )}
             </div>
-        </div>
+        </GameComponentDiv>
     );
 }
 

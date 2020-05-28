@@ -1,39 +1,53 @@
 import React, {FC} from 'react';
-import {WordModel} from "../types/gameTypes";
-import {WordType} from "../types/enums";
-import './WordComponent.css'
+import {PlayerModel, WordModel} from "../types/gameTypes";
+import styled from 'styled-components';
+import {getColor, getBorderColor} from "../resources/colors";
 
-interface WordComponentProps {
-    word : WordModel,
-    changeWordSelected :(isSelected : boolean) => void
+interface WordCardProps {
+    word: WordModel;
+    player : PlayerModel;
 }
 
-const WordComponent : FC<WordComponentProps> = ({word, changeWordSelected}) => {
+interface WordComponentProps extends WordCardProps {
+    changeWordSelected: (isSelected: boolean) => void
+}
 
-    const handleSelectedChange = (checked: boolean) => {
+
+const WordCard = styled.button`
+    color: ${(props: WordCardProps) => props.player.isLeader || props.word.isUnveiled
+    ? getColor(props.word.wordType)
+    : "black"};
+    width : 80%;
+    height : 80%;
+    margin : auto;
+    border-radius : 10px;
+    font-size : ${(props: WordCardProps) => props.word.isUnveiled ? '1rem' : '2rem'};
+    border: 5px solid ${(props: WordCardProps) =>
+    props.word.isSelected
+        ? 'black'
+        : (props.word.isUnveiled ? getBorderColor(props.word.wordType) : 'white')};
+        
+    &:focus, &:active {
+        outline: 0;
+    }
+    
+    &:hover {
+        cursor:${(props: WordCardProps) => props.word.isUnveiled || !props.player.isLeader ? 'initial' : 'pointer'};
+`;
+
+const WordComponent: FC<WordComponentProps> = ({word, player, changeWordSelected}) => {
+
+    const handleSelectedChange = () => {
         if (!word.isUnveiled)
-            changeWordSelected(checked);
+            changeWordSelected(!word.isSelected);
     }
 
-    const getWordTypeStyle = () : string => {
-        const prefix = `${word.isSelected ? 'selected-' : ''}${word.isUnveiled ? 'unveiled-' : ''}`
-        switch (word.wordType) {
-            case WordType.Blue : return prefix+'blue-word-component';
-            case WordType.Red : return prefix+'red-word-component';
-            case WordType.Unassigned : return prefix+'unassigned-word-component';
-            case WordType.Forbidden : return prefix+'forbidden-word-component';
-        }
-    }
-
-    return (
-        <div className={`word-component 
-        ${word.isUnveiled ? 'unveiled-word-component' : 'active-word-component'} 
-        ${word.isSelected ? 'selected-word-component' : ''} 
-        ${getWordTypeStyle()}`}
-        onClick={() => handleSelectedChange(!word.isSelected)}>
-            <p unselectable="on">{word.text}</p>
-        </div>
-    );
+    return <div className={`word-component`}>
+        <WordCard disabled={word.isUnveiled || !player.isLeader} onClick={() => handleSelectedChange()}
+                  word={word}
+                  player={player}>
+            {word.text}</WordCard>
+    </div>
 }
 
 export default WordComponent;

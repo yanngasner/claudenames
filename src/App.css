@@ -6,14 +6,6 @@
   text-align: center;
   margin: 0;
   padding: 0;
-  box-sizing: content-box;
-  --dark-blue: #0054d1;
-  --light-blue: #5e9cff;
-  --dark-red: #c40000;
-  --light-red: #ff887d;
-  --dark-unassigned: #a1a100;
-  --light-unassigned: #fff27d;
-  --dark-forbidden: #1a1a1a;
-  --light-forbidden: #999999;
+  box-sizing: border-box;
 }
 
