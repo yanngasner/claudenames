@@ -1,14 +1,18 @@
 import { auth } from "../services/firebase";
 
-export function signup(email : string, password :string) {
-    return auth().createUserWithEmailAndPassword(email, password);
+
+export async function signUp(email : string, password :string, userName : string) {
+
+    await auth().createUserWithEmailAndPassword(email, password);
+    await auth().currentUser?.updateProfile({
+        displayName : userName
+    });
 }
 
-export function signin(email : string, password : string) {
+export function signIn(email : string, password : string) {
     return auth().signInWithEmailAndPassword(email, password);
 }
 
 export function signInWithGoogle() {
-    const provider = new auth.GoogleAuthProvider();
-    return auth().signInWithPopup(provider);
+    return auth().signInWithPopup(new auth.GoogleAuthProvider());
 }

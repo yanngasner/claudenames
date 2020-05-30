@@ -3,7 +3,7 @@ import GameComponent from "../components/GameComponent";
 import {GameAction, WordAction} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
-import {userEmailState} from "../types/atoms";
+import {userIdState} from "../types/atoms";
 
 interface GamePageProps {
     game: GameModel,
@@ -13,13 +13,13 @@ interface GamePageProps {
 
 const GamePage : FC<GamePageProps> = ({game, actOnGame, actOnWord}) => {
 
-    const userEmail = useRecoilValue(userEmailState);
+    const userId = useRecoilValue(userIdState);
 
     return (
         <GameComponent
             game={game}
             // @ts-ignore
-            player={game.players.find(p => p.email === userEmail)}
+            player={game.players.find(p => p.userId === userId)}
             takeShift={() => actOnGame(GameAction.TakeShift, game.id)}
             validateSelection={(wordId : string) => actOnWord(WordAction.Validate, game.id, wordId)}
             changeWordSelected={(wordId : string, isSelected) => actOnWord(isSelected ? WordAction.Select :WordAction.Unselect, game.id, wordId)}

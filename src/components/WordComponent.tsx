@@ -26,6 +26,7 @@ const WordCard = styled.button`
     props.word.isSelected
         ? 'black'
         : (props.word.isUnveiled ? getBorderColor(props.word.wordType) : 'white')};
+    background-color: whitesmoke;
         
     &:focus, &:active {
         outline: 0;

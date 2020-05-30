@@ -1,5 +1,9 @@
 import {atom} from "recoil";
 
-export const userEmailState = atom({
-    key: 'userEmailState'
+export const userIdState = atom({
+    key: 'userIdState'
+})
+
+export const userNameState = atom({
+    key: 'userNameState'
 })

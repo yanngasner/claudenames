@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {customDateConverter} from "../helpers/dateHelpers";
 import {GameModel, PlayerModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil"
-import {userEmailState} from "../types/atoms";
+import {userIdState} from "../types/atoms";
 import './GameDescription.css';
 import {Team} from "../types/enums";
 import {makeStyles} from "@material-ui/core/styles";
@@ -32,10 +32,10 @@ export const GameDescription: React.FC<GameDescriptionProps>
     = ({game, player, startGame, endGame, joinTeam, changeLead}) => {
 
     const classes = useStyles();
-    const userEmail = useRecoilValue(userEmailState);
+    const userId = useRecoilValue(userIdState);
     const history = useHistory();
 
-    const isAuthor = () => game.authorEmail === userEmail;
+    const isAuthor = () => game.authorId === userId;
     const isBlue = () => player?.team === Team.Blue;
     const isRed = () => player?.team === Team.Red;
 
@@ -53,8 +53,8 @@ export const GameDescription: React.FC<GameDescriptionProps>
                 {game.players.filter(p => p.team === Team.Blue).map(p =>
                     <div
                         className={`${player?.isAuthor ? 'author-player' : ''} ${player?.isLeader ? 'leader-player' : ''}`}
-                        key={p.email}>
-                        <p>{p.email}</p>
+                        key={p.userName}>
+                        <p>{p.userName}</p>
                     </div>)
                 }
             </div>
@@ -83,8 +83,8 @@ export const GameDescription: React.FC<GameDescriptionProps>
                 {game.players.filter(p => p.team === Team.Red).map(p =>
                     <div
                         className={`${player?.isAuthor ? 'author-player' : ''} ${player?.isLeader ? 'leader-player' : ''}`}
-                        key={p.email}>
-                        <p>{p.email}</p>
+                        key={p.userName}>
+                        <p>{p.userName}</p>
                     </div>)
                 }
             </div>

@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {AuthenticationMode} from "../types/authenticationMode";
-import {signin, signInWithGoogle, signup} from "../helpers/auth";
+import {signIn, signInWithGoogle, signUp} from "../helpers/auth";
 import {Link} from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {userNameState} from "../types/atoms";
 
 interface AuthenticationProps {
     authenticationMode: AuthenticationMode
@@ -17,7 +19,9 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
             ? <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
             : <p>Already have an account? <Link to="/login">Login</Link></p>;
 
+    const [, setBaseUserName] = useRecoilState(userNameState)
     const [password, setPassword] = useState('');
+    const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState<string | null>(null);
 
@@ -25,7 +29,9 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
         event.preventDefault();
         setError('');
         try {
-            await (authenticationMode === AuthenticationMode.Login ? signin(email, password) : signup(email, password));
+            await (authenticationMode === AuthenticationMode.Login
+                ? signIn(email, password)
+                :  signUp(email, password, userName).then(() => setBaseUserName(userName)))
         } catch (error) {
             setError(error.message);
         }
@@ -39,6 +45,7 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
         }
     }
 
+    const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setUserName(event.target.value);
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value);
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
 
@@ -48,23 +55,29 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                 <h1>{authenticationMode} to <Link to="/">Claude Name</Link>
                 </h1>
                 {authenticationDescription()}
+                {authenticationMode === AuthenticationMode.SignUp
+                ? <div>
+                    <input placeholder="UserName" name="userName" type="username" onChange={handleUserNameChange}
+                           value={userName}></input>
+                </div>
+                : <div></div>}
                 <div>
                     <input placeholder="Email" name="email" type="email" onChange={handleEmailChange}
                            value={email}></input>
                 </div>
                 <div>
-                    <input placeholder="Password" name="password" onChange={handlePasswordChange} value={password}
-                           type="password"></input>
+                    <input placeholder="Password" name="password" type="password" onChange={handlePasswordChange}
+                           value={password}></input>
                 </div>
                 <div>
                     {error ? <p>{error}</p> : null}
-                    <button type="submit">Sign up</button>
+                    <button type="submit">{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</button>
                 </div>
                 <hr></hr>
                 {alternateAuthenticationDescription()}
                 <p>Or</p>
                 <button onClick={googleSignIn} type="button">
-                    Login with Google
+                    Login with Google (fill userName upfront)
                 </button>
             </form>
         </div>

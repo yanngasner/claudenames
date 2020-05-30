@@ -8,12 +8,12 @@ export interface GameModel {
     readonly endTime : Date | null,
     readonly words : readonly WordModel[],
     readonly players : readonly PlayerModel[],
-    readonly authorEmail: string | null
+    readonly authorId: string | null
 }
 
 export interface PlayerModel {
-    readonly email : string,
-    readonly name : string,
+    readonly userId : string,
+    readonly userName : string,
     readonly team : Team,
     readonly isLeader : boolean,
     readonly isAuthor : boolean,

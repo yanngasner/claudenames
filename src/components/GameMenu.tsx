@@ -3,7 +3,7 @@ import {GameDescription} from "./GameDescription";
 import {GameAction, Team} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
-import {userEmailState} from "../types/atoms";
+import {userIdState} from "../types/atoms";
 import {Button} from "@material-ui/core";
 import './GameMenu.css'
 
@@ -15,7 +15,7 @@ export interface GameMenuProps {
 
 export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}) => {
 
-    const userEmail = useRecoilValue(userEmailState);
+    const userId = useRecoilValue(userIdState);
     const [inputName, setInputName] = useState("")
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
@@ -45,7 +45,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
                     <GameDescription
                         key={game.id}
                         game={game}
-                        player={game.players.find(p => p.email === userEmail)}
+                        player={game.players.find(p => p.userId === userId)}
                         startGame={() => actOnGame(GameAction.Start, game.id)}
                         endGame={() => actOnGame(GameAction.End, game.id)}
                         joinTeam={(team: Team) => actOnGame(team == Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}

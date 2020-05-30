@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {db} from "./firebase";
 import {GameModel} from "../types/gameTypes";
-import {useRecoilValue} from "recoil"
-import {userEmailState} from "../types/atoms";
 import {GameAction, Team, WordAction, WordType} from "../types/enums";
 import firebase from "firebase";
 import wordsList from "../resources/wordsList";
+import {useRecoilValue} from "recoil";
+import {userIdState, userNameState} from "../types/atoms";
 
 
 const useGame = ():
@@ -15,9 +15,11 @@ const useGame = ():
         (wordAction: WordAction, gameId: string, wordId: string) => Promise<void>,
         boolean] => {
 
+    const userId = useRecoilValue(userIdState);
+    const userName = useRecoilValue(userNameState);
+
     const gameWordsCount = 25;
     const [games, setGames] = useState<GameModel[]>([]);
-    const userEmail = useRecoilValue(userEmailState);
     const [areGamesLoaded, setGamesLoaded] = useState(false);
 
     const getWords = () : string[] => {
@@ -73,13 +75,13 @@ const useGame = ():
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: Date.now(),
-            authorEmail: userEmail,
+            authorId: userId,
             players: []
         });
         await newGameRef.update({id: newGameRef.key})
-        await newGameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`).set({
-            email: userEmail,
-            name: '',
+        await newGameRef.child('players').child(userId).set({
+            userId: userId,
+            userName: userName,
             team: Team.Blue,
             isLeader: false,
             isAuthor: true
@@ -96,13 +98,13 @@ const useGame = ():
     }
 
     const joinGame = async (gameRef: firebase.database.Reference, team: Team) => {
-        const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
+        const playerRef = gameRef.child('players').child(userId);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 await playerRef.update({team: team})
             } else {
                 await playerRef.set({
-                    email: userEmail,
+                    userName: userName,
                     name: '',
                     team: team,
                     isLeader: false,
@@ -117,7 +119,7 @@ const useGame = ():
         await playersRef.once("value", async snapshot => {
             await snapshot.ref.update({isPlaying:false})
         });
-        const playerRef = playersRef.child(`${userEmail.replace(/\./g, ',')}`);
+        const playerRef = playersRef.child(userId);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 await playerRef.update({isPlaying: true})
@@ -126,7 +128,7 @@ const useGame = ():
     }
 
     const setLeader = async (gameRef: firebase.database.Reference, isLeader: boolean) => {
-        const playerRef = gameRef.child('players').child(`${userEmail.replace(/\./g, ',')}`);
+        const playerRef = gameRef.child('players').child(userId);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 await playerRef.update({isLeader: isLeader})
