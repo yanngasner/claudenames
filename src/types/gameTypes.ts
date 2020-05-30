@@ -1,14 +1,21 @@
-import {Team, WordType} from "./enums";
+import {RoundStatus, Team, WordType} from "./enums";
 
 export interface GameModel {
     readonly id: string,
     readonly name : string,
     readonly creationTime : Date,
     readonly startTime : Date | null,
-    readonly endTime : Date | null,
-    readonly words : readonly WordModel[],
     readonly players : readonly PlayerModel[],
-    readonly authorId: string | null
+    readonly rounds : readonly RoundModel[],
+    readonly authorId: string | null,
+    readonly roundId : number
+}
+
+export interface RoundModel {
+    readonly words : readonly WordModel[],
+    readonly bluePLayerId : string,
+    readonly redPlayerId : string,
+    readonly roundStatus : RoundStatus,
 }
 
 export interface PlayerModel {

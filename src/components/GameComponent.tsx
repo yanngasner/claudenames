@@ -21,12 +21,14 @@ const GameComponentDiv = styled.div<{ player: PlayerModel }>`
 
 const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validateSelection, changeWordSelected}) => {
 
+    const getWords = (game : GameModel) => game.rounds[game.roundId].words;
+
     const handleTakeShiftClick = () => {
         takeShift();
     }
 
     const handleValidateSelectionClick = () => {
-        game.words.filter(w => w.isSelected).forEach(w => validateSelection(w.id));
+        getWords(game).filter(w => w.isSelected).forEach(w => validateSelection(w.id));
     }
 
     return (
@@ -42,7 +44,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
             }
 
             <div className='words-container'>
-                {game.words.map(word =>
+                {getWords(game).map(word =>
                     <WordComponent
                         word={word}
                         changeWordSelected={(isSelected: boolean) => changeWordSelected(word.id, isSelected)}

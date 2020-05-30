@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {db} from "./firebase";
-import {GameModel} from "../types/gameTypes";
-import {GameAction, Team, WordAction, WordType} from "../types/enums";
+import {GameModel, RoundModel} from "../types/gameTypes";
+import {GameAction, RoundStatus, Team, WordAction, WordType} from "../types/enums";
 import firebase from "firebase";
 import wordsList from "../resources/wordsList";
 import {useRecoilValue} from "recoil";
@@ -12,7 +12,7 @@ const useGame = ():
     [GameModel[],
         (inputName: string) => Promise<void>,
         (gameAction: GameAction, gameId: string) => Promise<void>,
-        (wordAction: WordAction, gameId: string, wordId: string) => Promise<void>,
+        (wordAction: WordAction, gameId: string, roundId: number, wordId: string) => Promise<void>,
         boolean] => {
 
     const userId = useRecoilValue(userIdState);
@@ -76,7 +76,8 @@ const useGame = ():
             name: name,
             creationTime: Date.now(),
             authorId: userId,
-            players: []
+            players: [],
+            roundId : 0,
         });
         await newGameRef.update({id: newGameRef.key})
         await newGameRef.child('players').child(userId).set({
@@ -86,8 +87,11 @@ const useGame = ():
             isLeader: false,
             isAuthor: true
         });
+        await newGameRef.child('rounds').child("0").set({
+            roundStatus: RoundStatus.Waiting,
+        });
         for (let i = 0; i < 25; i++) {
-            await newGameRef.child('words').child(`${i}`).set({
+            await newGameRef.child('rounds').child("0").child("words").child(`${i}`).set({
                 id: i,
                 text: words[i],
                 wordType: types[i],
@@ -117,7 +121,9 @@ const useGame = ():
     const takeShift = async (gameRef: firebase.database.Reference) => {
         const playersRef = gameRef.child('players');
         await playersRef.once("value", async snapshot => {
-            await snapshot.ref.update({isPlaying:false})
+            await snapshot.forEach(child => {
+                 child.ref.update ({isPlaying : false})
+            })
         });
         const playerRef = playersRef.child(userId);
         await playerRef.once("value", async snapshot => {
@@ -217,23 +223,35 @@ const useGame = ():
         await updateGame(gameRef, gameAction);
     }
 
-    const actOnWord = async (wordAction: WordAction, gameId: string, wordId: string) => {
-        const path = `games/${gameId}/words/${wordId}`;
+    const actOnWord = async (wordAction: WordAction, gameId: string, roundId : number, wordId: string) => {
+        const path = `games/${gameId}/rounds/${roundId}/words/${wordId}`;
         const wordRef = db.ref(path);
         await updateWord(wordRef, wordAction);
+    }
+
+    const getGameModel = (snap: firebase.database.DataSnapshot) : GameModel => {
+        const players = snap.val().players;
+        const rounds = snap.val().rounds;
+        let roundModels : RoundModel[] = [];
+        rounds?.forEach((round: any) => {
+            const words = round.words;
+            roundModels.push({
+                ...round,
+                words: words == null ? [] : [...Object.keys(words).map(key => words[key])]
+            })
+        })
+        return ({
+            ...snap.val(),
+            players: players == null ? [] : [...Object.keys(players).map(key => players[key])],
+            rounds: roundModels,
+        })
     }
 
     useEffect(() => {
             db.ref("games").on('value', snapshot => {
                 let dbGames: GameModel[] = [];
-                snapshot.forEach((snap) => {
-                    const players = snap.val().players;
-                    const words = snap.val().words;
-                    dbGames.push({
-                        ...snap.val(),
-                        players: players == null ? [] : [...Object.keys(players).map(key => players[key])],
-                        words: words == null ? [] : [...Object.keys(words).map(key => words[key])],
-                    });
+                snapshot.forEach((snap) =>{
+                    dbGames.push(getGameModel(snap));
                 });
                 setGames(dbGames);
                 setGamesLoaded(true);

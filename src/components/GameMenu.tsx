@@ -41,7 +41,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
     const getGameComponents = () => {
         return (
             <div>
-                {games.map(game =>
+                {games.sort((game1, game2) => (game1.creationTime < game2.creationTime ? 1 : -1)).map(game =>
                     <GameDescription
                         key={game.id}
                         game={game}

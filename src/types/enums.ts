@@ -10,6 +10,14 @@ export enum WordType {
     Forbidden
 }
 
+export enum RoundStatus {
+    Waiting,
+    Playing,
+    BlueWins,
+    RedWins,
+    Deuce ,
+}
+
 export enum GameAction {
     Start,
     End,
