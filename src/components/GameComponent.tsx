@@ -8,15 +8,15 @@ import {getBackgroundColor} from "../resources/colors";
 
 interface GameComponentProps {
     game: GameModel,
-    player: PlayerModel,
+    player: PlayerModel | undefined,
     takeShift: () => void,
     validateSelection: (wordId : string) => void,
     changeWordSelected: (id: string, isSelected: boolean) => void
 }
 
 
-const GameComponentDiv = styled.div<{ player: PlayerModel }>`
-    background-color : ${props => getBackgroundColor(props.player.team)};
+const GameComponentDiv = styled.div<{  player: PlayerModel | undefined }>`
+    background-color : ${props => props.player == null ? 'whitesmoke' : getBackgroundColor(props.player.team)};
 `;
 
 const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validateSelection, changeWordSelected}) => {
@@ -34,9 +34,9 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeShift, validat
     return (
         <GameComponentDiv player={player} className={'game-component'}>
             {
-                player.isLeader
+                player?.isLeader
                     ? <div>
-                        {player.isPlaying
+                        {player?.isPlaying
                         ? <Button onClick={() => handleValidateSelectionClick()}>Valider</Button>
                         : <Button onClick={() => handleTakeShiftClick()}>A mon tour!</Button>}
                     </div>

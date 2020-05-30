@@ -20,7 +20,6 @@ export enum RoundStatus {
 
 export enum GameAction {
     Start,
-    End,
     JoinBlue,
     JoinRed,
     Lead,

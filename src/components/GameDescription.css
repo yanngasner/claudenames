@@ -7,14 +7,6 @@
     display:flex;
 }
 
-.blue-game-description-component {
-    background-color: var(--light-blue);
-}
-
-.red-game-description-component {
-    background-color: var(--light-red);
-}
-
 .game-description-central-component {
     width : 50%;
     border-radius: 25px;
@@ -32,12 +24,4 @@
 
 .author-player {
     text-decoration: underline;
-}
-
-.blue-players-list-component {
-    color: var(--dark-blue)
-}
-
-.red-players-list-component {
-    color: var(--dark-red)
 }

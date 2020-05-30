@@ -5,7 +5,7 @@ import {getColor, getBorderColor} from "../resources/colors";
 
 interface WordCardProps {
     word: WordModel;
-    player : PlayerModel;
+    player : PlayerModel | undefined;
 }
 
 interface WordComponentProps extends WordCardProps {
@@ -14,7 +14,7 @@ interface WordComponentProps extends WordCardProps {
 
 
 const WordCard = styled.button`
-    color: ${(props: WordCardProps) => props.player.isLeader || props.word.isUnveiled
+    color: ${(props: WordCardProps) => props.player?.isLeader || props.word.isUnveiled
     ? getColor(props.word.wordType)
     : "black"};
     width : 80%;
@@ -33,7 +33,7 @@ const WordCard = styled.button`
     }
     
     &:hover {
-        cursor:${(props: WordCardProps) => props.word.isUnveiled || !props.player.isLeader ? 'initial' : 'pointer'};
+        cursor:${(props: WordCardProps) => props.word.isUnveiled || !props.player?.isLeader ? 'initial' : 'pointer'};
 `;
 
 const WordComponent: FC<WordComponentProps> = ({word, player, changeWordSelected}) => {
@@ -44,7 +44,7 @@ const WordComponent: FC<WordComponentProps> = ({word, player, changeWordSelected
     }
 
     return <div className={`word-component`}>
-        <WordCard disabled={word.isUnveiled || !player.isLeader} onClick={() => handleSelectedChange()}
+        <WordCard disabled={word.isUnveiled || !player?.isLeader} onClick={() => handleSelectedChange()}
                   word={word}
                   player={player}>
             {word.text}</WordCard>

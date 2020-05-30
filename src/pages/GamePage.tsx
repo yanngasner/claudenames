@@ -18,7 +18,6 @@ const GamePage : FC<GamePageProps> = ({game, actOnGame, actOnWord}) => {
     return (
         <GameComponent
             game={game}
-            // @ts-ignore
             player={game.players.find(p => p.userId === userId)}
             takeShift={() => actOnGame(GameAction.TakeShift, game.id)}
             validateSelection={(wordId : string) => actOnWord(WordAction.Validate, game.id, game.roundId, wordId)}

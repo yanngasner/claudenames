@@ -166,13 +166,6 @@ const useGame = ():
             case GameAction.Start :
                 await gameRef.update({
                     startTime: Date.now(),
-                    endTime: null
-                });
-                break;
-
-            case GameAction.End :
-                await gameRef.update({
-                    endTime: Date.now()
                 });
                 break;
 
