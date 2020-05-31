@@ -25,7 +25,7 @@ const AppRouter : FC<AppRouterProps> = ({authenticated}) => {
                         <PrivateRoute key={game.id} path={`/${game.id}`} render={() => <GamePage game={game} actOnGame={actOnGame} actOnWord={actOnWord}/>}  authenticated={authenticated} ></PrivateRoute>
                     )}
                     <PublicRoute path="/signup" render={() => <SignUpPage />} authenticated={authenticated}></PublicRoute>
-                    <Route render={() => authenticated != null && areGamesLoaded ? <Redirect to={authenticated ? '/menu' : '/login'}/> : <div></div>} />/>*/}
+                    <Route render={() => authenticated != null ? <Redirect to={authenticated ? '/menu' : '/login'}/> : <div></div>} />/>*/}
                 </Switch>
             </Router>
         </div>
