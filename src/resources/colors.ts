@@ -2,10 +2,10 @@ import {Team, WordType} from "../types/enums";
 
 export const darkBlue = '#0054d1';
 export const lightBlue = '#5e9cff';
-export const veryLightBlue = '#99c0ff';
+export const veryLightBlue = '#d1e3ff';
 export const darkRed = '#c40000';
 export const lightRed = '#ff887d';
-export const veryLightRed = '#ffc0ba';
+export const veryLightRed = '#ffe1de';
 export const darkUnassigned = '#a1a100';
 export const lightUnassigned = '#fff27d';
 export const darkForbidden = '#1a1a1a';
