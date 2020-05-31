@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import {firebaseConfig} from "../../claudeNames-privateConfigs/firebaseConfig";
+import {firebaseConfig} from "./firebaseConfig";
 
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth;
