@@ -1,0 +1,3 @@
+[submodule "claudeNames-privateConfigs"]
+	path = claudeNames-privateConfigs
+	url = https://github.com/yanngasner/claudeNames-privateConfigs.git
