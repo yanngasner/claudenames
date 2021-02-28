@@ -45,12 +45,10 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                 <h1>{authenticationMode} to <Link to="/">Claude Name</Link>
                 </h1>
                 {authenticationDescription()}
-                {authenticationMode === AuthenticationMode.SignUp
-                ? <div>
+                <div>
                     <input placeholder="UserName" name="userName" type="username" onChange={handleUserNameChange}
                            value={userName}></input>
                 </div>
-                : <div></div>}
                 <div>
                     <input placeholder="Email" name="email" type="email" onChange={handleEmailChange}
                            value={email}></input>
