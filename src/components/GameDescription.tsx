@@ -55,7 +55,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <div className={'players-list-component'}>
                 {game.players.filter(p => p.team === Team.Blue).map(p =>
                     <div
-                        className={`${player?.isLeader ? 'leader-player' : ''}`}
+                        className={`${player?.isLeader && player?.userId === p.userId ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)
@@ -84,7 +84,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <div className={'players-list-component'}>
                 {game.players.filter(p => p.team === Team.Red).map(p =>
                     <div
-                        className={`${player?.isLeader ? 'leader-player' : ''}`}
+                        className={`${player?.isLeader && player?.userId === p.userId ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)
