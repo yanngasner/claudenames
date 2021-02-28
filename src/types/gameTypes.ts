@@ -7,7 +7,6 @@ export interface GameModel {
     readonly startTime : Date | null,
     readonly players : readonly PlayerModel[],
     readonly rounds : readonly RoundModel[],
-    readonly authorId: string | null,
     readonly roundId : number
 }
 
@@ -23,7 +22,6 @@ export interface PlayerModel {
     readonly userName : string,
     readonly team : Team,
     readonly isLeader : boolean,
-    readonly isAuthor : boolean,
     readonly isPlaying : boolean,
 }
 

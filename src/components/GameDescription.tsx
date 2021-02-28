@@ -40,7 +40,6 @@ export const GameDescription: React.FC<GameDescriptionProps>
     const userId = useRecoilValue(userIdState);
     const history = useHistory();
 
-    const isAuthor = () => game.authorId === userId;
     const isBlue = () => player?.team === Team.Blue;
     const isRed = () => player?.team === Team.Red;
 
@@ -56,7 +55,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <div className={'players-list-component'}>
                 {game.players.filter(p => p.team === Team.Blue).map(p =>
                     <div
-                        className={`${player?.isAuthor ? 'author-player' : ''} ${player?.isLeader ? 'leader-player' : ''}`}
+                        className={`${player?.isLeader ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)
@@ -64,10 +63,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
             </div>
             <div className={`game-description-central-component ${classes.root}`}>
                 <h3>{`${game.name} (${customDateConverter(game.creationTime)})`}</h3>
-                {isAuthor() || game.startTime
-                    ? <Button onClick={() => handleStartClick()}>Jouer</Button>
-                    : <div></div>
-                }
+                <Button onClick={() => handleStartClick()}>Jouer</Button>
                 {!game.startTime
                    ? <div className={`${classes.root}`}>
                         <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
@@ -88,7 +84,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <div className={'players-list-component'}>
                 {game.players.filter(p => p.team === Team.Red).map(p =>
                     <div
-                        className={`${player?.isAuthor ? 'author-player' : ''} ${player?.isLeader ? 'leader-player' : ''}`}
+                        className={`${player?.isLeader ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)

@@ -75,7 +75,6 @@ const useGame = ():
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: Date.now(),
-            authorId: userId,
             players: [],
             roundId : 0,
         });
@@ -84,8 +83,7 @@ const useGame = ():
             userId: userId,
             userName: userName,
             team: Team.Blue,
-            isLeader: false,
-            isAuthor: true
+            isLeader: false
         });
         await newGameRef.child('rounds').child("0").set({
             roundStatus: RoundStatus.Waiting,
@@ -112,7 +110,6 @@ const useGame = ():
                     name: '',
                     team: team,
                     isLeader: false,
-                    isAuthor: false
                 })
             }
         });
