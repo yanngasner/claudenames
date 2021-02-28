@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {AuthenticationMode} from "../types/authenticationMode";
-import {signIn, signInWithGoogle, signUp} from "../helpers/auth";
+import {signIn, signUp} from "../helpers/auth";
 import {Link} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {userNameState} from "../types/atoms";
@@ -20,7 +20,6 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
             : <p>Already have an account? <Link to="/login">Login</Link></p>;
 
     const [, setBaseUserName] = useRecoilState(userNameState)
-    const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -30,23 +29,14 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
         setError('');
         try {
             await (authenticationMode === AuthenticationMode.Login
-                ? signIn(email, password)
-                :  signUp(email, password, userName).then(() => setBaseUserName(userName)))
-        } catch (error) {
-            setError(error.message);
-        }
-    }
-
-    const googleSignIn = async () => {
-        try {
-            await signInWithGoogle();
+                ? signIn(email, userName)
+                :  signUp(email, userName).then(() => setBaseUserName(userName)))
         } catch (error) {
             setError(error.message);
         }
     }
 
     const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setUserName(event.target.value);
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value);
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
 
     return (
@@ -66,19 +56,11 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                            value={email}></input>
                 </div>
                 <div>
-                    <input placeholder="Password" name="password" type="password" onChange={handlePasswordChange}
-                           value={password}></input>
-                </div>
-                <div>
                     {error ? <p>{error}</p> : null}
                     <button type="submit">{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</button>
                 </div>
                 <hr></hr>
                 {alternateAuthenticationDescription()}
-                <p>Or</p>
-                <button onClick={googleSignIn} type="button">
-                    Login with Google (fill userName upfront)
-                </button>
             </form>
         </div>
     );
