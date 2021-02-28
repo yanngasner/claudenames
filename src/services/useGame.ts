@@ -106,8 +106,8 @@ const useGame = ():
                 await playerRef.update({team: team})
             } else {
                 await playerRef.set({
+                    userId: userId,
                     userName: userName,
-                    name: '',
                     team: team,
                     isLeader: false,
                 })
