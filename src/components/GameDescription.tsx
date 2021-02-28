@@ -8,7 +8,7 @@ import './GameDescription.css';
 import {Team} from "../types/enums";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, FormControlLabel} from "@material-ui/core";
-import {BlueButton, BlueSwitch, RedButton, RedSwitch} from "./MaterialComponents";
+import {BlueButton, RedButton} from "./MaterialComponents";
 import styled from "styled-components";
 import {getBackgroundColor} from "../resources/colors";
 
@@ -30,11 +30,10 @@ interface GameDescriptionProps {
     player: PlayerModel | undefined
     startGame: () => void,
     joinTeam: (team: Team) => void,
-    changeLead: (lead: boolean) => void,
 }
 
 export const GameDescription: React.FC<GameDescriptionProps>
-    = ({game, player, startGame, joinTeam, changeLead}) => {
+    = ({game, player, startGame, joinTeam}) => {
 
     const classes = useStyles();
     const userId = useRecoilValue(userIdState);
@@ -48,14 +47,13 @@ export const GameDescription: React.FC<GameDescriptionProps>
         history.push(`/${game.id}`);
     }
     const handleJoinClick = (team: Team) => joinTeam(team);
-    const handleChangeLeadClick = (checked: boolean) => changeLead(checked);
 
     return (
         <GameDescriptionDiv player={player} className='game-description-component'>
             <div className={'players-list-component'}>
                 {game.players.filter(p => p.team === Team.Blue).map(p =>
                     <div
-                        className={`${player?.isLeader && player?.userId === p.userId ? 'leader-player' : ''}`}
+                        className={`${p.isLeader ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)
@@ -68,15 +66,6 @@ export const GameDescription: React.FC<GameDescriptionProps>
                    ? <div className={`${classes.root}`}>
                         <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
                         <RedButton disabled={isRed()} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
-                        <FormControlLabel
-                            control={isBlue()
-                                ? <BlueSwitch checked={player?.isLeader ?? false}
-                                              onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
-                                : <RedSwitch checked={player?.isLeader ?? false}
-                                             onChange={(event) => handleChangeLeadClick(event.target.checked)}/>
-                            }
-                            label="Leader"
-                        />
                     </div>
                    : <div></div>
                 }
@@ -84,7 +73,7 @@ export const GameDescription: React.FC<GameDescriptionProps>
             <div className={'players-list-component'}>
                 {game.players.filter(p => p.team === Team.Red).map(p =>
                     <div
-                        className={`${player?.isLeader && player?.userId === p.userId ? 'leader-player' : ''}`}
+                        className={`${p.isLeader ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)

@@ -22,9 +22,11 @@ export enum GameAction {
     Start,
     JoinBlue,
     JoinRed,
-    Lead,
-    Unlead = 6,
-    TakeShift = 7,
+    LeadBlue,
+    LeadRed,
+    UnleadBlue,
+    UnleadRed,
+    TakeShift,
 }
 
 export enum WordAction {

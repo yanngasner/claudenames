@@ -48,7 +48,6 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
                         player={game.players.find(p => p.userId === userId)}
                         startGame={() => actOnGame(GameAction.Start, game.id)}
                         joinTeam={(team: Team) => actOnGame(team == Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}
-                        changeLead={(lead: boolean) => actOnGame(lead ? GameAction.Lead : GameAction.Unlead, game.id)}
                     />
                 )}
             </div>

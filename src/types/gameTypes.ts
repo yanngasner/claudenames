@@ -12,7 +12,8 @@ export interface GameModel {
 
 export interface RoundModel {
     readonly words : readonly WordModel[],
-    readonly bluePLayerId : string,
+    readonly players : readonly string[],
+    readonly blueLeaderId : string,
     readonly redPlayerId : string,
     readonly roundStatus : RoundStatus,
 }
@@ -24,7 +25,6 @@ export interface PlayerModel {
     readonly isLeader : boolean,
     readonly isPlaying : boolean,
 }
-
 
 export interface WordModel {
     readonly id:string,
