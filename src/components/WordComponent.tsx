@@ -44,7 +44,7 @@ const WordComponent: FC<WordComponentProps> = ({word, player, changeWordSelected
     }
 
     return <div className={`word-component`}>
-        <WordCard disabled={word.isUnveiled || !player?.isLeader} onClick={() => handleSelectedChange()}
+        <WordCard disabled={word.isUnveiled || !player?.isPlaying} onClick={() => handleSelectedChange()}
                   word={word}
                   player={player}>
             {word.text}</WordCard>

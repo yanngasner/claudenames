@@ -14,7 +14,7 @@ export interface RoundModel {
     readonly words : readonly WordModel[],
     readonly players : readonly string[],
     readonly blueLeaderId : string,
-    readonly redPlayerId : string,
+    readonly redLeaderId : string,
     readonly roundStatus : RoundStatus,
 }
 

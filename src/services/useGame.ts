@@ -130,20 +130,16 @@ const useGame = ():
         });
     }
 
-    const setLeader = async (gameRef: firebase.database.Reference, team: Team, isLeader: boolean) => {
+    const setLeader = async (gameRef: firebase.database.Reference, team: Team) => {
         const playerRef = gameRef.child('players').child(userId);
         await playerRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                await playerRef.update({isLeader: isLeader})
+                await playerRef.update({isLeader: true})
             }
         });
         const targetChild = team === Team.Blue ? "blueLeaderId" : "redLeaderId"
         const leadersRef = gameRef.child('rounds').child("0").child(targetChild);
-        if (isLeader) {
-            await leadersRef.set(userId)
-        } else {
-            await leadersRef.remove()
-        };
+        await leadersRef.set(userId);
     }
 
     const setSelected = async (wordRef: firebase.database.Reference, selected: boolean) => {
@@ -182,19 +178,11 @@ const useGame = ():
                 break;
 
             case GameAction.LeadBlue :
-                await setLeader(gameRef, Team.Blue, true);
-                break;
-
-            case GameAction.UnleadBlue :
-                await setLeader(gameRef, Team.Blue, false);
+                await setLeader(gameRef, Team.Blue);
                 break;
 
             case GameAction.LeadRed :
-                await setLeader(gameRef, Team.Red, true);
-                break;
-
-            case GameAction.UnleadRed :
-                await setLeader(gameRef, Team.Red, false);
+                await setLeader(gameRef, Team.Red);
                 break;
 
             case GameAction.TakeShift :

@@ -23,11 +23,21 @@ const GameComponentDiv = styled.div<{  player: PlayerModel | undefined }>`
 
 const GameComponent: FC<GameComponentProps> = ({game, player, takeLead, takeShift, validateSelection, changeWordSelected}) => {
 
-    const getWords = (game : GameModel) => game.rounds[game.roundId].words;
+    const getCurrentRound = (game : GameModel) => game.rounds[game.roundId];
+    const getWords = (game : GameModel) => getCurrentRound(game).words;
+    const hasTeamLeader = (game : GameModel, team : Team | undefined) =>
+    {
+        if (team === undefined) {
+            return false
+        } else {
+            return (team === Team.Blue ? getCurrentRound(game).blueLeaderId : getCurrentRound(game).redLeaderId) != undefined
+        }
+    }
 
     const handleTakeLeadClick = () => {
-        if (player != undefined)
+        if (player != undefined) {
             takeLead(player.team);
+        }
     }
 
     const handleTakeShiftClick = () => {
@@ -48,7 +58,11 @@ const GameComponent: FC<GameComponentProps> = ({game, player, takeLead, takeShif
                         ? <Button onClick={() => handleValidateSelectionClick()}>Valider</Button>
                         : <Button onClick={() => handleTakeShiftClick()}>A mon tour!</Button>}
                     </div>
-                    : <Button onClick={() => handleTakeLeadClick()}>Prendre le lead</Button>
+                    : <div>
+                        {hasTeamLeader(game, player?.team)
+                            ? <div></div>
+                            : <Button onClick={() => handleTakeLeadClick()}>Prendre le lead</Button>}
+                    </div>
             }
 
             <div className='words-container'>
