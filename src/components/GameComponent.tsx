@@ -38,6 +38,8 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
     const isPlaying = isBluePlaying || isRedPlaying;
     const hasSelectedWords = words.some(w=>w.isSelected);
+    const blueScore = game.rounds.filter(r => r.roundStatus === RoundStatus.BlueWins).length;
+    const redScore = game.rounds.filter(r => r.roundStatus === RoundStatus.RedWins).length;
 
     const handleTakeLeadClick = () => {
         if (player !== undefined) {
@@ -66,7 +68,8 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     return (
             <GameComponentDiv player={player} className={'game-component'}>
                 <div>
-                    <h1>{RoundStatus[currentRound.roundStatus]}</h1>
+                    <h3>{RoundStatus[currentRound.roundStatus]}</h3>
+                    <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
                     {currentRound.roundStatus >= RoundStatus.BlueWins
                     ? <Button onClick={() => handleRequestNextRoundClick()}>Démarrer le prochain round</Button>
                     : <div></div>
