@@ -37,8 +37,8 @@ const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) =
             }
         </div>
         <div className={`${classes.root}`}>
-                <BlueButton disabled={isBlue()} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
-                <RedButton disabled={isRed()} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
+                <BlueButton disabled={isBlue() || player?.isLeader} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
+                <RedButton disabled={isRed()|| player?.isLeader} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
         </div>
         <div className={'players-list-component'}>
             {game.players.filter(p => p.team === Team.Red).map(p =>
