@@ -6,7 +6,7 @@ import './GameComponent.css'
 import {Button} from "@material-ui/core";
 import styled from "styled-components";
 import {getBackgroundColor} from "../resources/colors";
-import {Team} from "../types/enums";
+import {RoundStatus, Team} from "../types/enums";
 
 interface GameComponentProps {
     game: GameModel,
@@ -35,7 +35,6 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
             return (team === Team.Blue ? getCurrentRound(game).blueLeaderId : getCurrentRound(game).redLeaderId) !== undefined
         }
     }
-    const hasTeamLeaders = (game : GameModel) => getCurrentRound(game).blueLeaderId && getCurrentRound(game).redLeaderId;
 
     const handleTakeLeadClick = () => {
         if (player !== undefined) {
@@ -61,8 +60,8 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                         ? <div>
                             {player?.isPlaying
                                 ? <div>
-                                    <Button disabled={!hasTeamLeaders(game)} onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
-                                    <Button disabled={!hasTeamLeaders(game)} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
+                                    <Button disabled={getCurrentRound(game).roundStatus !== RoundStatus.Playing} onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
+                                    <Button disabled={getCurrentRound(game).roundStatus !== RoundStatus.Playing} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
                                 </div>
                                 : <div></div>
                             }

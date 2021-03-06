@@ -137,11 +137,15 @@ const useGame = ():
 
     const setLeader = async (gameRef: firebase.database.Reference, team: Team) => {
 
+        const roundRef = gameRef.child('rounds').child("0")
+
         let isPlaying = false;
-        const targetChild = team === Team.Blue ? "blueLeaderId" : "redLeaderId"
-        const leadersRef = gameRef.child('rounds').child("0").child(targetChild);
-        await leadersRef.set(userId);
-        const startingTeam = gameRef.child('rounds').child("0").child('startingTeam');
+
+        const targetChild = team === Team.Blue ? "blueLeaderId" : "redLeaderId";
+        const leaderRef = roundRef.child(targetChild);
+        await leaderRef.set(userId);
+
+        const startingTeam = roundRef.child('startingTeam');
         await startingTeam.once("value", async snapshot => {
             if (snapshot.exists()) {
                 if (snapshot.val() === team) {
@@ -159,6 +163,16 @@ const useGame = ():
                 })
             }
         });
+
+        const oppositeTargetChild = team === Team.Blue ? "redLeaderId" : "blueLeaderId";
+
+        const oppositeLeaderRef = roundRef.child(oppositeTargetChild);
+        await oppositeLeaderRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await roundRef.update({roundStatus: RoundStatus.Playing})
+            }
+        });
+
     }
 
     const setSelected = async (wordRef: firebase.database.Reference, selected: boolean) => {
