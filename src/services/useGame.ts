@@ -40,10 +40,12 @@ const useGame = ():
         return indexesArray.map(i => completeWordsArray[i]);
     }
 
-    const getWordTypes = () : WordType[] => {
+    const getWordTypesAndStartingTeam = () : [WordType[], Team] => {
 
-        const firstTeam = Math.random() < 0.5 ? WordType.Blue : WordType.Red;
-        const secondTeam = firstTeam === WordType.Blue ? WordType.Red : WordType.Blue;
+        const firstTeam = Math.random() < 0.5 ? Team.Blue : Team.Red;
+        const secondTeam = firstTeam === Team.Blue ? Team.Red : Team.Blue;
+        const firstWordType = firstTeam == Team.Blue ? WordType.Blue : WordType.Red;
+        const secondWordType = secondTeam == Team.Blue ? WordType.Blue : WordType.Red;
         let assignedCount = 0;
         let wordTypesArray: WordType[] = Array(gameWordsCount).fill(WordType.Unassigned);
 
@@ -54,7 +56,7 @@ const useGame = ():
         while (assignedCount < 10) {
             index = Math.floor(Math.random() * gameWordsCount);
             if (wordTypesArray[index] === WordType.Unassigned) {
-                wordTypesArray[index] = firstTeam;
+                wordTypesArray[index] = firstWordType;
                 assignedCount +=1;
             }
         }
@@ -62,16 +64,16 @@ const useGame = ():
         while (assignedCount < 18) {
             index = Math.floor(Math.random() * gameWordsCount);
             if (wordTypesArray[index] === WordType.Unassigned) {
-                wordTypesArray[index] = secondTeam;
+                wordTypesArray[index] = secondWordType;
                 assignedCount +=1;
             }
         }
-        return wordTypesArray;
+        return [wordTypesArray, firstTeam];
     }
 
     const createGame = async (name: string) => {
         const words = getWords();
-        const types = getWordTypes();
+        const [wordTypes, startingTeam] = getWordTypesAndStartingTeam();
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: Date.now(),
@@ -87,12 +89,13 @@ const useGame = ():
         });
         await newGameRef.child('rounds').child("0").set({
             roundStatus: RoundStatus.Waiting,
+            startingTeam: startingTeam
         });
         for (let i = 0; i < 25; i++) {
             await newGameRef.child('rounds').child("0").child("words").child(`${i}`).set({
                 id: i,
                 text: words[i],
-                wordType: types[i],
+                wordType: wordTypes[i],
                 isUnveiled: false,
                 isSelected: false,
             });
@@ -139,15 +142,29 @@ const useGame = ():
     }
 
     const setLeader = async (gameRef: firebase.database.Reference, team: Team) => {
-        const playerRef = gameRef.child('players').child(userId);
-        await playerRef.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                await playerRef.update({isLeader: true})
-            }
-        });
+
+        let isPlaying = false;
         const targetChild = team === Team.Blue ? "blueLeaderId" : "redLeaderId"
         const leadersRef = gameRef.child('rounds').child("0").child(targetChild);
         await leadersRef.set(userId);
+        const startingTeam = gameRef.child('rounds').child("0").child('startingTeam');
+        await startingTeam.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                if (snapshot.val() === team) {
+                    isPlaying = true;
+                }
+            }
+        });
+
+        const playerRef = gameRef.child('players').child(userId);
+        await playerRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                await playerRef.update({
+                    isLeader: true,
+                    isPlaying: isPlaying
+                })
+            }
+        });
     }
 
     const setSelected = async (wordRef: firebase.database.Reference, selected: boolean) => {
