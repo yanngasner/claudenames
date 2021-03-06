@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {db} from "./firebase";
-import {GameModel, RoundModel} from "../types/gameTypes";
+import {GameModel, RoundModel, WordModel} from "../types/gameTypes";
 import {GameAction, RoundStatus, Team, WordAction, WordType} from "../types/enums";
 import firebase from "firebase";
 import wordsList from "../resources/wordsList";
@@ -11,8 +11,8 @@ import {userIdState, userNameState} from "../types/atoms";
 const useGame = ():
     [GameModel[],
         (inputName: string) => Promise<void>,
-        (gameAction: GameAction, gameId: string, team: Team) => Promise<void>,
-        (wordAction: WordAction, gameId: string, roundId: number, wordId: string) => Promise<void>,
+        (gameAction: GameAction, gameId: string, roundId: number, team: Team) => Promise<void>,
+        (wordAction: WordAction, gameId: string, roundId: number, team: Team, wordId: string) => Promise<void>,
         boolean] => {
 
     const userId = useRecoilValue(userIdState);
@@ -135,9 +135,7 @@ const useGame = ():
         });
     }
 
-    const setLeader = async (gameRef: firebase.database.Reference, team: Team) => {
-
-        const roundRef = gameRef.child('rounds').child("0")
+    const setLeader = async (gameRef: firebase.database.Reference, roundRef: firebase.database.Reference, team: Team) => {
 
         let isPlaying = false;
 
@@ -183,7 +181,7 @@ const useGame = ():
         });
     }
 
-    const validateWord = async (wordRef: firebase.database.Reference) => {
+    const validateWord = async (roundRef: firebase.database.Reference, wordRef: firebase.database.Reference, team: Team) => {
         await wordRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 await wordRef.update({
@@ -192,9 +190,28 @@ const useGame = ():
                 })
             }
         });
+        await roundRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                const words: WordModel[] = snapshot.val().words;
+                const unveiledWords = words.filter(w => w.isUnveiled);
+                const inGameWords = words.filter(w => !w.isUnveiled);
+                const blackOut = unveiledWords.some(w => w.wordType === WordType.Forbidden);
+                const blueDone = !inGameWords.some(w => w.wordType === WordType.Blue);
+                const redDone = !inGameWords.some(w => w.wordType === WordType.Red);
+                if (blackOut) {
+                    await roundRef.update({roundStatus: team === Team.Blue ? RoundStatus.RedWins : RoundStatus.BlueWins});
+                } else if (blueDone && redDone) {
+                    await roundRef.update({roundStatus: RoundStatus.Deuce});
+                } else if (blueDone) {
+                    await roundRef.update({roundStatus: RoundStatus.BlueWins});
+                } else if (redDone) {
+                    await roundRef.update({roundStatus: RoundStatus.RedWins});
+                }
+            }
+        });
     }
 
-    const updateGame = async (gameRef: firebase.database.Reference, team: Team, gameAction: GameAction) => {
+    const updateGame = async (gameRef: firebase.database.Reference, roundRef: firebase.database.Reference, team: Team, gameAction: GameAction) => {
         switch (gameAction) {
 
             case GameAction.Join :
@@ -202,7 +219,7 @@ const useGame = ():
                 break;
 
             case GameAction.Lead :
-                await setLeader(gameRef, team);
+                await setLeader(gameRef, roundRef, team);
                 break;
 
             case GameAction.EndShift :
@@ -211,7 +228,7 @@ const useGame = ():
         }
     }
 
-    const updateWord = async (wordRef: firebase.database.Reference, wordAction: WordAction) => {
+    const updateWord = async (roundRef: firebase.database.Reference, wordRef: firebase.database.Reference, team: Team, wordAction: WordAction) => {
 
         switch (wordAction) {
 
@@ -224,22 +241,26 @@ const useGame = ():
                 break;
 
             case WordAction.Validate :
-                await validateWord(wordRef);
+                await validateWord(roundRef, wordRef, team);
                 break;
 
         }
     }
 
-    const actOnGame = async (gameAction: GameAction, gameId: string, team: Team) => {
-        const path = `games/${gameId}`;
-        const gameRef = db.ref(path);
-        await updateGame(gameRef, team, gameAction);
+    const actOnGame = async (gameAction: GameAction, gameId: string, roundId : number, team: Team) => {
+        const gamePath = `games/${gameId}`;
+        const gameRef = db.ref(gamePath);
+        const roundPath = `${gamePath}/rounds/${roundId}`;
+        const roundRef = db.ref(roundPath);
+        await updateGame(gameRef, roundRef, team, gameAction);
     }
 
-    const actOnWord = async (wordAction: WordAction, gameId: string, roundId : number, wordId: string) => {
-        const path = `games/${gameId}/rounds/${roundId}/words/${wordId}`;
+    const actOnWord = async (wordAction: WordAction, gameId: string, roundId : number, team: Team, wordId: string) => {
+        const roundPath = `games/${gameId}/rounds/${roundId}`;
+        const roundRef = db.ref(roundPath);
+        const path = `${roundPath}/words/${wordId}`;
         const wordRef = db.ref(path);
-        await updateWord(wordRef, wordAction);
+        await updateWord(roundRef, wordRef, team, wordAction);
     }
 
     const getGameModel = (snap: firebase.database.DataSnapshot) : GameModel => {

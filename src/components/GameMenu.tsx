@@ -10,7 +10,7 @@ import './GameMenu.css'
 export interface GameMenuProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    actOnGame: (gameAction: GameAction, gameId: string, team: Team) => Promise<void>
+    actOnGame: (gameAction: GameAction, gameId: string, roundId: number, team: Team) => Promise<void>
 }
 
 export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}) => {
