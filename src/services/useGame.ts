@@ -133,9 +133,7 @@ const useGame = ():
     const endShift = async (roundRef: firebase.database.Reference, team: Team) => {
         const roundStatusRef = roundRef.child('roundStatus')
         await roundStatusRef.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                await roundRef.update({roundStatus: snapshot.val() === RoundStatus.BluePlaying ? RoundStatus.RedPlaying : RoundStatus.BluePlaying})
-            }
+            await roundRef.update({roundStatus: snapshot.val() === RoundStatus.BluePlaying ? RoundStatus.RedPlaying : RoundStatus.BluePlaying})
         });
     }
 
@@ -151,9 +149,7 @@ const useGame = ():
             if (snapshot.exists()) {
                 const startingTeam = roundRef.child('startingTeam');
                 await startingTeam.once("value", async snapshot => {
-                    if (snapshot.exists()) {
-                        await roundRef.update({roundStatus: snapshot.val() === Team.Blue ? RoundStatus.BluePlaying : RoundStatus.RedPlaying})
-                    }
+                    await roundRef.update({roundStatus: snapshot.val() === Team.Blue ? RoundStatus.BluePlaying : RoundStatus.RedPlaying})
                 });
             }
         });
@@ -161,41 +157,30 @@ const useGame = ():
     }
 
     const setSelected = async (wordRef: firebase.database.Reference, selected: boolean) => {
-        await wordRef.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                await wordRef.update({isSelected: selected})
-            }
-        });
+        await wordRef.update({isSelected: selected});
     }
 
     const validateWord = async (roundRef: firebase.database.Reference, wordRef: firebase.database.Reference, team: Team) => {
-
-        await wordRef.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                await wordRef.update({
-                    isSelected: false,
-                    isUnveiled: true,
-                })
-            }
+        await wordRef.update({
+            isSelected: false,
+            isUnveiled: true,
         });
 
         await roundRef.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                const words: WordModel[] = snapshot.val().words;
-                const unveiledWords = words.filter(w => w.isUnveiled);
-                const inGameWords = words.filter(w => !w.isUnveiled);
-                const blackOut = unveiledWords.some(w => w.wordType === WordType.Forbidden);
-                const blueDone = !inGameWords.some(w => w.wordType === WordType.Blue);
-                const redDone = !inGameWords.some(w => w.wordType === WordType.Red);
-                if (blackOut) {
-                    await roundRef.update({roundStatus: team === Team.Blue ? RoundStatus.RedWins : RoundStatus.BlueWins});
-                } else if (blueDone && redDone) {
-                    await roundRef.update({roundStatus: RoundStatus.Deuce});
-                } else if (blueDone) {
-                    await roundRef.update({roundStatus: RoundStatus.BlueWins});
-                } else if (redDone) {
-                    await roundRef.update({roundStatus: RoundStatus.RedWins});
-                }
+            const words: WordModel[] = snapshot.val().words;
+            const unveiledWords = words.filter(w => w.isUnveiled);
+            const inGameWords = words.filter(w => !w.isUnveiled);
+            const blackOut = unveiledWords.some(w => w.wordType === WordType.Forbidden);
+            const blueDone = !inGameWords.some(w => w.wordType === WordType.Blue);
+            const redDone = !inGameWords.some(w => w.wordType === WordType.Red);
+            if (blackOut) {
+                await roundRef.update({roundStatus: team === Team.Blue ? RoundStatus.RedWins : RoundStatus.BlueWins});
+            } else if (blueDone && redDone) {
+                await roundRef.update({roundStatus: RoundStatus.Deuce});
+            } else if (blueDone) {
+                await roundRef.update({roundStatus: RoundStatus.BlueWins});
+            } else if (redDone) {
+                await roundRef.update({roundStatus: RoundStatus.RedWins});
             }
         });
     }
