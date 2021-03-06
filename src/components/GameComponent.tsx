@@ -35,6 +35,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
             return (team === Team.Blue ? getCurrentRound(game).blueLeaderId : getCurrentRound(game).redLeaderId) !== undefined
         }
     }
+    const hasTeamLeaders = (game : GameModel) => getCurrentRound(game).blueLeaderId && getCurrentRound(game).redLeaderId;
 
     const handleTakeLeadClick = () => {
         if (player !== undefined) {
@@ -60,8 +61,8 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                         ? <div>
                             {player?.isPlaying
                                 ? <div>
-                                    <Button onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
-                                    <Button onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
+                                    <Button disabled={!hasTeamLeaders(game)} onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
+                                    <Button disabled={!hasTeamLeaders(game)} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
                                 </div>
                                 : <div></div>
                             }
