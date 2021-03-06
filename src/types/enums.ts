@@ -23,6 +23,7 @@ export enum GameAction {
     Join,
     Lead,
     EndShift,
+    NextRound,
 }
 
 export enum WordAction {

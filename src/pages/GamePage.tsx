@@ -32,6 +32,7 @@ const GamePage : FC<GamePageProps> = ({games, createGame, game, actOnGame, actOn
                 joinTeam={(team : Team) => actOnGame(GameAction.Join, game.id, game.roundId, team)}
                 takeLead={(team : Team) => actOnGame(GameAction.Lead, game.id, game.roundId, team)}
                 endShift={(team: Team) => actOnGame(GameAction.EndShift, game.id, game.roundId, team)}
+                requestNextRound={(team: Team) => actOnGame(GameAction.NextRound, game.id, game.roundId, team)}
                 validateSelection={(team : Team, wordId : string) => actOnWord(WordAction.Validate, game.id, game.roundId, team, wordId)}
                 changeWordSelected={(team : Team, wordId : string, isSelected) => actOnWord(isSelected ? WordAction.Select :WordAction.Unselect, game.id, game.roundId, team, wordId)}
             />);

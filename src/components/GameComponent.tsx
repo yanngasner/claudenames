@@ -14,6 +14,7 @@ interface GameComponentProps {
     joinTeam: (team: Team) => void,
     takeLead: (team: Team) => void,
     endShift: (team: Team) => void,
+    requestNextRound: (team: Team) => void
     validateSelection: (team: Team, wordId: string) => void,
     changeWordSelected: (team: Team, wordId: string, isSelected: boolean) => void
 }
@@ -23,7 +24,7 @@ const GameComponentDiv = styled.div<{  player: PlayerModel | undefined }>`
     background-color : ${props => props.player == null ? 'whitesmoke' : getBackgroundColor(props.player.team)};
 `;
 
-const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead, endShift, validateSelection, changeWordSelected}) => {
+const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead, endShift, requestNextRound, validateSelection, changeWordSelected}) => {
 
     const currentRound = game.rounds[game.roundId];
     const words = currentRound.words;
@@ -36,6 +37,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     const isBluePlaying = isBlueLeader && currentRound.roundStatus === RoundStatus.BluePlaying;
     const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
     const isPlaying = isBluePlaying || isRedPlaying;
+    const hasSelectedWords = words.some(w=>w.isSelected);
 
     const handleTakeLeadClick = () => {
         if (player !== undefined) {
@@ -49,6 +51,12 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
         }
     }
 
+    const handleRequestNextRoundClick = () => {
+        if (player !== undefined) {
+            requestNextRound(player.team);
+        }
+    }
+
     const handleValidateSelectionClick = () => {
         if (player !== undefined) {
             words.filter(w => w.isSelected).forEach(w => validateSelection(player.team, w.id));
@@ -57,14 +65,20 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
 
     return (
             <GameComponentDiv player={player} className={'game-component'}>
-                <h1>{RoundStatus[currentRound.roundStatus]}</h1>
+                <div>
+                    <h1>{RoundStatus[currentRound.roundStatus]}</h1>
+                    {currentRound.roundStatus >= RoundStatus.BlueWins
+                    ? <Button onClick={() => handleRequestNextRoundClick()}>Démarrer le prochain round</Button>
+                    : <div></div>
+                }
+                </div>
                 {
                     isLeader
                         ? <div>
                             {isPlaying
                                 ? <div>
                                     <Button onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
-                                    <Button onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
+                                    <Button disabled={hasSelectedWords} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
                                 </div>
                                 : <div></div>
                             }
@@ -79,7 +93,6 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                     game={game}
                     player={player}
                     joinTeam={(team: Team) => joinTeam(team)}
-
                 />
                 <div className='words-container'>
                     {words.map(word =>

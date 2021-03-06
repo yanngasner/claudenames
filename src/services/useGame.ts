@@ -72,21 +72,31 @@ const useGame = ():
     }
 
     const createGame = async (name: string) => {
-        const words = getWords();
-        const [wordTypes, startingTeam] = getWordTypesAndStartingTeam();
         const newGameRef = await db.ref("games").push({
             name: name,
             creationTime: Date.now(),
             players: [],
             roundId : 0,
         });
-        await newGameRef.update({id: newGameRef.key})
-        await newGameRef.child('rounds').child("0").set({
+        await newGameRef.update({id: newGameRef.key});
+
+        await createRound(newGameRef, 0);
+    }
+
+    const createRound = async (gameRef: firebase.database.Reference, roundId: number) => {
+
+        const words = getWords();
+        const [wordTypes, startingTeam] = getWordTypesAndStartingTeam();
+
+        await gameRef.child('rounds').child(`${roundId}`).set({
             roundStatus: RoundStatus.Waiting,
-            startingTeam: startingTeam
+            startingTeam: startingTeam,
+            words:[]
         });
+        await gameRef.update({roundId: roundId})
+
         for (let i = 0; i < 25; i++) {
-            await newGameRef.child('rounds').child("0").child("words").child(`${i}`).set({
+            await gameRef.child('rounds').child(`${roundId}`).child("words").child(`${i}`).set({
                 id: i,
                 text: words[i],
                 wordType: wordTypes[i],
@@ -94,6 +104,15 @@ const useGame = ():
                 isSelected: false,
             });
         }
+    }
+
+    const nextRound = async (gameRef: firebase.database.Reference) => {
+        await gameRef.once("value", async snapshot => {
+            if (snapshot.exists()) {
+                const roundId = snapshot.val().roundId;
+                await createRound(gameRef, roundId + 1);
+            }
+        });
     }
 
     const joinGame = async (gameRef: firebase.database.Reference, team: Team) => {
@@ -194,6 +213,10 @@ const useGame = ():
 
             case GameAction.EndShift :
                 await endShift(roundRef, team);
+                break;
+
+            case GameAction.NextRound :
+                await nextRound(gameRef);
                 break;
         }
     }
