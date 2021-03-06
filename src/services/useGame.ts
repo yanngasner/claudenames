@@ -106,68 +106,36 @@ const useGame = ():
                     userId: userId,
                     userName: userName,
                     team: team,
-                    isLeader: false,
                 })
             }
         });
     }
 
-    const endShift = async (gameRef: firebase.database.Reference, team: Team) => {
-
-        const playersRef = gameRef.child('players');
-        await playersRef.once("value", async snapshot => {
-            await snapshot.forEach(child => {
-                child.ref.update ({isPlaying : false})
-            })
-        });
-
-        const targetChild = team === Team.Blue ? "redLeaderId" : "blueLeaderId"
-        const leadersRef = gameRef.child('rounds').child("0").child(targetChild);
-        await leadersRef.once("value", async snapshot => {
+    const endShift = async (roundRef: firebase.database.Reference, team: Team) => {
+        const roundStatusRef = roundRef.child('roundStatus')
+        await roundStatusRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                const playerRef = playersRef.child(snapshot.val());
-                await playerRef.once("value", async snapshot => {
-                    if (snapshot.exists()) {
-                        await playerRef.update({isPlaying: true})
-                    }
-                });
+                await roundRef.update({roundStatus: snapshot.val() === RoundStatus.BluePlaying ? RoundStatus.RedPlaying : RoundStatus.BluePlaying})
             }
         });
     }
 
-    const setLeader = async (gameRef: firebase.database.Reference, roundRef: firebase.database.Reference, team: Team) => {
-
-        let isPlaying = false;
+    const setLeader = async (roundRef: firebase.database.Reference, team: Team) => {
 
         const targetChild = team === Team.Blue ? "blueLeaderId" : "redLeaderId";
         const leaderRef = roundRef.child(targetChild);
         await leaderRef.set(userId);
 
-        const startingTeam = roundRef.child('startingTeam');
-        await startingTeam.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                if (snapshot.val() === team) {
-                    isPlaying = true;
-                }
-            }
-        });
-
-        const playerRef = gameRef.child('players').child(userId);
-        await playerRef.once("value", async snapshot => {
-            if (snapshot.exists()) {
-                await playerRef.update({
-                    isLeader: true,
-                    isPlaying: isPlaying
-                })
-            }
-        });
-
         const oppositeTargetChild = team === Team.Blue ? "redLeaderId" : "blueLeaderId";
-
         const oppositeLeaderRef = roundRef.child(oppositeTargetChild);
         await oppositeLeaderRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                await roundRef.update({roundStatus: RoundStatus.Playing})
+                const startingTeam = roundRef.child('startingTeam');
+                await startingTeam.once("value", async snapshot => {
+                    if (snapshot.exists()) {
+                        await roundRef.update({roundStatus: snapshot.val() === Team.Blue ? RoundStatus.BluePlaying : RoundStatus.RedPlaying})
+                    }
+                });
             }
         });
 
@@ -182,6 +150,7 @@ const useGame = ():
     }
 
     const validateWord = async (roundRef: firebase.database.Reference, wordRef: firebase.database.Reference, team: Team) => {
+
         await wordRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 await wordRef.update({
@@ -190,6 +159,7 @@ const useGame = ():
                 })
             }
         });
+
         await roundRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 const words: WordModel[] = snapshot.val().words;
@@ -219,11 +189,11 @@ const useGame = ():
                 break;
 
             case GameAction.Lead :
-                await setLeader(gameRef, roundRef, team);
+                await setLeader(roundRef, team);
                 break;
 
             case GameAction.EndShift :
-                await endShift(gameRef, team);
+                await endShift(roundRef, team);
                 break;
         }
     }

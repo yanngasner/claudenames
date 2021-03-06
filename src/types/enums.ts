@@ -12,7 +12,8 @@ export enum WordType {
 
 export enum RoundStatus {
     Waiting,
-    Playing,
+    BluePlaying,
+    RedPlaying,
     BlueWins,
     RedWins,
     Deuce ,

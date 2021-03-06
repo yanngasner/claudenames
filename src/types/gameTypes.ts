@@ -21,8 +21,6 @@ export interface PlayerModel {
     readonly userId : string,
     readonly userName : string,
     readonly team : Team,
-    readonly isLeader : boolean,
-    readonly isPlaying : boolean,
 }
 
 export interface WordModel {

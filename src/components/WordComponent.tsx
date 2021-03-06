@@ -1,20 +1,24 @@
 import React, {FC} from 'react';
-import {PlayerModel, WordModel} from "../types/gameTypes";
+import {GameModel, PlayerModel, WordModel} from "../types/gameTypes";
 import styled from 'styled-components';
 import {getColor, getBorderColor} from "../resources/colors";
+import {RoundStatus, Team} from "../types/enums";
 
 interface WordCardProps {
     word: WordModel;
-    player : PlayerModel | undefined;
+    isLeader: boolean;
 }
 
-interface WordComponentProps extends WordCardProps {
+interface WordComponentProps {
+    game: GameModel;
+    word: WordModel;
+    player : PlayerModel | undefined;
     changeWordSelected: (isSelected: boolean) => void
 }
 
 
 const WordCard = styled.button`
-    color: ${(props: WordCardProps) => props.player?.isLeader || props.word.isUnveiled
+    color: ${(props: WordCardProps) => props.isLeader || props.word.isUnveiled
     ? getColor(props.word.wordType)
     : "black"};
     width : 80%;
@@ -33,10 +37,18 @@ const WordCard = styled.button`
     }
     
     &:hover {
-        cursor:${(props: WordCardProps) => props.word.isUnveiled || !props.player?.isLeader ? 'initial' : 'pointer'};
+        cursor:${(props: WordCardProps) => props.word.isUnveiled || !props.isLeader ? 'initial' : 'pointer'};
 `;
 
-const WordComponent: FC<WordComponentProps> = ({word, player, changeWordSelected}) => {
+const WordComponent: FC<WordComponentProps> = ({game, word, player, changeWordSelected}) => {
+
+    const currentRound = game.rounds[game.roundId];
+    const isBlueLeader = player !== undefined && player.userId === currentRound.blueLeaderId;
+    const isRedLeader = player !== undefined && player.userId === currentRound.redLeaderId;
+    const isLeader = isBlueLeader || isRedLeader;
+    const isBluePlaying = isBlueLeader && currentRound.roundStatus === RoundStatus.BluePlaying;
+    const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
+    const isPlaying = isBluePlaying || isRedPlaying;
 
     const handleSelectedChange = () => {
         if (!word.isUnveiled)
@@ -44,9 +56,9 @@ const WordComponent: FC<WordComponentProps> = ({word, player, changeWordSelected
     }
 
     return <div className={`word-component`}>
-        <WordCard disabled={word.isUnveiled || !player?.isPlaying} onClick={() => handleSelectedChange()}
+        <WordCard disabled={word.isUnveiled || !isPlaying} onClick={() => handleSelectedChange()}
                   word={word}
-                  player={player}>
+                  isLeader={isLeader}>
             {word.text}</WordCard>
     </div>
 }

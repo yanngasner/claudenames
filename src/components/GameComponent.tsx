@@ -30,6 +30,12 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     const hasTeamLeader = (player === undefined)
         ? false
         : (player.team === Team.Blue ? currentRound.blueLeaderId : currentRound.redLeaderId) !== undefined;
+    const isBlueLeader = player !== undefined && player.userId === currentRound.blueLeaderId;
+    const isRedLeader = player !== undefined && player.userId === currentRound.redLeaderId;
+    const isLeader = isBlueLeader || isRedLeader;
+    const isBluePlaying = isBlueLeader && currentRound.roundStatus === RoundStatus.BluePlaying;
+    const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
+    const isPlaying = isBluePlaying || isRedPlaying;
 
     const handleTakeLeadClick = () => {
         if (player !== undefined) {
@@ -53,12 +59,12 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
             <GameComponentDiv player={player} className={'game-component'}>
                 <h1>{RoundStatus[currentRound.roundStatus]}</h1>
                 {
-                    player?.isLeader
+                    isLeader
                         ? <div>
-                            {player?.isPlaying
+                            {isPlaying
                                 ? <div>
-                                    <Button disabled={currentRound.roundStatus !== RoundStatus.Playing} onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
-                                    <Button disabled={currentRound.roundStatus !== RoundStatus.Playing} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
+                                    <Button onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
+                                    <Button onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
                                 </div>
                                 : <div></div>
                             }
@@ -78,6 +84,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                 <div className='words-container'>
                     {words.map(word =>
                         <WordComponent
+                            game={game}
                             word={word}
                             changeWordSelected={(isSelected: boolean) => player !== undefined ? changeWordSelected(player.team, word.id, isSelected) : {}}
                             player={player}
