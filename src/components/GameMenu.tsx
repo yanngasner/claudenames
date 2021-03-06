@@ -10,7 +10,7 @@ import './GameMenu.css'
 export interface GameMenuProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    actOnGame: (gameAction: GameAction, gameId: string) => Promise<void>
+    actOnGame: (gameAction: GameAction, gameId: string, team: Team) => Promise<void>
 }
 
 export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}) => {
@@ -46,8 +46,6 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
                         key={game.id}
                         game={game}
                         player={game.players.find(p => p.userId === userId)}
-                        startGame={() => actOnGame(GameAction.Start, game.id)}
-                        joinTeam={(team: Team) => actOnGame(team == Team.Blue ? GameAction.JoinBlue : GameAction.JoinRed, game.id)}
                     />
                 )}
             </div>

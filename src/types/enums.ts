@@ -19,12 +19,9 @@ export enum RoundStatus {
 }
 
 export enum GameAction {
-    Start,
-    JoinBlue,
-    JoinRed,
-    LeadBlue,
-    LeadRed,
-    TakeShift,
+    Join,
+    Lead,
+    EndShift,
 }
 
 export enum WordAction {

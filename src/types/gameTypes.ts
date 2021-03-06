@@ -4,7 +4,6 @@ export interface GameModel {
     readonly id: string,
     readonly name : string,
     readonly creationTime : Date,
-    readonly startTime : Date | null,
     readonly players : readonly PlayerModel[],
     readonly rounds : readonly RoundModel[],
     readonly roundId : number

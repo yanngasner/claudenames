@@ -11,7 +11,7 @@ import {userIdState, userNameState} from "../types/atoms";
 const useGame = ():
     [GameModel[],
         (inputName: string) => Promise<void>,
-        (gameAction: GameAction, gameId: string) => Promise<void>,
+        (gameAction: GameAction, gameId: string, team: Team) => Promise<void>,
         (wordAction: WordAction, gameId: string, roundId: number, wordId: string) => Promise<void>,
         boolean] => {
 
@@ -115,17 +115,25 @@ const useGame = ():
         });
     }
 
-    const takeShift = async (gameRef: firebase.database.Reference) => {
+    const endShift = async (gameRef: firebase.database.Reference, team: Team) => {
+
         const playersRef = gameRef.child('players');
         await playersRef.once("value", async snapshot => {
             await snapshot.forEach(child => {
-                 child.ref.update ({isPlaying : false})
+                child.ref.update ({isPlaying : false})
             })
         });
-        const playerRef = playersRef.child(userId);
-        await playerRef.once("value", async snapshot => {
+
+        const targetChild = team === Team.Blue ? "redLeaderId" : "blueLeaderId"
+        const leadersRef = gameRef.child('rounds').child("0").child(targetChild);
+        await leadersRef.once("value", async snapshot => {
             if (snapshot.exists()) {
-                await playerRef.update({isPlaying: true})
+                const playerRef = playersRef.child(snapshot.val());
+                await playerRef.once("value", async snapshot => {
+                    if (snapshot.exists()) {
+                        await playerRef.update({isPlaying: true})
+                    }
+                });
             }
         });
     }
@@ -161,32 +169,19 @@ const useGame = ():
         });
     }
 
-    const updateGame = async (gameRef: firebase.database.Reference, gameAction: GameAction) => {
+    const updateGame = async (gameRef: firebase.database.Reference, team: Team, gameAction: GameAction) => {
         switch (gameAction) {
-            case GameAction.Start :
-                await gameRef.update({
-                    startTime: Date.now(),
-                });
+
+            case GameAction.Join :
+                await joinGame(gameRef, team);
                 break;
 
-            case GameAction.JoinBlue :
-                await joinGame(gameRef, Team.Blue);
+            case GameAction.Lead :
+                await setLeader(gameRef, team);
                 break;
 
-            case GameAction.JoinRed :
-                await joinGame(gameRef, Team.Red);
-                break;
-
-            case GameAction.LeadBlue :
-                await setLeader(gameRef, Team.Blue);
-                break;
-
-            case GameAction.LeadRed :
-                await setLeader(gameRef, Team.Red);
-                break;
-
-            case GameAction.TakeShift :
-                await takeShift(gameRef);
+            case GameAction.EndShift :
+                await endShift(gameRef, team);
                 break;
         }
     }
@@ -210,10 +205,10 @@ const useGame = ():
         }
     }
 
-    const actOnGame = async (gameAction: GameAction, gameId: string) => {
+    const actOnGame = async (gameAction: GameAction, gameId: string, team: Team) => {
         const path = `games/${gameId}`;
         const gameRef = db.ref(path);
-        await updateGame(gameRef, gameAction);
+        await updateGame(gameRef, team, gameAction);
     }
 
     const actOnWord = async (wordAction: WordAction, gameId: string, roundId : number, wordId: string) => {
