@@ -81,12 +81,6 @@ const useGame = ():
             roundId : 0,
         });
         await newGameRef.update({id: newGameRef.key})
-        await newGameRef.child('players').child(userId).set({
-            userId: userId,
-            userName: userName,
-            team: Team.Blue,
-            isLeader: false
-        });
         await newGameRef.child('rounds').child("0").set({
             roundStatus: RoundStatus.Waiting,
             startingTeam: startingTeam
