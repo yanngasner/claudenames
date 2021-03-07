@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {GameModel, PlayerModel, WordModel} from "../types/gameTypes";
 import styled from 'styled-components';
 import {getColor, getBorderColor} from "../resources/colors";
-import {RoundStatus, Team} from "../types/enums";
+import {usePlayer} from "../services/usePlayer";
 
 interface WordCardProps {
     word: WordModel;
@@ -43,12 +43,7 @@ const WordCard = styled.button`
 const WordComponent: FC<WordComponentProps> = ({game, word, player, changeWordSelected}) => {
 
     const currentRound = game.rounds[game.roundId];
-    const isBlueLeader = player !== undefined && player.userId === currentRound.blueLeaderId;
-    const isRedLeader = player !== undefined && player.userId === currentRound.redLeaderId;
-    const isLeader = isBlueLeader || isRedLeader;
-    const isBluePlaying = isBlueLeader && currentRound.roundStatus === RoundStatus.BluePlaying;
-    const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
-    const isPlaying = isBluePlaying || isRedPlaying;
+    const [, isLeader, isPlaying] = usePlayer(player, currentRound);
 
     const handleSelectedChange = () => {
         if (!word.isUnveiled)

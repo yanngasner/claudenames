@@ -7,6 +7,7 @@ import {Button} from "@material-ui/core";
 import styled from "styled-components";
 import {getBackgroundColor} from "../resources/colors";
 import {RoundStatus, Team} from "../types/enums";
+import {usePlayer} from "../services/usePlayer";
 
 interface GameComponentProps {
     game: GameModel,
@@ -28,15 +29,9 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
 
     const currentRound = game.rounds[game.roundId];
     const words = currentRound.words;
-    const hasTeamLeader = (player === undefined)
-        ? false
-        : (player.team === Team.Blue ? currentRound.blueLeaderId : currentRound.redLeaderId) !== undefined;
-    const isBlueLeader = player !== undefined && player.userId === currentRound.blueLeaderId;
-    const isRedLeader = player !== undefined && player.userId === currentRound.redLeaderId;
-    const isLeader = isBlueLeader || isRedLeader;
-    const isBluePlaying = isBlueLeader && currentRound.roundStatus === RoundStatus.BluePlaying;
-    const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
-    const isPlaying = isBluePlaying || isRedPlaying;
+
+    const [hasTeamLeader, isLeader, isPlaying] = usePlayer(player, currentRound);
+
     const hasSelectedWords = words.some(w=>w.isSelected);
     const blueScore = game.rounds.filter(r => r.roundStatus === RoundStatus.BlueWins).length;
     const redScore = game.rounds.filter(r => r.roundStatus === RoundStatus.RedWins).length;

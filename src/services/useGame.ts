@@ -44,8 +44,8 @@ const useGame = ():
 
         const firstTeam = Math.random() < 0.5 ? Team.Blue : Team.Red;
         const secondTeam = firstTeam === Team.Blue ? Team.Red : Team.Blue;
-        const firstWordType = firstTeam == Team.Blue ? WordType.Blue : WordType.Red;
-        const secondWordType = secondTeam == Team.Blue ? WordType.Blue : WordType.Red;
+        const firstWordType = firstTeam === Team.Blue ? WordType.Blue : WordType.Red;
+        const secondWordType = secondTeam === Team.Blue ? WordType.Blue : WordType.Red;
         let assignedCount = 0;
         let wordTypesArray: WordType[] = Array(gameWordsCount).fill(WordType.Unassigned);
 
