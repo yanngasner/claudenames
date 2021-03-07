@@ -6,6 +6,7 @@ import {useRecoilValue} from "recoil";
 import {userIdState} from "../types/atoms";
 import {GameMenu} from "../components/GameMenu";
 import './GamePage.css';
+import RulesComponent from "../components/RulesComponent";
 
 interface GamePageProps {
     games: GameModel[],
@@ -35,7 +36,8 @@ const GamePage : FC<GamePageProps> = ({games, createGame, game, actOnGame, actOn
                 requestNextRound={(team: Team) => actOnGame(GameAction.NextRound, game.id, game.roundId, team)}
                 validateSelection={(team : Team, wordId : string) => actOnWord(WordAction.Validate, game.id, game.roundId, team, wordId)}
                 changeWordSelected={(team : Team, wordId : string, isSelected) => actOnWord(isSelected ? WordAction.Select :WordAction.Unselect, game.id, game.roundId, team, wordId)}
-            />);
+            />
+            <RulesComponent/>
         </div>
     );
 }

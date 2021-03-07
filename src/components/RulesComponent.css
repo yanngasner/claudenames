@@ -1,0 +1,9 @@
+.rules-component {
+    width: 400px;
+    margin : 2rem 2rem;
+}
+
+.rules-component p {
+    text-align: justify;
+    font-size: 13px;
+}

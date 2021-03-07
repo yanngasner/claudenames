@@ -21,7 +21,7 @@ function App() {
             setUserId(user?.uid)
             setUserName(user?.displayName)
         })
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="App">
