@@ -266,10 +266,10 @@ const useGame = ():
                     dbGames.push(getGameModel(snap));
                 });
                 setGames(dbGames);
-                setGamesLoaded(true);
             })
+            setGamesLoaded(true)
         }
-        , []);
+        , [userId]);
 
     return [games, createGame, actOnGame, actOnWord, areGamesLoaded]
 }
