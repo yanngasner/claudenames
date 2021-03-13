@@ -1,9 +1,16 @@
-.rules-component {
+.filled-rules-component {
     width: 400px;
+    margin : 2rem 2rem;
+    text-align : left
+}
+
+.empty-rules-component {
+    width: 1rem;
     margin : 2rem 2rem;
 }
 
-.rules-component p {
+.filled-rules-component p, .empty-rules-component p {
     text-align: justify;
     font-size: 13px;
+    font-family: 'Roboto';
 }

@@ -1,3 +1,15 @@
 .new-game-component {
     margin : 2rem auto;
 }
+
+.filled-menu-component {
+    width: 200px;
+    margin : 2rem 2rem;
+    text-align : right
+}
+
+.empty-menu-component {
+    width: 1rem;
+    margin : 2rem 2rem;
+}
+

@@ -26,6 +26,7 @@ const GamePage : FC<GamePageProps> = ({games, createGame, game, actOnGame, actOn
                 games={games}
                 createGame={createGame}
                 actOnGame={actOnGame}
+                fromMenu={false}
             />
             <GameComponent
                 game={game}
@@ -37,7 +38,7 @@ const GamePage : FC<GamePageProps> = ({games, createGame, game, actOnGame, actOn
                 validateSelection={(team : Team, wordId : string) => actOnWord(WordAction.Validate, game.id, game.roundId, team, wordId)}
                 changeWordSelected={(team : Team, wordId : string, isSelected) => actOnWord(isSelected ? WordAction.Select :WordAction.Unselect, game.id, game.roundId, team, wordId)}
             />
-            <RulesComponent/>
+            <RulesComponent fromMenu={false}/>
         </div>
     );
 }

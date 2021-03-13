@@ -10,13 +10,17 @@ import './GameMenu.css'
 export interface GameMenuProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    actOnGame: (gameAction: GameAction, gameId: string, roundId: number, team: Team) => Promise<void>
+    actOnGame: (gameAction: GameAction, gameId: string, roundId: number, team: Team) => Promise<void>,
+    fromMenu: boolean
 }
 
-export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}) => {
+export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame, fromMenu}) => {
 
     const userId = useRecoilValue(userIdState);
     const [inputName, setInputName] = useState("")
+
+    const [isVisible, setVisible] = useState(fromMenu)
+    const handleOnClick = () => setVisible(!isVisible);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
@@ -53,10 +57,10 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame}
     }
 
     return (
-        <div>
-            {getCreateGameComponent()}
-            {getGameComponents()}
-
+        <div className={isVisible?'filled-menu-component':'empty-menu-component'}>
+            {fromMenu ? <div></div> :<button onClick={() => handleOnClick()}>{isVisible?'Masquer' : 'Menu'}</button>}
+            {isVisible ? getCreateGameComponent() : <div></div>}
+            {isVisible ? getGameComponents() : <div></div>}
         </div>
     );
 }

@@ -19,8 +19,8 @@ const AppRouter : FC<AppRouterProps> = ({authenticated}) => {
         <div className="App">
             <Router>
                 <Switch>
-                    <PrivateRoute path="/menu" render={() => <GameMenuPage games={games} createGame={createGame} actOnGame={actOnGame}/>}  authenticated={authenticated} ></PrivateRoute>
-                    <PrivateRoute path="/menu" render={() => <GameMenuPage games={games} createGame={createGame} actOnGame={actOnGame}/>}  authenticated={authenticated} ></PrivateRoute>
+                    <PrivateRoute path="/menu" render={() => <GameMenuPage games={games} createGame={createGame} actOnGame={actOnGame} fromMenu={true}/>}  authenticated={authenticated} ></PrivateRoute>
+                    <PrivateRoute path="/menu" render={() => <GameMenuPage games={games} createGame={createGame} actOnGame={actOnGame} fromMenu={true}/>}  authenticated={authenticated} ></PrivateRoute>
                     <PublicRoute path="/login" render={() => <LoginPage />} authenticated={authenticated}></PublicRoute>
                     {games.map(game =>
                         <PrivateRoute key={game.id} path={`/${game.id}`} render={() => <GamePage games={games} createGame={createGame} game={game} actOnGame={actOnGame} actOnWord={actOnWord}/>}  authenticated={authenticated} ></PrivateRoute>
