@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import GameComponent from "../components/GameComponent";
 import {GameAction, Team, WordAction} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
@@ -19,14 +19,15 @@ interface MainPageProps {
 const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOnWord}) => {
 
     const userId = useRecoilValue(userIdState);
-
+    const [isMenuVisible, setMenuVisible] = useState(game == undefined)
+    const [isRulesVisible, setRulesVisible] = useState(false)
     return (
         <div className='game-page'>
             <div className={'main-menu'}>
                 <MenuComponent
                     games={games}
                     createGame={createGame}
-                    hasSelectedGame={game != undefined}
+                    isVisible={isMenuVisible}
                 />
             </div>
             <div className={'main-game'}>
@@ -40,12 +41,14 @@ const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOn
                         requestNextRound={(team: Team) => actOnGame(GameAction.NextRound, game.id, game.roundId, team)}
                         validateSelection={(team: Team, wordId: string) => actOnWord(WordAction.Validate, game.id, game.roundId, team, wordId)}
                         changeWordSelected={(team: Team, wordId: string, isSelected) => actOnWord(isSelected ? WordAction.Select : WordAction.Unselect, game.id, game.roundId, team, wordId)}
+                        changeMenuVisibility={() => setMenuVisible(!isMenuVisible)}
+                        changeRulesVisibility={() => setRulesVisible(!isRulesVisible)}
                     />
                     : <div></div>
                 }
             </div>
             <div className={'main-rules'}>
-                <RulesComponent fromMenu={false}/>
+                <RulesComponent isVisible={isRulesVisible}/>
             </div>
         </div>
     );

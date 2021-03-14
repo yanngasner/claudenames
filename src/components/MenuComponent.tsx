@@ -10,16 +10,13 @@ import './MenuComponent.css'
 export interface MenuComponentProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    hasSelectedGame: boolean
+    isVisible: boolean
 }
 
-export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, hasSelectedGame}) => {
+export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, isVisible}) => {
 
     const userId = useRecoilValue(userIdState);
     const [inputName, setInputName] = useState("")
-
-    const [isVisible, setVisible] = useState(!hasSelectedGame)
-    const handleOnClick = () => setVisible(!isVisible);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 

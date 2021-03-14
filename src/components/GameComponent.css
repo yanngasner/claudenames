@@ -7,7 +7,7 @@
 
 .game-upper-container {
     height: 150px;
-    padding:2rem 2rem;
+    padding:2rem 0;
     display:flex;
     justify-content: space-between;
     box-sizing: content-box;
@@ -15,11 +15,13 @@
 }
 
 .game-upper-left {
-    width: 10%;
+    width: 5%;
+    height:200px;
 }
 
 .game-upper-right {
-    width: 10%;
+    width: 5%;
+    height:200px;
 }
 
 .game-upper-title {
@@ -30,12 +32,16 @@
 .game-upper-title h1{
     font-size: 4vw;
     line-height: 5rem;
+    color: #2B76FF
 }
 
 .game-upper-playing {
     width: 25%;
     margin: auto auto;
     padding-top: 1.5rem;
+    /*padding-bottom: 1.5rem;*/
+    /*background: white;*/
+    /*border-radius: 50px;*/
 }
 
 .game-upper-buttons {
@@ -48,6 +54,10 @@
 .game-upper-players {
     width: 25%;
     margin: auto auto;
+    /*padding-top: 1.5rem;*/
+    /*padding-bottom: 1.5rem;*/
+    /*background: white;*/
+    /*border-radius: 50px;*/
 }
 
 
@@ -57,10 +67,14 @@
     display:flex;
     flex-wrap:wrap;
     justify-content: space-evenly;
-    height: 95%;
+    height: 100%;
     width: 95%;
     background-color: white;
     border-radius: 20px;
+}
+
+.game-lower-container {
+    height: 50px;
 }
 
 .word-component {

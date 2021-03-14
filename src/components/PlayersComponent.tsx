@@ -24,7 +24,7 @@ const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) =
 
     return <div className={'players-component'}>
         <div className={'players-list-component'}>
-            <div className={'players-list'}>
+            <div className={'blue-players-list players-list'}>
                 {game.players.filter(p => p.team === Team.Blue).map(p =>
                     <div
                         className={`${p.userId === currentRound.blueLeaderId ? 'leader-player' : ''}`}
@@ -33,7 +33,7 @@ const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) =
                     </div>)
                 }
             </div>
-            <div className={'players-list'}>
+            <div className={'red-players-list players-list'}>
                 {game.players.filter(p => p.team === Team.Red).map(p =>
                     <div
                         className={`${p.userId === currentRound.redLeaderId ? 'leader-player' : ''}`}

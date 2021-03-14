@@ -1,16 +1,17 @@
-.filled-rules-component {
+.rules-component {
     width: 400px;
+    height: 100%;
     margin : 2rem 2rem;
-    text-align : left;
     overflow-y: scroll;
+    /*scrollbar-width: none; !* Firefox *!*/
+    /*-ms-overflow-style: none;  !* Internet Explorer 10+ *!*/
 }
+/*.rules-component::-webkit-scrollbar { !* WebKit *!*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*}*/
 
-.empty-rules-component {
-    width: 1rem;
-    margin : 2rem 2rem;
-}
-
-.filled-rules-component p, .empty-rules-component p {
+.rules-component p {
     text-align: justify;
     font-size: 13px;
     font-family: 'Roboto';

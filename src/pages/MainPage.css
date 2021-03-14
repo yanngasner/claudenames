@@ -1,6 +1,7 @@
 .game-page {
     display: flex;
     height: 100vh;
+    overflow: hidden;
 }
 
 .main-menu {
@@ -9,7 +10,6 @@
 
 .main-rules {
     height : 100%;
-    overflow-y: scroll;
 }
 
 .main-game {

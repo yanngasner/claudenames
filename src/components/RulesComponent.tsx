@@ -1,10 +1,7 @@
 import React, {FC, useState} from "react";
 import './RulesComponent.css'
 
-const RulesComponent: FC<{fromMenu:boolean}> = ({fromMenu}) => {
-
-        const [isVisible, setVisible] = useState(fromMenu);
-        const handleOnClick = () => setVisible(!isVisible);
+const RulesComponent: FC<{isVisible:boolean}> = ({isVisible}) => {
 
         const getRulesText = () =>
             <div>
@@ -55,9 +52,7 @@ const RulesComponent: FC<{fromMenu:boolean}> = ({fromMenu}) => {
                     <p>Un nouveau tableau est tiré, de nouveaux leaders se désignent, et la partie peut continuer.</p>
             </div>
 
-        return <div className={isVisible ? 'filled-rules-component' : 'empty-rules-component'}>
-                {fromMenu ? <div></div> :
-                    <button onClick={() => handleOnClick()}>{isVisible ? 'Masquer' : 'Règles'}</button>}
+        return <div className={isVisible ? 'rules-component' : ''}>
                 {isVisible ? getRulesText() : <div></div>}
         </div>
 }

@@ -6,7 +6,10 @@ import './GameComponent.css'
 import styled from "styled-components";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
-import {GameButton} from "./GameButton";
+import {GameButton, LeftBallButton, RightBallButton} from "./GameButton";
+import {gameGrey} from "../services/colorsProvider";
+import leftBall from '../resources/bulle_Gauche.png'
+import rightBall from '../resources/bulle_Droite.png'
 
 interface GameComponentProps {
     game: GameModel,
@@ -17,13 +20,15 @@ interface GameComponentProps {
     requestNextRound: (team: Team) => void
     validateSelection: (team: Team, wordId: string) => void,
     changeWordSelected: (team: Team, wordId: string, isSelected: boolean) => void
+    changeMenuVisibility: () => void
+    changeRulesVisibility: () => void
 }
 
 
 const GameComponentDiv = styled.div<{  player: PlayerModel | undefined }>`
 `;
 
-const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead, endShift, requestNextRound, validateSelection, changeWordSelected}) => {
+const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead, endShift, requestNextRound, validateSelection, changeWordSelected, changeMenuVisibility, changeRulesVisibility}) => {
 
     const currentRound = game.rounds[game.roundId];
     const words = currentRound.words;
@@ -84,24 +89,27 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     return (
         <GameComponentDiv player={player} className={'game-component'}>
             <div className={'game-upper-container'}>
-                <div className={'game-upper-left'}>Test</div>
+                <div className={'game-upper-left'}>
+                    <LeftBallButton onClick={changeMenuVisibility}>Menu</LeftBallButton>
+                </div>
                 <div className={'game-upper-playing'}>
                     <h3>{RoundStatus[currentRound.roundStatus]}</h3>
                     <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
                     {getGameUpperButtons()}
                 </div>
-
-            <div className={'game-upper-title'}>
-                <h1>Claude Names</h1>
-            </div>
-            <div className={'game-upper-players'}>
-                <PlayersComponent
-                    game={game}
-                    player={player}
-                    joinTeam={(team: Team) => joinTeam(team)}
-                />
-            </div>
-            <div className={'game-upper-right'}>Test</div>
+                <div className={'game-upper-title'}>
+                    <h1>Claude Names</h1>
+                </div>
+                <div className={'game-upper-players'}>
+                    <PlayersComponent
+                        game={game}
+                        player={player}
+                        joinTeam={(team: Team) => joinTeam(team)}
+                    />
+                </div>
+                <div className={'game-upper-right'}>
+                    <RightBallButton onClick={changeRulesVisibility}>Règles</RightBallButton>
+                </div>
             </div>
             <div className='game-words-container'>
                 {words.map(word =>
@@ -113,6 +121,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                     />
                 )}
             </div>
+            <div className={'game-lower-container'}/>
         </GameComponentDiv>
     );
 }

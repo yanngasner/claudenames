@@ -5,6 +5,7 @@
 .menu-component {
     padding : 2rem 2rem;
     overflow-y: scroll;
+    /*overflow: hidden;*/
     max-height: 100%;
 }
 

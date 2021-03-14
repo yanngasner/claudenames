@@ -19,6 +19,14 @@
     padding: 1rem 0;
 }
 
+.blue-players-list {
+    color: #97DABD;
+}
+
+.red-players-list {
+    color: #FF644F;
+}
+
 .leader-player {
     font-weight: bolder;
 }
