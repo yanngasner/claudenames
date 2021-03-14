@@ -3,7 +3,6 @@ import {GameModel, PlayerModel} from "../types/gameTypes";
 import WordComponent from "./WordComponent";
 import PlayersComponent from "./PlayersComponent";
 import './GameComponent.css'
-import {Button} from "@material-ui/core";
 import styled from "styled-components";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
@@ -31,7 +30,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
 
     const [hasTeamLeader, isLeader, isPlaying] = usePlayer(player, currentRound);
 
-    const hasSelectedWords = words.some(w=>w.isSelected);
+    const hasSelectedWords = words.some(w => w.isSelected);
     const blueScore = game.rounds.filter(r => r.roundStatus === RoundStatus.BlueWins).length;
     const redScore = game.rounds.filter(r => r.roundStatus === RoundStatus.RedWins).length;
 
@@ -59,51 +58,62 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
         }
     }
 
+    function getGameUpperButtons() {
+        if (currentRound.roundStatus >= RoundStatus.BlueWins)
+            return <div className={'game-upper-buttons'}>
+                <GameButton team={player?.team} onClick={() => handleRequestNextRoundClick()}>Une autre!
+                </GameButton>
+            </div>
+        else if (isLeader)
+            return <div className={'game-upper-buttons'}>
+                <GameButton team={player?.team} disabled={!isPlaying}
+                            onClick={() => handleValidateSelectionClick()}>Valider
+                </GameButton>
+                <GameButton team={player?.team} disabled={!isPlaying || hasSelectedWords}
+                            onClick={() => handleEndShiftClick()}>Terminer
+                </GameButton>
+            </div>
+        else if (!hasTeamLeader)
+            return <div className={'game-upper-buttons'}>
+                <GameButton team={player?.team} onClick={() => handleTakeLeadClick()}>Lead</GameButton>
+            </div>
+        return <div></div>
+    }
+
+
     return (
-            <GameComponentDiv player={player} className={'game-component'}>
-                <div className={'game-upper-container'}>
-                    <div>
-                        <h3>{RoundStatus[currentRound.roundStatus]}</h3>
-                        <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
-                        {currentRound.roundStatus >= RoundStatus.BlueWins
-                            ? <GameButton team={player?.team} onClick={() => handleRequestNextRoundClick()}>Prochain round</GameButton>
-                            : <div></div>
-                        }
-                    </div>
-                    {
-                        isLeader
-                            ? <div>
-                                {isPlaying
-                                    ? <div>
-                                        <GameButton team={player?.team} onClick={() => handleValidateSelectionClick()}>Valider</GameButton>
-                                        <GameButton team={player?.team} disabled={hasSelectedWords} onClick={() => handleEndShiftClick()}>Terminer</GameButton>
-                                    </div>
-                                    : <div></div>
-                                }
-                            </div>
-                            : <div>
-                                {hasTeamLeader
-                                    ? <div></div>
-                                    : <GameButton team={player?.team} onClick={() => handleTakeLeadClick()}>Lead</GameButton>}
-                            </div>
-                    }
-                    <PlayersComponent
+        <GameComponentDiv player={player} className={'game-component'}>
+            <div className={'game-upper-container'}>
+                <div className={'game-upper-left'}>Test</div>
+                <div className={'game-upper-playing'}>
+                    <h3>{RoundStatus[currentRound.roundStatus]}</h3>
+                    <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
+                    {getGameUpperButtons()}
+                </div>
+
+            <div className={'game-upper-title'}>
+                <h1>Claude Names</h1>
+            </div>
+            <div className={'game-upper-players'}>
+                <PlayersComponent
+                    game={game}
+                    player={player}
+                    joinTeam={(team: Team) => joinTeam(team)}
+                />
+            </div>
+            <div className={'game-upper-right'}>Test</div>
+            </div>
+            <div className='game-words-container'>
+                {words.map(word =>
+                    <WordComponent
                         game={game}
+                        word={word}
+                        changeWordSelected={(isSelected: boolean) => player !== undefined ? changeWordSelected(player.team, word.id, isSelected) : {}}
                         player={player}
-                        joinTeam={(team: Team) => joinTeam(team)}
                     />
-                </div>
-                <div className='game-words-container'>
-                    {words.map(word =>
-                        <WordComponent
-                            game={game}
-                            word={word}
-                            changeWordSelected={(isSelected: boolean) => player !== undefined ? changeWordSelected(player.team, word.id, isSelected) : {}}
-                            player={player}
-                        />
-                    )}
-                </div>
-            </GameComponentDiv>
+                )}
+            </div>
+        </GameComponentDiv>
     );
 }
 

@@ -6,9 +6,9 @@ export const GameButton = styled.button`
   color:${gameWhite};
   background-image: url(${(props: {team:Team|undefined}) => getButtonImage(props.team)});
   background-size: 100% 100%;
-  width: 100px;
+  width: 150px;
   height: 50px;
-  margin: auto 2rem;
+  font-size: 1.5rem;
   &:hover:enabled {
     color: ${gameGrey};
     cursor: pointer;
@@ -16,6 +16,8 @@ export const GameButton = styled.button`
   &:disabled {
     opacity: 0.3;
   }
+  &:focus {
+    outline: none;
+  }
 `;
-
 

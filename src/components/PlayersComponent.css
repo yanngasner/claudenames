@@ -1,16 +1,22 @@
 .players-component {
     width: 90%;
-    max-width : 500px;
-    margin : 2rem auto;
-    border: 1px solid black;
-    border-radius: 25px;
-    display: flex;
+    margin : auto auto;
 }
 
 .players-list-component {
-    margin : 1rem auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.players-button-component {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.players-list {
     width:25%;
-    font-size: 0.75em;
+    font-size: 1rem;
+    padding: 1rem 0;
 }
 
 .leader-player {

@@ -6,8 +6,50 @@
 }
 
 .game-upper-container {
+    height: 150px;
     padding:2rem 2rem;
+    display:flex;
+    justify-content: space-between;
+    box-sizing: content-box;
+    line-height: 2rem;
 }
+
+.game-upper-left {
+    width: 10%;
+}
+
+.game-upper-right {
+    width: 10%;
+}
+
+.game-upper-title {
+    width: 20%;
+    vertical-align: center;
+}
+
+.game-upper-title h1{
+    font-size: 4vw;
+    line-height: 5rem;
+}
+
+.game-upper-playing {
+    width: 25%;
+    margin: auto auto;
+    padding-top: 1.5rem;
+}
+
+.game-upper-buttons {
+    margin: auto auto;
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 1rem;
+}
+
+.game-upper-players {
+    width: 25%;
+    margin: auto auto;
+}
+
 
 .game-words-container {
     margin: 1rem auto;
