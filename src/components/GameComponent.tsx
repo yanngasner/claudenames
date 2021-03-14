@@ -5,7 +5,6 @@ import PlayersComponent from "./PlayersComponent";
 import './GameComponent.css'
 import {Button} from "@material-ui/core";
 import styled from "styled-components";
-import {getBackgroundColor} from "../resources/colors";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
 
@@ -22,7 +21,6 @@ interface GameComponentProps {
 
 
 const GameComponentDiv = styled.div<{  player: PlayerModel | undefined }>`
-    background-color : ${props => props.player == null ? 'whitesmoke' : getBackgroundColor(props.player.team)};
 `;
 
 const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead, endShift, requestNextRound, validateSelection, changeWordSelected}) => {

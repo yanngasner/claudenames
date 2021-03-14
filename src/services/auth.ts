@@ -1,4 +1,4 @@
-import { auth } from "../services/firebase";
+import { auth } from "./firebase";
 
 
 export async function signUp(email : string, userName : string) {

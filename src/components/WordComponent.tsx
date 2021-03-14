@@ -1,12 +1,14 @@
 import React, {FC} from 'react';
 import {GameModel, PlayerModel, WordModel} from "../types/gameTypes";
 import styled from 'styled-components';
-import {getColor, getBorderColor} from "../resources/colors";
+import {getFontColor, getImage} from "../services/colorsProvider";
 import {usePlayer} from "../services/usePlayer";
+import {RoundStatus} from "../types/enums";
 
 interface WordCardProps {
     word: WordModel;
     isLeader: boolean;
+    roundStatus: RoundStatus;
 }
 
 interface WordComponentProps {
@@ -18,19 +20,15 @@ interface WordComponentProps {
 
 
 const WordCard = styled.button`
-    color: ${(props: WordCardProps) => props.isLeader || props.word.isUnveiled
-    ? getColor(props.word.wordType)
-    : "black"};
-    width : 80%;
-    height : 80%;
+    color: ${(props: WordCardProps) => getFontColor(props.word, props.isLeader)};
+    width : 90%;
+    height : 90%;
     margin : auto;
-    border-radius : 10px;
-    font-size : ${(props: WordCardProps) => props.word.isUnveiled ? '1rem' : '2rem'};
-    border: 5px solid ${(props: WordCardProps) =>
-    props.word.isSelected
-        ? 'black'
-        : (props.word.isUnveiled ? getBorderColor(props.word.wordType) : 'white')};
-    background-color: whitesmoke;
+    border : none;
+    background-image: url(${(props: WordCardProps) => getImage(props.word, props.roundStatus)});
+    background-size: 100% 100%;
+    font-size : ${(props: WordCardProps) => '2rem'};
+    
         
     &:focus, &:active {
         outline: 0;
@@ -53,7 +51,9 @@ const WordComponent: FC<WordComponentProps> = ({game, word, player, changeWordSe
     return <div className={`word-component`}>
         <WordCard disabled={word.isUnveiled || !isPlaying} onClick={() => handleSelectedChange()}
                   word={word}
-                  isLeader={isLeader}>
+                  isLeader={isLeader}
+                  roundStatus={currentRound.roundStatus}
+        >
             {word.text}</WordCard>
     </div>
 }

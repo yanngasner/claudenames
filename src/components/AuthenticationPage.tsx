@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {AuthenticationMode} from "../types/authenticationMode";
-import {signIn, signUp} from "../helpers/auth";
+import {signIn, signUp} from "../services/auth";
 import {Link} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {userNameState} from "../types/atoms";
