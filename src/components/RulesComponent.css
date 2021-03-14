@@ -1,7 +1,8 @@
 .filled-rules-component {
     width: 400px;
     margin : 2rem 2rem;
-    text-align : left
+    text-align : left;
+    overflow-y: scroll;
 }
 
 .empty-rules-component {

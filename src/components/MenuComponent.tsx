@@ -5,21 +5,20 @@ import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
 import {userIdState} from "../types/atoms";
 import {Button} from "@material-ui/core";
-import './GameMenu.css'
+import './MenuComponent.css'
 
-export interface GameMenuProps {
+export interface MenuComponentProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    actOnGame: (gameAction: GameAction, gameId: string, roundId: number, team: Team) => Promise<void>,
-    fromMenu: boolean
+    hasSelectedGame: boolean
 }
 
-export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame, fromMenu}) => {
+export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, hasSelectedGame}) => {
 
     const userId = useRecoilValue(userIdState);
     const [inputName, setInputName] = useState("")
 
-    const [isVisible, setVisible] = useState(fromMenu)
+    const [isVisible, setVisible] = useState(!hasSelectedGame)
     const handleOnClick = () => setVisible(!isVisible);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
@@ -44,7 +43,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame,
 
     const getGameComponents = () => {
         return (
-            <div>
+            <div >
                 {games.sort((game1, game2) => (game1.creationTime < game2.creationTime ? 1 : -1)).map(game =>
                     <GameDescription
                         key={game.id}
@@ -57,11 +56,12 @@ export const GameMenu: React.FC<GameMenuProps> = ({games, createGame, actOnGame,
     }
 
     return (
-        <div className={isVisible?'filled-menu-component':'empty-menu-component'}>
-            {fromMenu ? <div></div> :<button onClick={() => handleOnClick()}>{isVisible?'Masquer' : 'Menu'}</button>}
-            {isVisible ? getCreateGameComponent() : <div></div>}
-            {isVisible ? getGameComponents() : <div></div>}
-        </div>
+            isVisible
+            ?  <div className={'menu-component'}>
+                    {getCreateGameComponent()}
+                    {getGameComponents()}
+            </div>
+            :<div></div>
     );
 }
 

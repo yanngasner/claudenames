@@ -1,0 +1,10 @@
+.new-game-component {
+    margin : 2rem auto;
+}
+
+.menu-component {
+    padding : 2rem 2rem;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+

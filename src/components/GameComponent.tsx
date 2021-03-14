@@ -60,37 +60,39 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
 
     return (
             <GameComponentDiv player={player} className={'game-component'}>
-                <div>
-                    <h3>{RoundStatus[currentRound.roundStatus]}</h3>
-                    <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
-                    {currentRound.roundStatus >= RoundStatus.BlueWins
-                    ? <Button onClick={() => handleRequestNextRoundClick()}>Démarrer le prochain round</Button>
-                    : <div></div>
-                }
+                <div className={'game-upper-container'}>
+                    <div>
+                        <h3>{RoundStatus[currentRound.roundStatus]}</h3>
+                        <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
+                        {currentRound.roundStatus >= RoundStatus.BlueWins
+                            ? <Button onClick={() => handleRequestNextRoundClick()}>Démarrer le prochain round</Button>
+                            : <div></div>
+                        }
+                    </div>
+                    {
+                        isLeader
+                            ? <div>
+                                {isPlaying
+                                    ? <div>
+                                        <Button onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
+                                        <Button disabled={hasSelectedWords} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
+                                    </div>
+                                    : <div></div>
+                                }
+                            </div>
+                            : <div>
+                                {hasTeamLeader
+                                    ? <div></div>
+                                    : <Button onClick={() => handleTakeLeadClick()}>Prendre le lead</Button>}
+                            </div>
+                    }
+                    <PlayersComponent
+                        game={game}
+                        player={player}
+                        joinTeam={(team: Team) => joinTeam(team)}
+                    />
                 </div>
-                {
-                    isLeader
-                        ? <div>
-                            {isPlaying
-                                ? <div>
-                                    <Button onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
-                                    <Button disabled={hasSelectedWords} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
-                                </div>
-                                : <div></div>
-                            }
-                        </div>
-                        : <div>
-                            {hasTeamLeader
-                                ? <div></div>
-                                : <Button onClick={() => handleTakeLeadClick()}>Prendre le lead</Button>}
-                        </div>
-                }
-                <PlayersComponent
-                    game={game}
-                    player={player}
-                    joinTeam={(team: Team) => joinTeam(team)}
-                />
-                <div className='words-container'>
+                <div className='game-words-container'>
                     {words.map(word =>
                         <WordComponent
                             game={game}
