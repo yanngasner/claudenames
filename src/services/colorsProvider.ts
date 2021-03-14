@@ -7,30 +7,34 @@ import yellow_full from '../resources/FOND_JAUNE.png'
 import yellow_border from '../resources/BORD_JAUNE.png'
 import grey_full from '../resources/FOND_GRIS.png'
 import grey_border from '../resources/BORD_GRIS.png'
+import green_button from '../resources/bouton_vert.png'
+import red_button from '../resources/bouton_rouge.png'
+import grey_button from '../resources/bouton_gris.png'
+
 import {WordModel} from "../types/gameTypes";
 
-export const green = '#97DABD';
-export const red = '#FF644F';
-export const yellow = '#FFD93E';
-export const black = '#000000';
-export const white = '#FFFFFF'
+export const gameGreen = '#97DABD';
+export const gameRed = '#FF644F';
+export const gameYellow = '#FFD93E';
+export const gameGrey = '#424242';
+export const gameWhite = '#FFFFFF'
 
 export function getFontColor(word: WordModel, isLeader: boolean) {
     if (word.isUnveiled)
-        return white;
+        return gameWhite;
     else if (!isLeader)
-        return black;
+        return gameGrey;
     else
     {
         switch (word.wordType) {
             case WordType.Blue :
-                return green;
+                return gameGreen;
             case WordType.Red :
-                return red;
+                return gameRed;
             case WordType.Unassigned :
-                return yellow;
+                return gameYellow;
             case WordType.Forbidden :
-                return black;
+                return gameGrey;
         }
     }
 }
@@ -38,9 +42,20 @@ export function getFontColor(word: WordModel, isLeader: boolean) {
 export function getBackgroundColor(team: Team) {
     switch (team) {
         case Team.Blue :
-            return green;
+            return gameGreen;
         case Team.Red :
-            return red;
+            return gameRed;
+    }
+}
+
+export function getButtonImage(team: Team | undefined) {
+    switch (team) {
+        case undefined:
+            return grey_button;
+        case Team.Blue :
+            return green_button;
+        case Team.Red :
+            return red_button;
     }
 }
 

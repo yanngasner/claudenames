@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {GameModel, PlayerModel} from "../types/gameTypes";
 import {Team} from "../types/enums";
-import {BlueButton, RedButton} from "./MaterialComponents";
 import {makeStyles} from "@material-ui/core/styles";
 import './PlayersComponent.css';
 import {usePlayer} from "../services/usePlayer";
+import {GameButton} from "./GameButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,8 +44,8 @@ const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) =
             }
         </div>
         <div className={`${classes.root}`}>
-                <BlueButton disabled={isBlue || isLeader} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</BlueButton>
-                <RedButton disabled={isRed || isLeader} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</RedButton>
+                <GameButton team={Team.Blue} disabled={isBlue || isLeader} onClick={() => handleJoinClick(Team.Blue)}>Team Bleu</GameButton>
+                <GameButton team={Team.Red} disabled={isRed || isLeader} onClick={() => handleJoinClick(Team.Red)}>Team Rouge</GameButton>
         </div>
         <div className={'players-list-component'}>
             {game.players.filter(p => p.team === Team.Red).map(p =>

@@ -7,6 +7,7 @@ import {Button} from "@material-ui/core";
 import styled from "styled-components";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
+import {GameButton} from "./GameButton";
 
 interface GameComponentProps {
     game: GameModel,
@@ -65,7 +66,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                         <h3>{RoundStatus[currentRound.roundStatus]}</h3>
                         <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
                         {currentRound.roundStatus >= RoundStatus.BlueWins
-                            ? <Button onClick={() => handleRequestNextRoundClick()}>Démarrer le prochain round</Button>
+                            ? <GameButton team={player?.team} onClick={() => handleRequestNextRoundClick()}>Prochain round</GameButton>
                             : <div></div>
                         }
                     </div>
@@ -74,8 +75,8 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                             ? <div>
                                 {isPlaying
                                     ? <div>
-                                        <Button onClick={() => handleValidateSelectionClick()}>Valider la sélection</Button>
-                                        <Button disabled={hasSelectedWords} onClick={() => handleEndShiftClick()}>Terminer le tour</Button>
+                                        <GameButton team={player?.team} onClick={() => handleValidateSelectionClick()}>Valider</GameButton>
+                                        <GameButton team={player?.team} disabled={hasSelectedWords} onClick={() => handleEndShiftClick()}>Terminer</GameButton>
                                     </div>
                                     : <div></div>
                                 }
@@ -83,7 +84,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                             : <div>
                                 {hasTeamLeader
                                     ? <div></div>
-                                    : <Button onClick={() => handleTakeLeadClick()}>Prendre le lead</Button>}
+                                    : <GameButton team={player?.team} onClick={() => handleTakeLeadClick()}>Lead</GameButton>}
                             </div>
                     }
                     <PlayersComponent

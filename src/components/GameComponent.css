@@ -10,12 +10,15 @@
 }
 
 .game-words-container {
+    margin: 1rem auto;
     padding:2rem 2rem;
     display:flex;
     flex-wrap:wrap;
     justify-content: space-evenly;
-    height: 100%;
-    width: 100%;
+    height: 95%;
+    width: 95%;
+    background-color: white;
+    border-radius: 20px;
 }
 
 .word-component {

@@ -27,15 +27,16 @@ const WordCard = styled.button`
     border : none;
     background-image: url(${(props: WordCardProps) => getImage(props.word, props.roundStatus)});
     background-size: 100% 100%;
-    font-size : ${(props: WordCardProps) => '2rem'};
-    
-        
+    font-size : ${(props: WordCardProps) => props.word.text.length < 10 ? '2.5vw' : '2vw'};
+            
     &:focus, &:active {
         outline: 0;
     }
     
-    &:hover {
-        cursor:${(props: WordCardProps) => props.word.isUnveiled || !props.isLeader ? 'initial' : 'pointer'};
+    &:hover:enabled {
+        cursor:pointer;
+        width:95%;
+        height:95%;
 `;
 
 const WordComponent: FC<WordComponentProps> = ({game, word, player, changeWordSelected}) => {
