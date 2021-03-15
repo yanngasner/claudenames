@@ -11,7 +11,7 @@ export const GameButton = styled.button`
   background-color: transparent;
   border: none;
   width: 10vw;
-  height: 50px;
+  height: calc(var(--upper-height) / 4);
   font-size: 1.5vw;
   &:hover:enabled {
     color: ${gameGrey};
