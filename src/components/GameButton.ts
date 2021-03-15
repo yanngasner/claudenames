@@ -8,9 +8,11 @@ export const GameButton = styled.button`
   color:${gameWhite};
   background-image: url(${(props: {team:Team|undefined}) => getButtonImage(props.team)});
   background-size: 100% 100%;
-  width: 150px;
+  background-color: transparent;
+  border: none;
+  width: 10vw;
   height: 50px;
-  font-size: 1.5rem;
+  font-size: 1.5vw;
   &:hover:enabled {
     color: ${gameGrey};
     cursor: pointer;
@@ -24,17 +26,18 @@ export const GameButton = styled.button`
 `;
 
 export const LeftBallButton = styled.button`
+    color:transparent;
     background-image: url(${leftBall});
     background-size: 100% 100%;
+    background-color: transparent;
+    border: none;
     width : 100%;
     height : 90%;
     margin : auto auto;
-    font-size: 1rem;
-    color:transparent;
+    font-size: 0.75vw;
     text-align: left;
-    padding: 0.5rem; 
-    
-    &:focus, &:active {
+    padding: 0.25vw; 
+    &:focus {
         outline: 0;
     }
     &:hover:enabled {
@@ -44,19 +47,21 @@ export const LeftBallButton = styled.button`
 `;
 
 export const RightBallButton = styled.button`
+    color:transparent;
     background-image: url(${rightBall});
     background-size: 100% 100%;
+    background-color: transparent;
+    border: none;
     width : 100%;
     height : 90%;
     margin : auto auto;
-    font-size: 1rem;
-    color:transparent;
+    font-size: 0.75vw;
     text-align: right;
-    padding: 0.5rem; 
-    
-    &:focus, &:active {
+    padding: 0.25vw; 
+    &:focus {
         outline: 0;
     }
+    
     &:hover:enabled {
         cursor:pointer;
         color:${gameGrey}

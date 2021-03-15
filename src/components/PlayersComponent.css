@@ -15,7 +15,7 @@
 
 .players-list {
     width:25%;
-    font-size: 1rem;
+    font-size: 1vw;
     padding: 1rem 0;
 }
 
@@ -28,5 +28,5 @@
 }
 
 .leader-player {
-    font-weight: bolder;
+    text-decoration: underline;
 }

@@ -25,6 +25,7 @@ const WordCard = styled.button`
     height : 90%;
     margin : auto;
     border : none;
+    background-color: transparent;
     background-image: url(${(props: WordCardProps) => getImage(props.word, props.roundStatus)});
     background-size: 100% 100%;
     font-size : ${(props: WordCardProps) => props.word.text.length < 10 ? '2.5vw' : '2vw'};
