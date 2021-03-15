@@ -90,3 +90,9 @@
         --upper-height: calc(100vh - 400px);
     }
 }
+
+@media (max-height: 500px) {
+    .game-component {
+        --upper-height: 100px;
+    }
+}
