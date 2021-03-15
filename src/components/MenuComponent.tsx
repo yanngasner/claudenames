@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {GameDescription} from "./GameDescription";
-import {GameAction, Team} from "../types/enums";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
 import {userIdState} from "../types/atoms";

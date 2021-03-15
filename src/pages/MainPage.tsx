@@ -19,7 +19,7 @@ interface MainPageProps {
 const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOnWord}) => {
 
     const userId = useRecoilValue(userIdState);
-    const [isMenuVisible, setMenuVisible] = useState(game == undefined)
+    const [isMenuVisible, setMenuVisible] = useState(game === undefined)
     const [isRulesVisible, setRulesVisible] = useState(false)
     return (
         <div className='game-page'>
@@ -31,7 +31,7 @@ const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOn
                 />
             </div>
             <div className={'main-game'}>
-                {game != undefined
+                {game !== undefined
                     ? <GameComponent
                         game={game}
                         player={game.players.find(p => p.userId === userId)}

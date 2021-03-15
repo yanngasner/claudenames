@@ -96,7 +96,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                     {getGameUpperButtons()}
                 </div>
                 <div className={'game-upper-title'}>
-                    <img src={title}/>
+                    <img src={title} alt={'title'}/>
                 </div>
                 <div className={'game-upper-players'}>
                     <PlayersComponent

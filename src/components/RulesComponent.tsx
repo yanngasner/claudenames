@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import './RulesComponent.css'
 
 const RulesComponent: FC<{isVisible:boolean}> = ({isVisible}) => {
