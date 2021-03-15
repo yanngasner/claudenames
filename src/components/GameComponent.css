@@ -51,7 +51,7 @@
     margin: auto auto;
     display: flex;
     justify-content: space-evenly;
-    padding-top: 2vh;
+    padding-top: 10px;
 }
 
 .game-upper-players {
