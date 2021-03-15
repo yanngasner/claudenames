@@ -1,27 +1,30 @@
+
+
 .game-component {
     width: 100%;
     height: 100%;
     display:flex;
     flex-direction: column;
     box-sizing: content-box;
+    --upper-height: 250px;
 }
 
 .game-upper-container {
-    height: 250px;
-    padding:10px 0;
+    height: var(--upper-height);
+    padding:calc(var(--upper-height) / 25) 0;
     display:flex;
     justify-content: space-between;
-    line-height: 50px;
+    line-height: calc(var(--upper-height) / 5);
 }
 
 .game-upper-left {
     width: 5%;
-    height:250px;
+    height:var(--upper-height);
 }
 
 .game-upper-right {
     width: 5%;
-    height:250px;
+    height:var(--upper-height);
 }
 
 .game-upper-title {
@@ -36,14 +39,14 @@
 .game-upper-title img{
     width: 20vw;
     height: auto;
-    max-width: 450px;
+    max-width: calc(var(--upper-height) * 2);
     background-size: cover;
 }
 
 .game-upper-playing {
     width: 25%;
     margin: auto auto;
-    padding-top: 10px;
+    padding-top: calc(var(--upper-height) / 25);
     font-size: 1.5vw;
 }
 
@@ -51,7 +54,7 @@
     margin: auto auto;
     display: flex;
     justify-content: space-evenly;
-    padding-top: 10px;
+    padding-top: calc(var(--upper-height) / 25);
 }
 
 .game-upper-players {
@@ -73,11 +76,17 @@
 }
 
 .game-lower-container {
-    height: 50px;
+    height: calc(var(--upper-height) / 5);
 }
 
 .word-component {
     width : 20%;
     height : 20%;
     display : flex;
+}
+
+@media (max-height: 650px) {
+    .game-component {
+        --upper-height: calc(100vh - 400px);
+    }
 }
