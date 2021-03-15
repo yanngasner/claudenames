@@ -3,25 +3,25 @@
     height: 100%;
     display:flex;
     flex-direction: column;
+    box-sizing: content-box;
 }
 
 .game-upper-container {
-    height: 150px;
-    padding:2rem 0;
+    height: 250px;
+    padding:10px 0;
     display:flex;
     justify-content: space-between;
-    box-sizing: content-box;
-    line-height: 2rem;
+    line-height: 50px;
 }
 
 .game-upper-left {
     width: 5%;
-    height:200px;
+    height:250px;
 }
 
 .game-upper-right {
     width: 5%;
-    height:200px;
+    height:250px;
 }
 
 .game-upper-title {
@@ -29,44 +29,42 @@
     vertical-align: center;
 }
 
-.game-upper-title h1{
-    font-size: 4vw;
-    line-height: 5rem;
-    color: #2B76FF
+.game-upper-title{
+    margin: auto auto;
+}
+
+.game-upper-title img{
+    width: 20vw;
+    height: auto;
+    max-width: 450px;
+    background-size: cover;
 }
 
 .game-upper-playing {
     width: 25%;
     margin: auto auto;
-    padding-top: 1.5rem;
+    padding-top: 10px;
     font-size: 1.5vw;
-    /*padding-bottom: 1.5rem;*/
-    /*background: white;*/
-    /*border-radius: 50px;*/
 }
 
 .game-upper-buttons {
     margin: auto auto;
     display: flex;
     justify-content: space-evenly;
-    padding-top: 1rem;
+    padding-top: 2vh;
 }
 
 .game-upper-players {
     width: 25%;
     margin: auto auto;
-    /*padding-top: 1.5rem;*/
-    /*padding-bottom: 1.5rem;*/
-    /*background: white;*/
-    /*border-radius: 50px;*/
 }
 
 
 .game-words-container {
-    margin: 1rem auto;
-    padding:2rem 2rem;
-    display:flex;
-    flex-wrap:wrap;
+    margin: 2vh auto;
+    padding: 2vh 1vw;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     height: 100%;
     width: 95%;

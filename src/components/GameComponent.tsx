@@ -7,9 +7,7 @@ import styled from "styled-components";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
 import {GameButton, LeftBallButton, RightBallButton} from "./GameButton";
-import {gameGrey} from "../services/colorsProvider";
-import leftBall from '../resources/bulle_Gauche.png'
-import rightBall from '../resources/bulle_Droite.png'
+import title from '../resources/CLAUDE_NAMES_title_v2.png';
 
 interface GameComponentProps {
     game: GameModel,
@@ -98,7 +96,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                     {getGameUpperButtons()}
                 </div>
                 <div className={'game-upper-title'}>
-                    <h1>Claude Names</h1>
+                    <img src={title}/>
                 </div>
                 <div className={'game-upper-players'}>
                     <PlayersComponent
