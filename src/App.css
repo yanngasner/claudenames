@@ -16,3 +16,12 @@ button {
   font: inherit;
 }
 
+button:focus, button:active {
+          outline: 0;
+}
+
+button:hover:enabled {
+  cursor: pointer;
+}
+
+

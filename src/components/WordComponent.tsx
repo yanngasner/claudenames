@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {getFontColor, getImage} from "../services/colorsProvider";
 import {usePlayer} from "../services/usePlayer";
 import {RoundStatus} from "../types/enums";
+import '../App.css'
 
 interface WordCardProps {
     word: WordModel;
@@ -24,18 +25,10 @@ const WordCard = styled.button`
     width : 90%;
     height : 90%;
     margin : auto;
-    border : none;
-    background-color: transparent;
     background-image: url(${(props: WordCardProps) => getImage(props.word, props.roundStatus)});
     background-size: 100% 100%;
     font-size : ${(props: WordCardProps) => props.word.text.length < 10 ? '2.5vw' : '2vw'};
-            
-    &:focus, &:active {
-        outline: 0;
-    }
-    
     &:hover:enabled {
-        cursor:pointer;
         width:95%;
         height:95%;
 `;

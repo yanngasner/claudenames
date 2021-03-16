@@ -1,3 +1,5 @@
+@import "../App.css";
+
 .game-description-component {
     width: 90%;
     max-width : 100px;

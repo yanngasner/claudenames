@@ -3,6 +3,7 @@ import {GameModel, PlayerModel} from "../types/gameTypes";
 import WordComponent from "./WordComponent";
 import PlayersComponent from "./PlayersComponent";
 import './GameComponent.css'
+import '../App.css'
 import styled from "styled-components";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
