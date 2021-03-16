@@ -69,7 +69,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    height: 100%;
+    height: calc(96vh - 6 * var(--upper-height) / 5);
     width: 95%;
     background-color: white;
     border-radius: 20px;
