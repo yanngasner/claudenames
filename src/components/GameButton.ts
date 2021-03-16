@@ -26,7 +26,7 @@ export const AuthenticationButton = styled.button`
   background-size: 100% 100%;
   width: 150px;
   height: 60px;
-  font-size: 1.5vw;
+  font-size: 1.5em;
   &:hover:enabled {
     color: ${gameGrey};
   }
