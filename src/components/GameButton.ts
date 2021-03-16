@@ -22,7 +22,7 @@ export const GameButton = styled.button`
 
 export const AuthenticationButton = styled.button`
   color:${gameWhite};
-  background-image: url(${getButtonImage(Team.Blue)});
+  background-image: url(${(props: {team:Team|undefined}) => getButtonImage(props.team)});
   background-size: 100% 100%;
   width: 150px;
   height: 60px;

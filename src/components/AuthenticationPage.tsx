@@ -58,7 +58,7 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                 </div>
             <div>
                     {error ? <p>{error}</p> : null}
-                    <AuthenticationButton onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</AuthenticationButton>
+                    <AuthenticationButton team={Team.Blue} onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</AuthenticationButton>
                 </div>
 
                 {alternateAuthenticationDescription()}
