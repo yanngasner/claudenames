@@ -1,17 +1,16 @@
 @import "../App.css";
 
 .rules-component {
-    width: 400px;
+    width: 20vw;
     height: 100%;
-    margin : 2rem 2rem;
+    padding: 2rem 2rem;
     overflow-y: scroll;
-    /*scrollbar-width: none; !* Firefox *!*/
-    /*-ms-overflow-style: none;  !* Internet Explorer 10+ *!*/
 }
-/*.rules-component::-webkit-scrollbar { !* WebKit *!*/
-/*    width: 0;*/
-/*    height: 0;*/
-/*}*/
+
+.rules-inner-component {
+    width: 100%;
+    margin: auto auto;
+}
 
 .rules-component p {
     text-align: justify;

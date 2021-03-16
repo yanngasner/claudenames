@@ -21,6 +21,20 @@ const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOn
     const userId = useRecoilValue(userIdState);
     const [isMenuVisible, setMenuVisible] = useState(game === undefined)
     const [isRulesVisible, setRulesVisible] = useState(false)
+
+    const handleChangeMenuVisibility = () => {
+        if (!isMenuVisible)
+            setRulesVisible(false);
+        setMenuVisible(!isMenuVisible);
+        
+    }
+
+    const handleChangeRulesVisibility = () => {
+        if (!isRulesVisible)
+            setMenuVisible(false);
+        setRulesVisible(!isRulesVisible);
+    }
+
     return (
         <div className='game-page'>
             <div className={'main-menu'}>
@@ -41,8 +55,8 @@ const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOn
                         requestNextRound={(team: Team) => actOnGame(GameAction.NextRound, game.id, game.roundId, team)}
                         validateSelection={(team: Team, wordId: string) => actOnWord(WordAction.Validate, game.id, game.roundId, team, wordId)}
                         changeWordSelected={(team: Team, wordId: string, isSelected) => actOnWord(isSelected ? WordAction.Select : WordAction.Unselect, game.id, game.roundId, team, wordId)}
-                        changeMenuVisibility={() => setMenuVisible(!isMenuVisible)}
-                        changeRulesVisibility={() => setRulesVisible(!isRulesVisible)}
+                        changeMenuVisibility={handleChangeMenuVisibility}
+                        changeRulesVisibility={handleChangeRulesVisibility}
                     />
                     : <div></div>
                 }

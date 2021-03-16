@@ -4,7 +4,7 @@ import './RulesComponent.css'
 const RulesComponent: FC<{isVisible:boolean}> = ({isVisible}) => {
 
         const getRulesText = () =>
-            <div>
+            <div className={'rules-inner-component'}>
                     <h2>ClaudeNames</h2>
                     <br/>
                     <h4>Version online entre amis du célèbre jeu CodeNames</h4>

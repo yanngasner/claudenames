@@ -16,7 +16,7 @@
 
 .main-game {
     height : 100%;
-    width: 100%;
+    max-width:100%;
     background-image: url('../resources/PLATEAU.png');
 }
 
