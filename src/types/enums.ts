@@ -1,20 +1,20 @@
 export enum Team {
-    Blue,
+    Green,
     Red,
 }
 
 export enum WordType {
     Unassigned,
-    Blue,
+    Green,
     Red,
     Forbidden
 }
 
 export enum RoundStatus {
     Waiting,
-    BluePlaying,
+    GreenPlaying,
     RedPlaying,
-    BlueWins,
+    GreenWins,
     RedWins,
     Deuce ,
 }

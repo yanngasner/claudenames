@@ -47,7 +47,6 @@
     margin: auto auto;
     padding-top: calc(var(--upper-height) / 25);
     font-size: 1.5vw;
-    color: #424242;
 }
 
 .game-upper-buttons {

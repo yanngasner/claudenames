@@ -16,7 +16,7 @@ const RulesComponent: FC<{isVisible:boolean}> = ({isVisible}) => {
                             nouvelle.</p>
                     <br/>
                     <h4>Choix des rôles</h4>
-                    <p>Vous choisissez si vous êtes dans l'équipe bleue ou rouge</p>
+                    <p>Vous choisissez si vous êtes dans l'équipe vert ou rouge</p>
                     <p>Une personne par équipe décide de prendre le lead : c'est le joueur qui fera deviner les mots à
                             son équipe.</p>
                     <p>Une fois les 2 leaders déclarés, la partie commence.</p>

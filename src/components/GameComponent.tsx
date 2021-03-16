@@ -9,6 +9,7 @@ import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
 import {GameButton, LeftBallButton, RightBallButton} from "./GameButton";
 import title from '../resources/CLAUDE_NAMES_title_v2.png';
+import {getRoundStatusColor, getScoreColor} from "../services/colorsProvider";
 
 interface GameComponentProps {
     game: GameModel,
@@ -23,8 +24,12 @@ interface GameComponentProps {
     changeRulesVisibility: () => void
 }
 
+const RoundStatusDiv = styled.h3`
+  color: ${(props: {roundStatus:RoundStatus}) => getRoundStatusColor(props.roundStatus)};
+`;
 
-const GameComponentDiv = styled.div<{  player: PlayerModel | undefined }>`
+const ScoreDiv = styled.h3`
+  color: ${(props: {greenScore:number, redScore: number}) => getScoreColor(props.greenScore, props.redScore)};
 `;
 
 const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead, endShift, requestNextRound, validateSelection, changeWordSelected, changeMenuVisibility, changeRulesVisibility}) => {
@@ -35,7 +40,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     const [hasTeamLeader, isLeader, isPlaying] = usePlayer(player, currentRound);
 
     const hasSelectedWords = words.some(w => w.isSelected);
-    const blueScore = game.rounds.filter(r => r.roundStatus === RoundStatus.BlueWins).length;
+    const greenScore = game.rounds.filter(r => r.roundStatus === RoundStatus.GreenWins).length;
     const redScore = game.rounds.filter(r => r.roundStatus === RoundStatus.RedWins).length;
 
     const handleTakeLeadClick = () => {
@@ -63,7 +68,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     }
 
     function getGameUpperButtons() {
-        if (currentRound.roundStatus >= RoundStatus.BlueWins)
+        if (currentRound.roundStatus >= RoundStatus.GreenWins)
             return <div className={'game-upper-buttons'}>
                 <GameButton team={player?.team} onClick={() => handleRequestNextRoundClick()}>Une autre!
                 </GameButton>
@@ -85,15 +90,30 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
     }
 
 
+    const getRoundStatus = (roundStatus: RoundStatus) => {
+        if (roundStatus == RoundStatus.Waiting)
+            return "En Attente..."
+        else if (roundStatus == RoundStatus.GreenPlaying)
+            return "Tour Vert"
+        else if (roundStatus == RoundStatus.RedPlaying)
+            return "Tour Rouge"
+        else if (roundStatus == RoundStatus.GreenWins)
+            return "Victoire Vert!"
+        else if (roundStatus == RoundStatus.RedWins)
+            return "Victoire Rouge!"
+        else
+            return "Egalité"
+    }
+
     return (
-        <GameComponentDiv player={player} className={'game-component'}>
+        <div className={'game-component'}>
             <div className={'game-upper-container'}>
                 <div className={'game-upper-left'}>
                     <LeftBallButton onClick={changeMenuVisibility}>Menu</LeftBallButton>
                 </div>
                 <div className={'game-upper-playing'}>
-                    <h3>{RoundStatus[currentRound.roundStatus]}</h3>
-                    <h3>{`Blue: ${blueScore} - Red: ${redScore}`}</h3>
+                    <RoundStatusDiv roundStatus={currentRound.roundStatus}>{getRoundStatus(currentRound.roundStatus)}</RoundStatusDiv>
+                    <ScoreDiv greenScore={greenScore} redScore={redScore}>{`Vert: ${greenScore} - Rouge: ${redScore}`}</ScoreDiv>
                     {getGameUpperButtons()}
                 </div>
                 <div className={'game-upper-title'}>
@@ -121,7 +141,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                 )}
             </div>
             <div className={'game-lower-container'}/>
-        </GameComponentDiv>
+        </div>
     );
 }
 

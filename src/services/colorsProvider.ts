@@ -27,7 +27,7 @@ export function getFontColor(word: WordModel, isLeader: boolean) {
     else
     {
         switch (word.wordType) {
-            case WordType.Blue :
+            case WordType.Green :
                 return gameGreen;
             case WordType.Red :
                 return gameRed;
@@ -39,20 +39,11 @@ export function getFontColor(word: WordModel, isLeader: boolean) {
     }
 }
 
-export function getBackgroundColor(team: Team) {
-    switch (team) {
-        case Team.Blue :
-            return gameGreen;
-        case Team.Red :
-            return gameRed;
-    }
-}
-
 export function getButtonImage(team: Team | undefined) {
     switch (team) {
         case undefined:
             return grey_button;
-        case Team.Blue :
+        case Team.Green :
             return green_button;
         case Team.Red :
             return red_button;
@@ -63,7 +54,7 @@ export function getImage(word: WordModel, roundStatus: RoundStatus) {
 
     if (word.isSelected) {
         switch (roundStatus) {
-            case RoundStatus.BluePlaying:
+            case RoundStatus.GreenPlaying:
                 return green_border;
             case RoundStatus.RedPlaying:
                 return red_border;
@@ -73,7 +64,7 @@ export function getImage(word: WordModel, roundStatus: RoundStatus) {
     }
     else if (word.isUnveiled) {
         switch (word.wordType) {
-            case WordType.Blue :
+            case WordType.Green :
                 return green_full;
             case WordType.Red :
                 return red_full;
@@ -86,4 +77,22 @@ export function getImage(word: WordModel, roundStatus: RoundStatus) {
     else
         return yellow_border;
 
+}
+
+export function getScoreColor(greenScore: number, redScore: number) {
+    if (greenScore > redScore)
+        return gameGreen;
+    else if (redScore > greenScore)
+        return gameRed;
+    else
+        return gameYellow;
+}
+
+export function getRoundStatusColor(roundStatus: RoundStatus) {
+    if (roundStatus == RoundStatus.GreenPlaying || roundStatus == RoundStatus.GreenWins)
+        return gameGreen;
+    else if (roundStatus == RoundStatus.RedPlaying || roundStatus == RoundStatus.RedWins)
+        return gameRed;
+    else
+        return gameYellow;
 }

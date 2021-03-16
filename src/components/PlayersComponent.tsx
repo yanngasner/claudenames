@@ -14,7 +14,7 @@ interface PlayersComponentProps {
 const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) => {
 
     const currentRound = game.rounds[game.roundId];
-    const isBlue = player?.team === Team.Blue;
+    const isGreen = player?.team === Team.Green;
     const isRed = player?.team === Team.Red;
 
     const [, isLeader,] = usePlayer(player, currentRound);
@@ -24,10 +24,10 @@ const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) =
 
     return <div className={'players-component'}>
         <div className={'players-list-component'}>
-            <div className={'blue-players-list players-list'}>
-                {game.players.filter(p => p.team === Team.Blue).map(p =>
+            <div className={'green-players-list players-list'}>
+                {game.players.filter(p => p.team === Team.Green).map(p =>
                     <div
-                        className={`${p.userId === currentRound.blueLeaderId ? 'leader-player' : ''}`}
+                        className={`${p.userId === currentRound.greenLeaderId ? 'leader-player' : ''}`}
                         key={p.userName}>
                         <p>{p.userName}</p>
                     </div>)
@@ -45,7 +45,7 @@ const PlayersComponent: FC<PlayersComponentProps> = ({game, player, joinTeam}) =
         </div>
 
         <div className={`players-button-component`}>
-            <GameButton team={Team.Blue} disabled={isBlue || isLeader} onClick={() => handleJoinClick(Team.Blue)}>Bleu</GameButton>
+            <GameButton team={Team.Green} disabled={isGreen || isLeader} onClick={() => handleJoinClick(Team.Green)}>Vert</GameButton>
             <GameButton team={Team.Red} disabled={isRed || isLeader} onClick={() => handleJoinClick(Team.Red)}>Rouge</GameButton>
         </div>
     </div>

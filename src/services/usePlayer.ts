@@ -7,15 +7,15 @@ const usePlayer = (player: PlayerModel | undefined, currentRound: RoundModel): [
 
     const hasTeamLeader = (player === undefined)
         ? false
-        : (player.team === Team.Blue ? currentRound.blueLeaderId : currentRound.redLeaderId) !== undefined;
+        : (player.team === Team.Green ? currentRound.greenLeaderId : currentRound.redLeaderId) !== undefined;
 
-    const isBlueLeader = player !== undefined && player.userId === currentRound.blueLeaderId;
+    const isGreenLeader = player !== undefined && player.userId === currentRound.greenLeaderId;
     const isRedLeader = player !== undefined && player.userId === currentRound.redLeaderId;
-    const isLeader = isBlueLeader || isRedLeader;
+    const isLeader = isGreenLeader || isRedLeader;
 
-    const isBluePlaying = isBlueLeader && currentRound.roundStatus === RoundStatus.BluePlaying;
+    const isGreenPlaying = isGreenLeader && currentRound.roundStatus === RoundStatus.GreenPlaying;
     const isRedPlaying = isRedLeader && currentRound.roundStatus === RoundStatus.RedPlaying;
-    const isPlaying = isBluePlaying || isRedPlaying;
+    const isPlaying = isGreenPlaying || isRedPlaying;
 
     return [hasTeamLeader, isLeader, isPlaying]
 }

@@ -42,10 +42,10 @@ const useGame = ():
 
     const getWordTypesAndStartingTeam = () : [WordType[], Team] => {
 
-        const firstTeam = Math.random() < 0.5 ? Team.Blue : Team.Red;
-        const secondTeam = firstTeam === Team.Blue ? Team.Red : Team.Blue;
-        const firstWordType = firstTeam === Team.Blue ? WordType.Blue : WordType.Red;
-        const secondWordType = secondTeam === Team.Blue ? WordType.Blue : WordType.Red;
+        const firstTeam = Math.random() < 0.5 ? Team.Green : Team.Red;
+        const secondTeam = firstTeam === Team.Green ? Team.Red : Team.Green;
+        const firstWordType = firstTeam === Team.Green ? WordType.Green : WordType.Red;
+        const secondWordType = secondTeam === Team.Green ? WordType.Green : WordType.Red;
         let assignedCount = 0;
         let wordTypesArray: WordType[] = Array(gameWordsCount).fill(WordType.Unassigned);
 
@@ -133,23 +133,23 @@ const useGame = ():
     const endShift = async (roundRef: firebase.database.Reference, team: Team) => {
         const roundStatusRef = roundRef.child('roundStatus')
         await roundStatusRef.once("value", async snapshot => {
-            await roundRef.update({roundStatus: snapshot.val() === RoundStatus.BluePlaying ? RoundStatus.RedPlaying : RoundStatus.BluePlaying})
+            await roundRef.update({roundStatus: snapshot.val() === RoundStatus.GreenPlaying ? RoundStatus.RedPlaying : RoundStatus.GreenPlaying})
         });
     }
 
     const setLeader = async (roundRef: firebase.database.Reference, team: Team) => {
 
-        const targetChild = team === Team.Blue ? "blueLeaderId" : "redLeaderId";
+        const targetChild = team === Team.Green ? "greenLeaderId" : "redLeaderId";
         const leaderRef = roundRef.child(targetChild);
         await leaderRef.set(userId);
 
-        const oppositeTargetChild = team === Team.Blue ? "redLeaderId" : "blueLeaderId";
+        const oppositeTargetChild = team === Team.Green ? "redLeaderId" : "greenLeaderId";
         const oppositeLeaderRef = roundRef.child(oppositeTargetChild);
         await oppositeLeaderRef.once("value", async snapshot => {
             if (snapshot.exists()) {
                 const startingTeam = roundRef.child('startingTeam');
                 await startingTeam.once("value", async snapshot => {
-                    await roundRef.update({roundStatus: snapshot.val() === Team.Blue ? RoundStatus.BluePlaying : RoundStatus.RedPlaying})
+                    await roundRef.update({roundStatus: snapshot.val() === Team.Green ? RoundStatus.GreenPlaying : RoundStatus.RedPlaying})
                 });
             }
         });
@@ -171,14 +171,14 @@ const useGame = ():
             const unveiledWords = words.filter(w => w.isUnveiled);
             const inGameWords = words.filter(w => !w.isUnveiled);
             const blackOut = unveiledWords.some(w => w.wordType === WordType.Forbidden);
-            const blueDone = !inGameWords.some(w => w.wordType === WordType.Blue);
+            const greenDone = !inGameWords.some(w => w.wordType === WordType.Green);
             const redDone = !inGameWords.some(w => w.wordType === WordType.Red);
             if (blackOut) {
-                await roundRef.update({roundStatus: team === Team.Blue ? RoundStatus.RedWins : RoundStatus.BlueWins});
-            } else if (blueDone && redDone) {
+                await roundRef.update({roundStatus: team === Team.Green ? RoundStatus.RedWins : RoundStatus.GreenWins});
+            } else if (greenDone && redDone) {
                 await roundRef.update({roundStatus: RoundStatus.Deuce});
-            } else if (blueDone) {
-                await roundRef.update({roundStatus: RoundStatus.BlueWins});
+            } else if (greenDone) {
+                await roundRef.update({roundStatus: RoundStatus.GreenWins});
             } else if (redDone) {
                 await roundRef.update({roundStatus: RoundStatus.RedWins});
             }
