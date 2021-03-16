@@ -20,6 +20,21 @@ export const GameButton = styled.button`
   }
 `;
 
+export const AuthenticationButton = styled.button`
+  color:${gameWhite};
+  background-image: url(${getButtonImage(Team.Blue)});
+  background-size: 100% 100%;
+  width: 150px;
+  height: 60px;
+  font-size: 1.5vw;
+  &:hover:enabled {
+    color: ${gameGrey};
+  }
+  &:disabled {
+    opacity: 0.3;
+  }
+`;
+
 export const LeftBallButton = styled.button`
     color:transparent;
     background-image: url(${leftBall});

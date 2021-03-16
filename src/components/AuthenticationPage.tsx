@@ -6,7 +6,7 @@ import {useRecoilState} from "recoil";
 import {userNameState} from "../types/atoms";
 import title from "../resources/CLAUDE_NAMES_title_v2.png";
 import './AuthenticationPage.css';
-import {GameButton} from "./GameButton";
+import {AuthenticationButton} from "./GameButton";
 import {Team} from "../types/enums";
 
 interface AuthenticationProps {
@@ -58,7 +58,7 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                 </div>
             <div>
                     {error ? <p>{error}</p> : null}
-                    <GameButton team={Team.Blue} onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</GameButton>
+                    <AuthenticationButton onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</AuthenticationButton>
                 </div>
 
                 {alternateAuthenticationDescription()}

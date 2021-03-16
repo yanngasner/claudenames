@@ -22,8 +22,7 @@
 }
 
 .authentication-title img{
-    width: 20vw;
-    height: auto;
-    max-width: calc(var(--upper-height) * 2);
+    width: auto;
+    height: 200px;
     background-size: cover;
 }
