@@ -4,6 +4,10 @@ import {signIn, signUp} from "../services/auth";
 import {Link} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {userNameState} from "../types/atoms";
+import title from "../resources/CLAUDE_NAMES_title_v2.png";
+import './AuthenticationPage.css';
+import {GameButton} from "./GameButton";
+import {Team} from "../types/enums";
 
 interface AuthenticationProps {
     authenticationMode: AuthenticationMode
@@ -24,8 +28,7 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
     const [email, setEmail] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleClick = async () => {
         setError('');
         try {
             await (authenticationMode === AuthenticationMode.Login
@@ -40,10 +43,10 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value);
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h1>{authenticationMode} to <Link to="/">Claude Name</Link>
-                </h1>
+        <div className={'authentication-page'}>
+                <div className={'authentication-title'}>
+                    <img src={title} alt={'title'}/>
+                </div>
                 {authenticationDescription()}
                 <div>
                     <input placeholder="UserName" name="userName" type="username" onChange={handleUserNameChange}
@@ -53,13 +56,12 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                     <input placeholder="Email" name="email" type="email" onChange={handleEmailChange}
                            value={email}></input>
                 </div>
-                <div>
+            <div>
                     {error ? <p>{error}</p> : null}
-                    <button type="submit">{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</button>
+                    <GameButton team={Team.Blue} onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</GameButton>
                 </div>
-                <hr></hr>
+
                 {alternateAuthenticationDescription()}
-            </form>
         </div>
     );
 
