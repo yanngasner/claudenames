@@ -23,4 +23,16 @@ button:hover:enabled {
   cursor: pointer;
 }
 
+input {
+  border:none;
+  font-family: Roboto;
+  background-size: 100% 100%;
+  height: 40px;
+  width: 200px;
+}
+
+input:focus, input:active {
+  outline: 0;
+}
+
 

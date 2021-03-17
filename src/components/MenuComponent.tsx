@@ -10,10 +10,11 @@ import {Team} from "../types/enums";
 export interface MenuComponentProps {
     games: GameModel[],
     createGame: (inputName: string) => Promise<void>,
-    isVisible: boolean
+    isVisible: boolean;
+    gameSelected: () => void;
 }
 
-export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, isVisible}) => {
+export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, isVisible, gameSelected}) => {
 
     const userId = useRecoilValue(userIdState);
     const [inputName, setInputName] = useState("")
@@ -29,6 +30,7 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
 
     const handleStartClick = (game: GameModel) => {
         history.push(`/${game.id}`);
+        gameSelected();
     }
 
     const getCreateGameComponent = () => {
@@ -37,8 +39,8 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
                 <form onSubmit={handleSubmit}>
                     <h3>Créer une partie</h3>
                     <input placeholder="Nom de partie" name="name" type="name" onChange={handleNameChange}
-                           value={inputName}></input>
-                    <SmallMenuButton team={Team.Red} type="submit">OK</SmallMenuButton>
+                           value={inputName} autoComplete="off"></input>
+                    <SmallMenuButton team={Team.Green} type="submit">OK</SmallMenuButton>
                 </form>
             </div>
         );

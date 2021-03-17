@@ -9,7 +9,7 @@ import grey_full from '../resources/FOND_GRIS.png'
 import grey_border from '../resources/BORD_GRIS.png'
 import green_button from '../resources/bouton_vert.png'
 import red_button from '../resources/bouton_rouge.png'
-import yellow_button from '../resources/bouton_gris.png'
+import yellow_button from '../resources/bouton_jaune.png'
 
 import {WordModel} from "../types/gameTypes";
 
@@ -18,6 +18,8 @@ export const gameRed = '#FF644F';
 export const gameYellow = '#FFD93E';
 export const gameGrey = '#424242';
 export const gameWhite = '#FFFFFF'
+export const gameBlue = '#0147F7'
+
 
 export function getFontColor(word: WordModel, isLeader: boolean) {
     if (word.isUnveiled)

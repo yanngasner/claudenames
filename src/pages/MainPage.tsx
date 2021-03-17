@@ -42,6 +42,7 @@ const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOn
                     games={games}
                     createGame={createGame}
                     isVisible={isMenuVisible}
+                    gameSelected={() => setMenuVisible(false)}
                 />
             </div>
             <div className={'main-game'}>
