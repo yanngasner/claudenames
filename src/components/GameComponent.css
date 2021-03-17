@@ -27,11 +27,8 @@
 }
 
 .game-upper-title {
-    width: 20%;
+    width: 25%;
     vertical-align: center;
-}
-
-.game-upper-title{
     margin: auto auto;
 }
 
@@ -40,13 +37,15 @@
     height: auto;
     max-width: calc(var(--upper-height) * 2);
     background-size: cover;
+    margin: auto auto;
 }
 
 .game-upper-playing {
     width: 25%;
-    margin: auto auto;
     padding-top: calc(var(--upper-height) / 25);
+    margin: auto auto auto 4vw;
     font-size: 1.5vw;
+
 }
 
 .game-upper-buttons {
@@ -58,9 +57,8 @@
 
 .game-upper-players {
     width: 25%;
-    margin: auto auto;
+    margin: auto 4vw auto auto;
 }
-
 
 .game-words-container {
     margin: 2vh auto;

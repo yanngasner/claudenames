@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {GameDescription} from "./GameDescription";
 import {GameModel} from "../types/gameTypes";
 import {useRecoilValue} from "recoil";
 import {userIdState} from "../types/atoms";
-import {Button} from "@material-ui/core";
 import './MenuComponent.css'
+import {useHistory} from "react-router-dom";
+import {MenuButton, SmallMenuButton} from "./GameButtons";
+import {Team} from "../types/enums";
 
 export interface MenuComponentProps {
     games: GameModel[],
@@ -17,11 +18,17 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
     const userId = useRecoilValue(userIdState);
     const [inputName, setInputName] = useState("")
 
+    const history = useHistory();
+
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputName(event.target.value);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await createGame(inputName);
+    }
+
+    const handleStartClick = (game: GameModel) => {
+        history.push(`/${game.id}`);
     }
 
     const getCreateGameComponent = () => {
@@ -31,7 +38,7 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
                     <h3>Créer une partie</h3>
                     <input placeholder="Nom de partie" name="name" type="name" onChange={handleNameChange}
                            value={inputName}></input>
-                    <Button type="submit">OK</Button>
+                    <SmallMenuButton team={Team.Red} type="submit">OK</SmallMenuButton>
                 </form>
             </div>
         );
@@ -41,11 +48,9 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
         return (
             <div >
                 {games.sort((game1, game2) => (game1.creationTime < game2.creationTime ? 1 : -1)).map(game =>
-                    <GameDescription
-                        key={game.id}
-                        game={game}
-                        player={game.players.find(p => p.userId === userId)}
-                    />
+                    <div className={'menu-game-element'}>
+                        <MenuButton team={game.players.find(p => p.userId === userId)?.team} onClick={() => handleStartClick(game)}>{game.name}</MenuButton>
+                    </div>
                 )}
             </div>
         );

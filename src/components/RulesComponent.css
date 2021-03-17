@@ -2,9 +2,10 @@
 
 .rules-component {
     width: 20vw;
+    min-width: 250px;
     height: 100%;
-    padding: 2rem 2rem;
-    overflow-y: scroll;
+    padding: 1vh 2vw;
+    overflow-y: auto;
 }
 
 .rules-inner-component {

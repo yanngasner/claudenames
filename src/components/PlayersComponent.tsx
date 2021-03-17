@@ -3,7 +3,7 @@ import {GameModel, PlayerModel} from "../types/gameTypes";
 import {Team} from "../types/enums";
 import './PlayersComponent.css';
 import {usePlayer} from "../services/usePlayer";
-import {GameButton} from "./GameButton";
+import {GameButton} from "./GameButtons";
 
 interface PlayersComponentProps {
     game: GameModel,

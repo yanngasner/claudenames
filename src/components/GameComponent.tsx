@@ -7,7 +7,7 @@ import '../App.css'
 import styled from "styled-components";
 import {RoundStatus, Team} from "../types/enums";
 import {usePlayer} from "../services/usePlayer";
-import {GameButton, LeftBallButton, RightBallButton} from "./GameButton";
+import {GameButton, LeftBallButton, RightBallButton} from "./GameButtons";
 import title from '../resources/CLAUDE_NAMES_title_v2.png';
 import {getRoundStatusColor, getScoreColor} from "../services/colorsProvider";
 
@@ -91,15 +91,15 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
 
 
     const getRoundStatus = (roundStatus: RoundStatus) => {
-        if (roundStatus == RoundStatus.Waiting)
+        if (roundStatus === RoundStatus.Waiting)
             return "En Attente..."
-        else if (roundStatus == RoundStatus.GreenPlaying)
+        else if (roundStatus === RoundStatus.GreenPlaying)
             return "Tour Vert"
-        else if (roundStatus == RoundStatus.RedPlaying)
+        else if (roundStatus === RoundStatus.RedPlaying)
             return "Tour Rouge"
-        else if (roundStatus == RoundStatus.GreenWins)
+        else if (roundStatus === RoundStatus.GreenWins)
             return "Victoire Vert!"
-        else if (roundStatus == RoundStatus.RedWins)
+        else if (roundStatus === RoundStatus.RedWins)
             return "Victoire Rouge!"
         else
             return "Egalité"

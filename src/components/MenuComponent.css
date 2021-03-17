@@ -1,14 +1,34 @@
 @import "../App.css";
 
-.new-game-component {
-    margin : 2rem auto;
+.menu-component {
+    width: 20vw;
+    min-width: 250px;
+    height: 100%;
+    padding : 2rem 2rem;
+    overflow-y: auto;
+    direction: rtl;
+    margin: 0 0;
 }
 
-.menu-component {
-    padding : 2rem 2rem;
-    width: 20vw;
-    overflow-y: scroll;
-    /*overflow: hidden;*/
-    max-height: 100%;
+.new-game-component {
+    margin : 2rem auto;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    color: #FFD93E;
+}
+
+.menu-game-element {
+    margin : 0.5rem auto;
+}
+
+.new-game-component input {
+    background-image: url('../resources/BORD_VERT.png');
+    margin: 1em auto;
+    background-size: 100% 100%;
+    height: 40px;
+    width: 200px;
+    border:none;
+    font-family: Roboto;
 }
 

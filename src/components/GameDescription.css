@@ -1,9 +1,0 @@
-@import "../App.css";
-
-.game-description-component {
-    width: 90%;
-    max-width : 100px;
-    margin : 2rem auto;
-    border: 1px solid black;
-    border-radius: 25px;
-}

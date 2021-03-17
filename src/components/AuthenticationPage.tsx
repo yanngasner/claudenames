@@ -6,7 +6,7 @@ import {useRecoilState} from "recoil";
 import {userNameState} from "../types/atoms";
 import title from "../resources/CLAUDE_NAMES_title_v2.png";
 import './AuthenticationPage.css';
-import {AuthenticationButton} from "./GameButton";
+import {MenuButton} from "./GameButtons";
 import {Team} from "../types/enums";
 
 interface AuthenticationProps {
@@ -16,12 +16,12 @@ interface AuthenticationProps {
 export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticationMode}) => {
 
     const authenticationDescription = () =>
-        <p>Fill in the form below to {authenticationMode} to your account.</p>;
+        <p>Merci de vous identifier ci-dessous</p>;
 
     const alternateAuthenticationDescription = () =>
         authenticationMode === AuthenticationMode.Login
-            ? <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
-            : <p>Already have an account? <Link to="/login">Login</Link></p>;
+            ? <p>Pas encore de compte? <Link to="/signup">Sign up</Link></p>
+            : <p>Déjà un compte? <Link to="/login">Login</Link></p>;
 
     const [, setBaseUserName] = useRecoilState(userNameState)
     const [userName, setUserName] = useState('');
@@ -48,7 +48,8 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                     <img src={title} alt={'title'}/>
                 </div>
                 {authenticationDescription()}
-                <div>
+            {alternateAuthenticationDescription()}
+            <div>
                     <input placeholder="UserName" name="userName" type="username" onChange={handleUserNameChange}
                            value={userName}></input>
                 </div>
@@ -58,10 +59,9 @@ export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticatio
                 </div>
             <div>
                     {error ? <p>{error}</p> : null}
-                    <AuthenticationButton team={Team.Green} onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</AuthenticationButton>
+                    <MenuButton team={Team.Green} onClick={handleClick}>{`${authenticationMode === AuthenticationMode.Login ? 'Log In' : 'Sign up' }`}</MenuButton>
                 </div>
 
-                {alternateAuthenticationDescription()}
         </div>
     );
 

@@ -9,7 +9,7 @@ import grey_full from '../resources/FOND_GRIS.png'
 import grey_border from '../resources/BORD_GRIS.png'
 import green_button from '../resources/bouton_vert.png'
 import red_button from '../resources/bouton_rouge.png'
-import grey_button from '../resources/bouton_gris.png'
+import yellow_button from '../resources/bouton_gris.png'
 
 import {WordModel} from "../types/gameTypes";
 
@@ -42,7 +42,7 @@ export function getFontColor(word: WordModel, isLeader: boolean) {
 export function getButtonImage(team: Team | undefined) {
     switch (team) {
         case undefined:
-            return grey_button;
+            return yellow_button;
         case Team.Green :
             return green_button;
         case Team.Red :
@@ -89,9 +89,9 @@ export function getScoreColor(greenScore: number, redScore: number) {
 }
 
 export function getRoundStatusColor(roundStatus: RoundStatus) {
-    if (roundStatus == RoundStatus.GreenPlaying || roundStatus == RoundStatus.GreenWins)
+    if (roundStatus === RoundStatus.GreenPlaying || roundStatus === RoundStatus.GreenWins)
         return gameGreen;
-    else if (roundStatus == RoundStatus.RedPlaying || roundStatus == RoundStatus.RedWins)
+    else if (roundStatus === RoundStatus.RedPlaying || roundStatus === RoundStatus.RedWins)
         return gameRed;
     else
         return gameYellow;
