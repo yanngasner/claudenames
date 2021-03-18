@@ -9,6 +9,10 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <br/>
             <h4>Version online entre amis du célèbre jeu CodeNames</h4>
             <br/>
+            <h4>Organiser une partie</h4>
+            <p>Il faut être au minimum 4 joueurs, et avoir un moyen de communication accessible entre joueurs (visio,
+                téléphone, en direct, ou éventuellement un chat) pour les propositions de mots et les discussions</p>
+            <br/>
             <h4>Avant de jouer</h4>
             <p>Avant de jouer, il est nécessaire de vous logger au jeu. Si vous n'avez jamais joué, il vous faudra vous
                 ddd

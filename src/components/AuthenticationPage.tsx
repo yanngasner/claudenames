@@ -16,8 +16,11 @@ interface AuthenticationProps {
 export const AuthenticationPage: React.FC<AuthenticationProps> = ({authenticationMode}) => {
 
     const authenticationDescription = () =>
-        <p>Merci de vous identifier ci-dessous</p>;
-
+    <div>
+        <p>Merci de vous identifier ci-dessous</p>
+        <p>Le username doit contenir au minimum 6 caractères</p>
+    </div>
+    
     const alternateAuthenticationDescription = () =>
         authenticationMode === AuthenticationMode.Login
             ? <p>Pas encore de compte? <Link to="/signup">Sign up</Link></p>
