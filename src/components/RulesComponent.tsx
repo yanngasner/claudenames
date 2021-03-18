@@ -36,7 +36,7 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <p>Les leaders voient apparaitre les couleurs des cartes, tandis qu'elles restent masquées pour les
                 autres joueurs.</p>
             <p>Le leader qui a un mot de plus a faire deviner (il y en a 9 contre 8) sera le premier à jouer. Il
-                voit les boutons de jeu appraitre.</p>
+                voit les boutons de jeu apparaitre.</p>
             <br/>
             <h4>Déroulement</h4>
             <p>Lorsque c'est à son tour de jouer, le leader va chercher,

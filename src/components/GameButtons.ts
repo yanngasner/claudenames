@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Team} from "../types/enums";
-import {getButtonImage, gameGrey, gameWhite} from "../services/colorsProvider";
+import {getButtonImage, gameGrey, gameWhite, gameYellow} from "../services/colorsProvider";
 import rightBall from "../resources/bulle_Droite.png";
 import leftBall from "../resources/bulle_Gauche.png";
 import "../App.css"
@@ -38,15 +38,15 @@ export const SmallMenuButton = styled(BaseButton)`
 `;
 
 const BallButton = styled.button`
-    color:transparent;
+    color: ${gameGrey};
     background-size: 100% 100%;
     width : 100%;
     height : 90%;
     margin : auto auto;
-    font-size: 0.75vw;
+    font-size: 0.6vw;
     padding: 0.25vw; 
     &:hover:enabled {
-        color:${gameGrey}
+        font-size: 0.7vw;
     }  
 `;
 
