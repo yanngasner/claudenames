@@ -20,8 +20,8 @@ interface MainPageProps {
 const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOnWord}) => {
 
     const userId = useRecoilValue(userIdState);
-    const [isMenuVisible, setMenuVisible] = useState(false)
-    const [isRulesVisible, setRulesVisible] = useState(game === undefined)
+    const [isMenuVisible, setMenuVisible] = useState(game === undefined)
+    const [isRulesVisible, setRulesVisible] = useState(false)
 
     const handleChangeMenuVisibility = () => {
         if (!isMenuVisible)

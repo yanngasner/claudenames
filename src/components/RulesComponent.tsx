@@ -11,7 +11,8 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <br/>
             <h4>Organiser une partie</h4>
             <p>Il faut être au minimum 4 joueurs (2 par équipe), et avoir un moyen de communication accessible entre
-                joueurs (visio, téléphone, en direct) pour les propositions de mots et les discussions.</p>
+                joueurs (visio, téléphone, en direct) pour les propositions de mots et les discussions. Par exemple,
+                vous pouvez patager votre en écran verticaleent entre claudenames et une fenêtre de visio</p>
             <br/>
             <h4>Avant de jouer</h4>
             <p>Avant de jouer, il est nécessaire de vous logger au jeu. Si vous n'avez jamais joué, il vous faudra vous
