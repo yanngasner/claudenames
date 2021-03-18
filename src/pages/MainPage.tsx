@@ -7,6 +7,7 @@ import {userIdState} from "../types/atoms";
 import {MenuComponent} from "../components/MenuComponent";
 import './MainPage.css';
 import RulesComponent from "../components/RulesComponent";
+import EmptyGameComponent from "../components/EmptyGameComponent";
 
 interface MainPageProps {
     games: GameModel[],
@@ -19,8 +20,8 @@ interface MainPageProps {
 const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOnWord}) => {
 
     const userId = useRecoilValue(userIdState);
-    const [isMenuVisible, setMenuVisible] = useState(game === undefined)
-    const [isRulesVisible, setRulesVisible] = useState(false)
+    const [isMenuVisible, setMenuVisible] = useState(false)
+    const [isRulesVisible, setRulesVisible] = useState(game === undefined)
 
     const handleChangeMenuVisibility = () => {
         if (!isMenuVisible)
@@ -59,7 +60,10 @@ const MainPage : FC<MainPageProps> = ({games, createGame, game, actOnGame, actOn
                         changeMenuVisibility={handleChangeMenuVisibility}
                         changeRulesVisibility={handleChangeRulesVisibility}
                     />
-                    : <div></div>
+                    : <EmptyGameComponent
+                        changeMenuVisibility={handleChangeMenuVisibility}
+                        changeRulesVisibility={handleChangeRulesVisibility}
+                    />
                 }
             </div>
             <div className={'main-rules'}>

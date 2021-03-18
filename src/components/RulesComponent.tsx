@@ -10,8 +10,8 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <h4>Version online entre amis du célèbre jeu CodeNames</h4>
             <br/>
             <h4>Organiser une partie</h4>
-            <p>Il faut être au minimum 4 joueurs, et avoir un moyen de communication accessible entre joueurs (visio,
-                téléphone, en direct, ou éventuellement un chat) pour les propositions de mots et les discussions</p>
+            <p>Il faut être au minimum 4 joueurs (2 par équipe), et avoir un moyen de communication accessible entre
+                joueurs (visio, téléphone, en direct) pour les propositions de mots et les discussions.</p>
             <br/>
             <h4>Avant de jouer</h4>
             <p>Avant de jouer, il est nécessaire de vous logger au jeu. Si vous n'avez jamais joué, il vous faudra vous
@@ -20,6 +20,12 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <p>NB : L'association UserName - Email doit être constante.</p>
             <p>Une fois loggé, vous pouvez via le menu rejoindre une partie déjà créée, ou en créer une
                 nouvelle.</p>
+            <br/>
+            <h4>Description du plateau de jeu</h4>
+            <li>un menu et les règles sont accessibles via les bulles en haut à gauche et à droite</li>
+            <li>la partie haute du plateau regroupe les détails des tours, les boutons de jeu, et les choix d'équipes</li>
+            <li>la partie basse du plateau permet de visualiser les mots, et de sélectionner pour le leader
+                les mots choisis par l'équipe</li>
             <br/>
             <h4>Choix des rôles</h4>
             <p>Vous choisissez si vous êtes dans l'équipe vert ou rouge</p>
