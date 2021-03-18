@@ -19,6 +19,11 @@
     width:25%;
     font-size: 1vw;
     padding: 10px 0;
+    margin: auto auto;
+}
+
+.players-list p{
+    line-height: 1.5vw;
 }
 
 .green-players-list {

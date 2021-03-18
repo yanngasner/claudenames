@@ -27,7 +27,7 @@ const WordCard = styled.button`
     margin : auto;
     background-image: url(${(props: WordCardProps) => getImage(props.word, props.roundStatus)});
     background-size: 100% 100%;
-    font-size : ${(props: WordCardProps) => props.word.text.length < 10 ? '2.5vw' : '2vw'};
+    font-size : ${(props: WordCardProps) => props.word.text.length < 9 ? '2.5vw' : '2vw'};
     &:hover:enabled {
         width:95%;
         height:95%;

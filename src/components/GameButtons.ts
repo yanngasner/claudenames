@@ -28,7 +28,7 @@ export const GameButton = styled(BaseButton)`
 export const MenuButton = styled(BaseButton)`
   width: 150px;
   height: 60px;
-  font-size: 1.5em;
+  font-size: 1.25em;
 `;
 
 export const SmallMenuButton = styled(BaseButton)`

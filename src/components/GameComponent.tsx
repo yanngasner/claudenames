@@ -82,7 +82,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
                             onClick={() => handleEndShiftClick()}>Terminer
                 </GameButton>
             </div>
-        else if (!hasTeamLeader && player?.team != undefined)
+        else if (!hasTeamLeader && player?.team !== undefined)
             return <div className={'game-upper-buttons'}>
                 <GameButton team={player?.team} onClick={() => handleTakeLeadClick()}>Lead</GameButton>
             </div>

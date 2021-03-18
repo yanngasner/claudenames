@@ -13,7 +13,7 @@
     padding:calc(var(--upper-height) / 25) 0;
     display:flex;
     justify-content: space-between;
-    line-height: calc(var(--upper-height) / 5);
+    line-height: 2.5vw;
 }
 
 .game-upper-left {
@@ -52,7 +52,7 @@
     margin: auto auto;
     display: flex;
     justify-content: space-evenly;
-    padding-top: calc(var(--upper-height) / 25);
+    padding-top: calc(var(--upper-height) / 15);
 }
 
 .game-upper-players {

@@ -13,7 +13,7 @@
     margin: auto auto;
 }
 
-.rules-component p {
+.rules-component p, .rules-component li {
     text-align: justify;
     font-size: 13px;
     font-family: 'Roboto';
