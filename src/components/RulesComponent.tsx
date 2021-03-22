@@ -12,7 +12,7 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <h4>Organiser une partie</h4>
             <p>Il faut être au minimum 4 joueurs (2 par équipe), et avoir un moyen de communication accessible entre
                 joueurs (visio, téléphone, en direct) pour les propositions de mots et les discussions. Par exemple,
-                vous pouvez patager votre en écran verticaleent entre claudenames et une fenêtre de visio</p>
+                vous pouvez patager votre en écran verticalement entre claudenames et une fenêtre de visio.</p>
             <br/>
             <h4>Avant de jouer</h4>
             <p>Avant de jouer, il est nécessaire de vous logger au jeu. Si vous n'avez jamais joué, il vous faudra vous
@@ -49,9 +49,11 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
                 ouverte. La proposition peut comporter plusieurs salves.</p>
             <p>A chaque proposition, validée par l'ensemble de l'équipe, le leader va sélectionner les mots,
                 puis cliquer sur "Valider".</p>
-            <p>Les mots sélectionnés sont dévoilés. Si la somme des mots proposés n'a pas encore atteint le
+            <p>Les mots sélectionnés sont dévoilés pour l'ensemble des joueurs : le fond de la carte prend la couleur
+                associée au mot.</p>
+            <p>Si la somme des mots proposés n'a pas encore atteint le
                 nombre donné par le leader, l'équipe poursuit. Elle peut cependant décider de s'arrêter
-                avant d'avoir atteint le nombre de mots proposés par le leader si elle a un doute</p>
+                avant d'avoir atteint le nombre de mots proposés par le leader si elle a un doute.</p>
             <p>Le leader doit anticiper les propositions de son équipe, puisque toute découverte d'une autre
                 couleur est pénalisante :</p>
             <li>le mot noir est interdit et met fin au tour, avec un victoire de l'équipe adverse</li>
@@ -63,9 +65,8 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
             <br/>
             <h4>Fin du round</h4>
             <p>Le round s'arrête si une équipe tombe sur le mot interdit, ou parvient à avoir tous ses mots
-                dévoilés (cela peut venir de l'aversaire!)</p>
-            <p>Il est alors possible de commencer un nouveau round en cliquant sur "Commencer un nouveau
-                Round"</p>
+                dévoilés (cela peut venir de l'adversaire!)</p>
+            <p>Il est alors possible de commencer un nouveau round en cliquant sur "Une autre!"</p>
             <p>Un nouveau tableau est tiré, de nouveaux leaders se désignent, et la partie peut continuer.</p>
         </div>
 
