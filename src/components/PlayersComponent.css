@@ -22,7 +22,7 @@
     margin: auto auto;
 }
 
-.players-list p{
+.players-list p {
     line-height: 1.5vw;
 }
 
@@ -36,4 +36,14 @@
 
 .leader-player {
     text-decoration: underline;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .players-list {
+        font-size: 2vw;
+    }
+
+    .players-list p {
+        line-height: 2vw;
+    }
 }

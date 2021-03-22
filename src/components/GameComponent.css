@@ -38,6 +38,7 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    margin: 0 auto;
 }
 
 .game-upper-playing {
@@ -45,7 +46,6 @@
     padding-top: calc(var(--upper-height) / 25);
     margin: auto auto auto 4vw;
     font-size: 1.5vw;
-
 }
 
 .game-upper-buttons {
@@ -94,7 +94,7 @@
     }
 }
 
-@media (max-aspect-ratio: 4/5) {
+@media (max-aspect-ratio: 1/1) {
     .game-very-upper-container {
         height: calc(var(--upper-height) * 1 /2);
         padding: calc(var(--upper-height) / 25) 0 0;
@@ -116,6 +116,8 @@
 
     .game-upper-playing, .game-upper-players {
         width : 35%;
+        font-size: 2vw;
+        line-height: 3vw;
     }
 
     .game-upper-left, .game-upper-right {

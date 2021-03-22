@@ -23,6 +23,11 @@ export const GameButton = styled(BaseButton)`
   width: 10vw;
   height: calc(var(--upper-height) / 4);
   font-size: 1.5vw;
+  @media (max-aspect-ratio: 1/1) {
+    width: 15vw;
+    height: calc(var(--upper-height) / 8);
+    font-size: 2vw;
+  }
 `;
 
 export const MenuButton = styled(BaseButton)`
@@ -47,7 +52,13 @@ const BallButton = styled.button`
     padding: 0.25vw; 
     &:hover:enabled {
         font-size: 0.7vw;
-    }  
+    } 
+    @media (max-aspect-ratio: 1/1) {
+      font-size: 1vw;
+      &:hover:enabled {
+        font-size: 1.2vw;
+    } 
+  } 
 `;
 
 export const LeftBallButton = styled(BallButton)`
