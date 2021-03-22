@@ -5,19 +5,17 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
 
     const getRulesText = () =>
         <div className={'rules-inner-component'}>
-            <h2>ClaudeNames</h2>
+            <title>ClaudeNames</title>
             <br/>
-            <h4>Version online entre amis du célèbre jeu CodeNames</h4>
+            <h1>Jeu online inspiré de la version équipe du jeu CodeNames</h1>
             <br/>
             <h4>Organiser une partie</h4>
             <p>Il faut être au minimum 4 joueurs (2 par équipe), et avoir un moyen de communication accessible entre
                 joueurs (visio, téléphone, en direct) pour les propositions de mots et les discussions. Par exemple,
-                vous pouvez patager votre en écran verticalement entre claudenames et une fenêtre de visio.</p>
+                vous pouvez patager votre écran verticalement entre claudenames et une fenêtre de visio.</p>
             <br/>
             <h4>Avant de jouer</h4>
-            <p>Avant de jouer, il est nécessaire de vous logger au jeu. Si vous n'avez jamais joué, il vous faudra vous
-                enregistrer (signup).</p>
-            <p>NB : L'association UserName - Email doit être constante.</p>
+            <p>Avant de jouer, il est nécessaire de vous logger au jeu avec un simple nom d'utilisateur.</p>
             <p>Une fois loggé, vous pouvez via le menu rejoindre une partie déjà créée, ou en créer une
                 nouvelle.</p>
             <br/>
