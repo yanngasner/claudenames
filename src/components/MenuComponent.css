@@ -2,9 +2,9 @@
 
 .menu-component {
     width: 20vw;
-    min-width: 250px;
+    min-width: 200px;
     height: 100%;
-    padding : 2rem 2rem;
+    padding : 2rem 0;
     overflow-y: auto;
     direction: rtl;
     margin: 0 0;
@@ -21,10 +21,12 @@
 
 .menu-game-element {
     margin : 0.5rem auto;
+    max-width: 100%;
 }
 
 .new-game-component input {
     background-image: url('../resources/BORD_ROUGE.png');
     margin: 1em auto;
+    max-width: 90%;
 }
 

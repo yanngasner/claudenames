@@ -12,6 +12,11 @@ interface EmptyGameComponentProps {
 const EmptyGameComponent: FC<EmptyGameComponentProps> = ({changeMenuVisibility, changeRulesVisibility}) => {
         return (
         <div className={'game-component'}>
+            <div className={'game-very-upper-container'}>
+                <div className={'game-very-upper-title'}>
+                    <img src={title} alt={'title'}/>
+                </div>
+            </div>
             <div className={'game-upper-container'}>
                 <div className={'game-upper-left'}>
                     <LeftBallButton onClick={changeMenuVisibility}>Menu</LeftBallButton>
