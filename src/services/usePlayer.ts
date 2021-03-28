@@ -2,15 +2,13 @@ import {PlayerModel, RoundModel} from "../types/gameTypes";
 import {RoundStatus, Team} from "../types/enums";
 
 const usePlayer = (player: PlayerModel | undefined, currentRound: RoundModel): [boolean, boolean, boolean] => {
+
     if (player === undefined)
         return [false, false, false]
 
-    const hasTeamLeader = (player === undefined)
-        ? false
-        : (player.team === Team.Green ? currentRound.greenLeaderId : currentRound.redLeaderId) !== undefined;
-
-    const isGreenLeader = player !== undefined && player.userId === currentRound.greenLeaderId;
-    const isRedLeader = player !== undefined && player.userId === currentRound.redLeaderId;
+    const hasTeamLeader = (player.team === Team.Green ? currentRound.greenLeaderId : currentRound.redLeaderId) !== undefined;
+    const isGreenLeader = player.userId === currentRound.greenLeaderId;
+    const isRedLeader = player.userId === currentRound.redLeaderId;
     const isLeader = isGreenLeader || isRedLeader;
 
     const isGreenPlaying = isGreenLeader && currentRound.roundStatus === RoundStatus.GreenPlaying;

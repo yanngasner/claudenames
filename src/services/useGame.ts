@@ -130,7 +130,7 @@ const useGame = ():
         });
     }
 
-    const endShift = async (roundRef: firebase.database.Reference, team: Team) => {
+    const endShift = async (roundRef: firebase.database.Reference) => {
         const roundStatusRef = roundRef.child('roundStatus')
         await roundStatusRef.once("value", async snapshot => {
             await roundRef.update({roundStatus: snapshot.val() === RoundStatus.GreenPlaying ? RoundStatus.RedPlaying : RoundStatus.GreenPlaying})
@@ -197,7 +197,7 @@ const useGame = ():
                 break;
 
             case GameAction.EndShift :
-                await endShift(roundRef, team);
+                await endShift(roundRef);
                 break;
 
             case GameAction.NextRound :

@@ -10,9 +10,9 @@ import {Team} from "../types/enums";
 export const AuthenticationPage: React.FC = () => {
 
     const authenticationDescription = () =>
-    <div>
-        <p>Merci de saisir un nom pour vous identifier</p>
-    </div>
+        <div>
+            <p>Merci de saisir un nom pour vous identifier</p>
+        </div>
 
     const [, setBaseUserName] = useRecoilState(userNameState)
     const [userName, setUserName] = useState('');
@@ -36,7 +36,7 @@ export const AuthenticationPage: React.FC = () => {
             </div>
             {authenticationDescription()}
             <input placeholder="UserName" name="userName" type="username" onChange={handleUserNameChange}
-                   value={userName}></input>
+                   value={userName}/>
             {error ? <p>{error}</p> : null}
             <MenuButton team={Team.Green} onClick={handleClick}>Log In</MenuButton>
         </div>

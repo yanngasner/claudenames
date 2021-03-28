@@ -86,7 +86,7 @@ const GameComponent: FC<GameComponentProps> = ({game, player, joinTeam, takeLead
             return <div className={'game-upper-buttons'}>
                 <GameButton team={player?.team} onClick={() => handleTakeLeadClick()}>Lead</GameButton>
             </div>
-        return <div></div>
+        return <div/>
     }
 
 

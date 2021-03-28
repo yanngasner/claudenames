@@ -21,16 +21,16 @@ const EmptyGameComponent: FC<EmptyGameComponentProps> = ({changeMenuVisibility, 
                 <div className={'game-upper-left'}>
                     <LeftBallButton onClick={changeMenuVisibility}>Menu</LeftBallButton>
                 </div>
-                <div className={'game-upper-playing'}></div>
+                <div className={'game-upper-playing'}/>
                 <div className={'game-upper-title'}>
                     <img src={title} alt={'title'}/>
                 </div>
-                <div className={'game-upper-players'}></div>
+                <div className={'game-upper-players'}/>
                 <div className={'game-upper-right'}>
                     <RightBallButton onClick={changeRulesVisibility}>Règles</RightBallButton>
                 </div>
             </div>
-            <div className='game-words-container'></div>
+            <div className='game-words-container'/>
             <div className={'game-lower-container'}/>
         </div>
     );

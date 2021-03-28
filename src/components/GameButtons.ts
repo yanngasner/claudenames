@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Team} from "../types/enums";
-import {getButtonImage, gameGrey, gameWhite, gameYellow} from "../services/colorsProvider";
+import {getButtonImage, gameGrey, gameWhite} from "../services/colorsProvider";
 import rightBall from "../resources/bulle_Droite.png";
 import leftBall from "../resources/bulle_Gauche.png";
 import "../App.css"

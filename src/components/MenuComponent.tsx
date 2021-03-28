@@ -39,7 +39,7 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
                 <form onSubmit={handleSubmit}>
                     <h3>Créer une partie</h3>
                     <input placeholder="Nom de partie" name="name" type="name" onChange={handleNameChange}
-                           value={inputName} autoComplete="off"></input>
+                           value={inputName} autoComplete="off"/>
                     <SmallMenuButton team={Team.Green} type="submit">OK</SmallMenuButton>
                 </form>
             </div>
@@ -48,10 +48,11 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
 
     const getGameComponents = () => {
         return (
-            <div >
+            <div>
                 {games.sort((game1, game2) => (game1.creationTime < game2.creationTime ? 1 : -1)).map(game =>
                     <div className={'menu-game-element'}>
-                        <MenuButton team={game.players.find(p => p.userId === userId)?.team} onClick={() => handleStartClick(game)}>{game.name}</MenuButton>
+                        <MenuButton team={game.players.find(p => p.userId === userId)?.team}
+                                    onClick={() => handleStartClick(game)}>{game.name}</MenuButton>
                     </div>
                 )}
             </div>
@@ -59,12 +60,12 @@ export const MenuComponent: React.FC<MenuComponentProps> = ({games, createGame, 
     }
 
     return (
-            isVisible
-            ?  <div className={'menu-component'}>
-                    {getCreateGameComponent()}
-                    {getGameComponents()}
+        isVisible
+            ? <div className={'menu-component'}>
+                {getCreateGameComponent()}
+                {getGameComponents()}
             </div>
-            :<div></div>
+            : <div/>
     );
 }
 

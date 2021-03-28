@@ -69,7 +69,7 @@ const RulesComponent: FC<{ isVisible: boolean }> = ({isVisible}) => {
         </div>
 
     return <div className={isVisible ? 'rules-component' : ''}>
-        {isVisible ? getRulesText() : <div></div>}
+        {isVisible ? getRulesText() : <div/>}
     </div>
 }
 
