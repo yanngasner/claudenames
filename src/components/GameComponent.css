@@ -118,6 +118,7 @@
         width : 35%;
         font-size: 2vw;
         line-height: 3vw;
+        margin: auto auto auto auto;
     }
 
     .game-upper-left, .game-upper-right {

@@ -24,8 +24,8 @@ export const GameButton = styled(BaseButton)`
   height: calc(var(--upper-height) / 4);
   font-size: 1.5vw;
   @media (max-aspect-ratio: 1/1) {
-    width: 15vw;
-    height: calc(var(--upper-height) / 8);
+    width: 12vw;
+    height: calc(var(--upper-height) / 7);
     font-size: 2vw;
   }
 `;
